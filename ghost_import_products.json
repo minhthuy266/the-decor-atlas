@@ -1,0 +1,168 @@
+{
+    "db": [
+        {
+            "meta": {
+                "exported_on": 1715420000000,
+                "version": "5.0.0"
+            },
+            "data": {
+                "posts": [
+                    {
+                        "id": 101,
+                        "title": "Akari 1A Table Lamp",
+                        "slug": "product-akari-1a",
+                        "html": "<p>Designed by Isamu Noguchi in 1951, the Akari Light Sculptures are handcrafted from traditional washi paper. 'Akari' means light in Japanese, connoting both illumination and physical lightness.</p><p>This table lamp serves as a perfect bedside companion or a soft accent in a living room shelf setup.</p>",
+                        "feature_image": "https://images.unsplash.com/photo-1513506003011-38f044aff2dd?q=80&w=800&auto=format&fit=crop",
+                        "featured": 0,
+                        "status": "published",
+                        "published_at": 1715430000000,
+                        "custom_excerpt": "$210 | Design Within Reach | Vitra",
+                        "author_id": 1,
+                        "tags": [
+                            { "id": 999, "name": "product", "slug": "product" },
+                            { "id": 1002, "name": "Lighting", "slug": "lighting" }
+                        ]
+                    },
+                    {
+                        "id": 102,
+                        "title": "Travertine Coffee Table",
+                        "slug": "product-travertine-table",
+                        "html": "<p>A monolithic statement piece. The Epic Table by GUBI brings the grandeur of Roman architecture into the modern home. Made from solid travertine stone, its hexagonal base and circular top create a beautiful geometric contrast.</p>",
+                        "feature_image": "https://images.unsplash.com/photo-1615529182904-14819c35db37?q=80&w=800&auto=format&fit=crop",
+                        "featured": 1,
+                        "status": "published",
+                        "published_at": 1715430100000,
+                        "custom_excerpt": "$1,450 | Finnish Design Shop | GUBI",
+                        "author_id": 1,
+                        "tags": [
+                            { "id": 999, "name": "product", "slug": "product" },
+                            { "id": 1001, "name": "Furniture", "slug": "furniture" }
+                        ]
+                    },
+                    {
+                        "id": 103,
+                        "title": "Pacha Lounge Chair",
+                        "slug": "product-pacha-chair",
+                        "html": "<p>Pierre Paulin's 1975 invention replaced the traditional post-war austere design with a new, vigorous, organic approach. The Pacha Chair looks as if it is floating on clouds, offering extreme comfort with a minimal footprint.</p>",
+                        "feature_image": "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=800&auto=format&fit=crop",
+                        "featured": 1,
+                        "status": "published",
+                        "published_at": 1715430200000,
+                        "custom_excerpt": "$2,800 | 2Modern | GUBI",
+                        "author_id": 1,
+                        "tags": [
+                            { "id": 999, "name": "product", "slug": "product" },
+                            { "id": 1001, "name": "Furniture", "slug": "furniture" }
+                        ]
+                    },
+                    {
+                        "id": 104,
+                        "title": "Stoneware Vase No. 04",
+                        "slug": "product-stoneware-vase",
+                        "html": "<p>Inspired by the shapes of nature, this stoneware vase features a reactive glaze that ensures no two pieces are exactly alike. Perfect for dried stems or as a standalone sculptural object.</p>",
+                        "feature_image": "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?q=80&w=800&auto=format&fit=crop",
+                        "featured": 0,
+                        "status": "published",
+                        "published_at": 1715430300000,
+                        "custom_excerpt": "$85 | Nordic Nest | Menu Space",
+                        "author_id": 1,
+                        "tags": [
+                            { "id": 999, "name": "product", "slug": "product" },
+                            { "id": 1003, "name": "Decor", "slug": "decor" }
+                        ]
+                    },
+                    {
+                        "id": 105,
+                        "title": "Linen Duvet Set",
+                        "slug": "product-linen-duvet",
+                        "html": "<p>Crafted from European flax, this linen set is garment-washed for ultimate softness. It's breathable, durable, and gets better with every wash. The quintessential choice for a relaxed, layered bedroom look.</p>",
+                        "feature_image": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=800&auto=format&fit=crop",
+                        "featured": 0,
+                        "status": "published",
+                        "published_at": 1715430400000,
+                        "custom_excerpt": "$329 | Parachute Home | Parachute",
+                        "author_id": 1,
+                        "tags": [
+                            { "id": 999, "name": "product", "slug": "product" },
+                            { "id": 1004, "name": "Textiles", "slug": "textiles" }
+                        ]
+                    },
+                    {
+                        "id": 106,
+                        "title": "Walnut Dining Chair",
+                        "slug": "product-walnut-chair",
+                        "html": "<p>A mid-century modern icon. The molded plywood chair by Charles and Ray Eames has been hailed by Time magazine as the Best Design of the 20th Century. Comfortable, elegant, and timeless.</p>",
+                        "feature_image": "https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=800&auto=format&fit=crop",
+                        "featured": 0,
+                        "status": "published",
+                        "published_at": 1715430500000,
+                        "custom_excerpt": "$895 | Herman Miller | Eames",
+                        "author_id": 1,
+                        "tags": [
+                            { "id": 999, "name": "product", "slug": "product" },
+                            { "id": 1001, "name": "Furniture", "slug": "furniture" }
+                        ]
+                    },
+                    {
+                        "id": 107,
+                        "title": "Anglepoise Desk Lamp",
+                        "slug": "product-anglepoise",
+                        "html": "<p>The original adjustable lamp. Launched in the 1930s, the Anglepoise mechanism uses constant tension springs to remain in any given position. An essential tool for the home office.</p>",
+                        "feature_image": "https://images.unsplash.com/photo-1534349762948-3a47050e3903?q=80&w=800&auto=format&fit=crop",
+                        "featured": 0,
+                        "status": "published",
+                        "published_at": 1715430600000,
+                        "custom_excerpt": "$190 | Amazon | Anglepoise",
+                        "author_id": 1,
+                        "tags": [
+                            { "id": 999, "name": "product", "slug": "product" },
+                            { "id": 1002, "name": "Lighting", "slug": "lighting" }
+                        ]
+                    },
+                    {
+                        "id": 108,
+                        "title": "Abstract Wall Art",
+                        "slug": "product-wall-art",
+                        "html": "<p>A limited edition Giclée print on 265g natural art paper with a matte, uncoated finish and lightly textured surface, that ensures a rich and vibrant display of colours.</p>",
+                        "feature_image": "https://images.unsplash.com/photo-1580130601254-05fa235e1e54?q=80&w=800&auto=format&fit=crop",
+                        "featured": 0,
+                        "status": "published",
+                        "published_at": 1715430700000,
+                        "custom_excerpt": "$120 | The Poster Club | Studio 5",
+                        "author_id": 1,
+                        "tags": [
+                            { "id": 999, "name": "product", "slug": "product" },
+                            { "id": 1003, "name": "Decor", "slug": "decor" }
+                        ]
+                    }
+                ],
+                "tags": [
+                    { "id": 999, "name": "product", "slug": "product", "description": "System tag for shop items" },
+                    { "id": 1001, "name": "Furniture", "slug": "furniture", "description": "Statement pieces." },
+                    { "id": 1002, "name": "Lighting", "slug": "lighting", "description": "Illumination." },
+                    { "id": 1003, "name": "Decor", "slug": "decor", "description": "Finishing touches." },
+                    { "id": 1004, "name": "Textiles", "slug": "textiles", "description": "Soft goods." },
+                    { "id": 1005, "name": "Kitchen", "slug": "kitchen", "description": "Dining essentials." }
+                ],
+                "posts_tags": [
+                    {"post_id": 101, "tag_id": 999}, {"post_id": 101, "tag_id": 1002},
+                    {"post_id": 102, "tag_id": 999}, {"post_id": 102, "tag_id": 1001},
+                    {"post_id": 103, "tag_id": 999}, {"post_id": 103, "tag_id": 1001},
+                    {"post_id": 104, "tag_id": 999}, {"post_id": 104, "tag_id": 1003},
+                    {"post_id": 105, "tag_id": 999}, {"post_id": 105, "tag_id": 1004},
+                    {"post_id": 106, "tag_id": 999}, {"post_id": 106, "tag_id": 1001},
+                    {"post_id": 107, "tag_id": 999}, {"post_id": 107, "tag_id": 1002},
+                    {"post_id": 108, "tag_id": 999}, {"post_id": 108, "tag_id": 1003}
+                ],
+                "users": [
+                    {
+                        "id": 1,
+                        "name": "The Decor Atlas",
+                        "slug": "the-decor-atlas",
+                        "email": "editor@thedecoratlas.com"
+                    }
+                ]
+            }
+        }
+    ]
+}

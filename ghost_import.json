@@ -1,0 +1,181 @@
+{
+    "db": [
+        {
+            "meta": {
+                "exported_on": 1715420000000,
+                "version": "5.0.0"
+            },
+            "data": {
+                "posts": [
+                    {
+                        "id": 1,
+                        "title": "Japandi: The Art of Imperfect Minimalism",
+                        "slug": "japandi-art-of-imperfect-minimalism",
+                        "html": "<p>In an era defined by noise and digital clutter, the home has returned to its primal role: a sanctuary. Enter <strong>Japandi</strong>, the design movement that doesn't just ask us to declutter, but to rethink our relationship with the objects we own.</p><hr><h2>A Dialogue Between East and West</h2><p>Japandi is not merely a portmanteau of 'Japan' and 'Scandi'; it is a philosophical dialogue between two cultures that prioritize simplicity. While Scandinavian design leans towards <em>hygge</em> (coziness) and functionality, Japanese design is rooted in <em>wabi-sabi</em>—the acceptance of transience and imperfection.</p><blockquote>\"Japandi is the sweet spot where the rustic warmth of the Nordics meets the Zen aesthetics of the East.\"</blockquote><p>When these two merge, the result is a home that feels clean but not sterile, warm but not cluttered. It is minimalism with a human touch.</p><figure class=\"kg-card kg-image-card\"><img src=\"https://images.unsplash.com/photo-1598928506311-c55ded91a20c?q=80&w=2000&auto=format&fit=crop\" class=\"kg-image\" alt=\"Japandi Living Room\"><figcaption>Low-profile furniture is a staple of the Japandi aesthetic.</figcaption></figure><h2>Key Design Principles</h2><p>To achieve this look, one must exercise restraint. The palette is the first step:</p><ul><li><strong>Warm Neutrals:</strong> Move away from stark clinic whites. Think oatmeal, beige, stone, and cream.</li><li><strong>Contrast:</strong> Use black or dark charcoal accents to ground the space, a technique borrowed from Japanese calligraphy.</li><li><strong>Natural Materials:</strong> Unfinished wood, bamboo, rattan, and linen are essential.</li></ul><h3>The Low Profile</h3><p>Japanese interiors often maintain a connection to the earth. In a modern Western home, this translates to low-slung furniture. A platform bed or a sofa with a low back height opens up the vertical space of a room, allowing light to travel freely and creating a sense of airiness.</p><h2>Embracing Imperfection</h2><p>Do not hide the cracks in your ceramics or the knots in your timber. In Japandi, these are marks of life. A handmade clay vase with an uneven rim is infinitely more valuable to the atmosphere of a room than a mass-produced, perfectly symmetrical glass vessel.</p>",
+                        "feature_image": "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=2000&auto=format&fit=crop",
+                        "featured": 1,
+                        "status": "published",
+                        "published_at": 1715410000000,
+                        "custom_excerpt": "Exploring the fusion of Scandinavian functionality and Japanese rustic minimalism in modern homes.",
+                        "author_id": 1,
+                        "tags": [
+                            {
+                                "id": 1,
+                                "name": "Minimalism",
+                                "slug": "minimalism"
+                            },
+                            {
+                                "id": 2,
+                                "name": "Design Theory",
+                                "slug": "design-theory"
+                            }
+                        ]
+                    },
+                    {
+                        "id": 2,
+                        "title": "Material Focus: The Renaissance of Travertine",
+                        "slug": "renaissance-of-travertine",
+                        "html": "<p>For decades, marble has reigned supreme as the stone of luxury. Carrara and Calacatta were the gold standards. But in 2024, the design world has shifted its gaze towards something warmer, more tactile, and historically richer: <strong>Travertine</strong>.</p><h2>From Ancient Rome to Modern Living</h2><p>Travertine is a form of limestone deposited by mineral springs. It built the Colosseum in Rome, yet for a long time, it was dismissed as a dated relic of 1980s interiors. Its return marks a shift in what we value: we are moving away from the high-gloss perfection of marble towards the matte, porous reality of limestone.</p><figure class=\"kg-card kg-image-card\"><img src=\"https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=2000&auto=format&fit=crop\" class=\"kg-image\" alt=\"Travertine Coffee Table\"><figcaption>Travertine adds texture and warmth that marble often lacks.</figcaption></figure><h2>Styling Travertine</h2><p>Because travertine comes in hues of ivory, beige, and walnut, it acts as a perfect neutral anchor.</p><h3>1. The Coffee Table Statement</h3><p>A solid travertine coffee table is sculptural. It pairs beautifully with:</p><ul><li>Bouclé sofas (texture on texture)</li><li>Dark walnut flooring (contrast)</li><li>Vintage brass accents</li></ul><h3>2. Bathroom Sanctuaries</h3><p>Using travertine tiles in a bathroom creates a spa-like, organic feel. Unlike the cold sharpness of white subway tiles, travertine absorbs light, softening the space.</p><blockquote>\"Stone speaks to our primal need for permanence. In a disposable world, a travertine table is a forever piece.\"</blockquote><h2>Care and Patina</h2><p>Travertine is porous. It demands respect. It will etch with acids and stain with wine if not sealed properly. But for many designers, this 'living finish' is part of the charm—the furniture ages with the home.</p>",
+                        "feature_image": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=2000&auto=format&fit=crop",
+                        "featured": 0,
+                        "status": "published",
+                        "published_at": 1715320000000,
+                        "custom_excerpt": "Why the design world is trading high-gloss marble for the earthy, porous textures of limestone.",
+                        "author_id": 1,
+                        "tags": [
+                            {
+                                "id": 3,
+                                "name": "Materials",
+                                "slug": "materials"
+                            }
+                        ]
+                    },
+                    {
+                        "id": 3,
+                        "title": "Lighting as Sculpture: Beyond Utility",
+                        "slug": "lighting-as-sculpture",
+                        "html": "<p>Lighting is often the last consideration in home design, treated as a utility rather than an art form. This is a mistake. Lighting is the jewelry of the home; it dictates the mood, the depth, and the perceived size of a space.</p><h2>The Rule of Three Layers</h2><p>A professionally designed room never relies on a single light source (especially not the 'big light' in the center of the ceiling). Instead, we layer:</p><ol><li><strong>Ambient:</strong> The general glow (often soft, hidden LEDs).</li><li><strong>Task:</strong> Focused light for reading or cooking.</li><li><strong>Accent:</strong> The drama. This is where sculptural fixtures come in.</li></ol><figure class=\"kg-card kg-image-card\"><img src=\"https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?q=80&w=2000&auto=format&fit=crop\" class=\"kg-image\" alt=\"Sculptural Pendant Light\"></figure><h2>Form Meets Function</h2><p>In modern interiors, a lamp is beautiful even when it is turned off. Think of the paper lanterns of Isamu Noguchi or the metallic curves of Scandinavian pendants. These are sculptures that happen to emit light.</p><h3>The Warmth Factor</h3><p>The color temperature of your bulbs makes or breaks the luxury feel. Avoid 4000K (Daylight) which feels like a hospital. Aim for <strong>2700K to 3000K</strong>. This is the spectrum of sunset and candlelight—universally flattering and deeply relaxing.</p>",
+                        "feature_image": "https://images.unsplash.com/photo-1513506003011-38f044aff2dd?q=80&w=2000&auto=format&fit=crop",
+                        "featured": 0,
+                        "status": "published",
+                        "published_at": 1715200000000,
+                        "custom_excerpt": "How to transform your home's atmosphere by treating light fixtures as pieces of art.",
+                        "author_id": 1,
+                        "tags": [
+                            {
+                                "id": 4,
+                                "name": "Lighting",
+                                "slug": "lighting"
+                            },
+                            {
+                                "id": 2,
+                                "name": "Design Theory",
+                                "slug": "design-theory"
+                            }
+                        ]
+                    },
+                    {
+                        "id": 4,
+                        "title": "The Parisian Apartment: Mastering Small Spaces",
+                        "slug": "parisian-apartment-guide",
+                        "html": "<p>There is a specific romance to the Parisian apartment. High ceilings, herringbone floors, and marble fireplaces. But often, these spaces are incredibly compact. The French have mastered the art of living beautifully in small footprints.</p><h2>Verticality is Everything</h2><p>When you cannot build out, build up. Floor-to-ceiling curtains draw the eye upward, emphasizing volume rather than floor area. Tall mirrors leaned against walls double the visual depth of a room.</p><h2>The Curated Clutter</h2><p>Minimalism is safe, but 'curated clutter' is soulful. The key difference between messy and curated is <em>intention</em>.</p><ul><li><strong>Books:</strong> Stack them on the floor or overflow the shelves. It shows a life of the mind.</li><li><strong>Art:</strong> Don't just hang it; lean frames on mantels and floors. It feels casual and evolved.</li></ul><figure class=\"kg-card kg-image-card\"><img src=\"https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=2000&auto=format&fit=crop\" class=\"kg-image\" alt=\"Parisian Interior Detail\"></figure><h2>Mixing Eras</h2><p>A modern sofa next to a Louis XVI chair. A lucite table on an antique Persian rug. The friction between old and new creates energy. It prevents a small space from feeling like a furniture showroom and makes it feel like a home collected over generations.</p>",
+                        "feature_image": "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop",
+                        "featured": 1,
+                        "status": "published",
+                        "published_at": 1715100000000,
+                        "custom_excerpt": "Lessons in verticality, mixing eras, and the art of curated clutter from the French capital.",
+                        "author_id": 1,
+                        "tags": [
+                            {
+                                "id": 5,
+                                "name": "Small Spaces",
+                                "slug": "small-spaces"
+                            },
+                            {
+                                "id": 6,
+                                "name": "Architecture",
+                                "slug": "architecture"
+                            }
+                        ]
+                    },
+                    {
+                        "id": 5,
+                        "title": "Textural Healing: Bouclé, Linen, and Velvet",
+                        "slug": "textural-healing-fabrics",
+                        "html": "<p>We touch our homes as much as we look at them. The cool handle of a brass knob, the scratch of a wool rug, the softness of a linen sheet. Texture is the secret language of comfort.</p><h2>The Rise of Bouclé</h2><p>Bouclé (from the French for 'curled') has exploded in popularity. Its nubby, loop-yarn texture catches the light and adds profound softness to rigid architectural lines. A white bouclé armchair is not just a seat; it is a cloud in the corner of your room.</p><h2>Linen: The Perfect Imperfection</h2><p>Linen wrinkles. And that is why we love it. In a world of wrinkle-free synthetics, the crinkles of washed linen bedding speak of relaxation and ease.</p><blockquote>\"Texture brings a flat room to life. Without it, a neutral room is just boring. With it, a neutral room is a masterpiece.\"</blockquote><figure class=\"kg-card kg-image-card\"><img src=\"https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=2000&auto=format&fit=crop\" class=\"kg-image\" alt=\"Textured Fabrics\"></figure><h2>Layering for Seasons</h2><p>Rotate your textiles. Heavy velvets and wools in the winter for cocooning. Crisp linens and cottons in the summer for breathability. This ritual connects your interior to the changing world outside.</p>",
+                        "feature_image": "https://images.unsplash.com/photo-1615873968403-89e068629265?q=80&w=2000&auto=format&fit=crop",
+                        "featured": 0,
+                        "status": "published",
+                        "published_at": 1715000000000,
+                        "custom_excerpt": "Understanding the tactile experience of home through the lens of modern fabrics.",
+                        "author_id": 1,
+                        "tags": [
+                            {
+                                "id": 3,
+                                "name": "Materials",
+                                "slug": "materials"
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "id": 1,
+                        "name": "Minimalism",
+                        "slug": "minimalism",
+                        "description": "The pursuit of simplicity and clarity."
+                    },
+                    {
+                        "id": 2,
+                        "name": "Design Theory",
+                        "slug": "design-theory",
+                        "description": "Understanding the why behind the what."
+                    },
+                    {
+                        "id": 3,
+                        "name": "Materials",
+                        "slug": "materials",
+                        "description": "Exploring stone, wood, and textiles."
+                    },
+                    {
+                        "id": 4,
+                        "name": "Lighting",
+                        "slug": "lighting",
+                        "description": "Illuminating spaces with intention."
+                    },
+                    {
+                        "id": 5,
+                        "name": "Small Spaces",
+                        "slug": "small-spaces",
+                        "description": "Maximizing life in minimal square footage."
+                    },
+                    {
+                        "id": 6,
+                        "name": "Architecture",
+                        "slug": "architecture",
+                        "description": "Structural design and spatial theory."
+                    }
+                ],
+                "posts_tags": [
+                    {"post_id": 1, "tag_id": 1},
+                    {"post_id": 1, "tag_id": 2},
+                    {"post_id": 2, "tag_id": 3},
+                    {"post_id": 3, "tag_id": 4},
+                    {"post_id": 3, "tag_id": 2},
+                    {"post_id": 4, "tag_id": 5},
+                    {"post_id": 4, "tag_id": 6},
+                    {"post_id": 5, "tag_id": 3}
+                ],
+                "users": [
+                    {
+                        "id": 1,
+                        "name": "The Decor Atlas",
+                        "slug": "the-decor-atlas",
+                        "email": "editor@thedecoratlas.com",
+                        "profile_image": "https://ui-avatars.com/api/?name=Decor+Atlas&background=1c1917&color=fff&size=256"
+                    }
+                ]
+            }
+        }
+    ]
+}

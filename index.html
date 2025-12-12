@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Decor Atlas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Tenor Sans for High-end Display, Manrope for clean body -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Tenor+Sans&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Manrope', 'sans-serif'],
+              serif: ['Tenor Sans', 'sans-serif'], 
+              display: ['Tenor Sans', 'sans-serif'],
+            },
+            colors: {
+              stone: {
+                50: '#fafaf9',
+                100: '#f5f5f4',
+                200: '#e7e5e4',
+                300: '#d6d3d1',
+                400: '#a8a29e',
+                500: '#78716c',
+                600: '#57534e',
+                700: '#44403c',
+                800: '#292524',
+                900: '#111110',
+              }
+            },
+            animation: {
+              'marquee': 'marquee 30s linear infinite',
+              'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'slow-zoom': 'slowZoom 20s infinite alternate',
+              'fade-in': 'fadeIn 0.6s ease-out forwards',
+              'bounce-slow': 'bounceSlow 3s infinite',
+            },
+            keyframes: {
+              marquee: {
+                '0%': { transform: 'translateX(0%)' },
+                '100%': { transform: 'translateX(-100%)' },
+              },
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              slowZoom: {
+                '0%': { transform: 'scale(1)' },
+                '100%': { transform: 'scale(1.1)' },
+              },
+              bounceSlow: {
+                '0%, 100%': { transform: 'translateY(0)', opacity: '0.8' },
+                '50%': { transform: 'translateY(10px)', opacity: '1' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #fafaf9; /* stone-50 */
+        color: #111110; /* stone-900 */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* Parallax Class */
+      .bg-fixed-parallax {
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      @media (hover: none) {
+        .bg-fixed-parallax {
+          background-attachment: scroll;
+        }
+      }
+
+      /* --- Ghost Content Styles (Editorial Update) --- */
+      
+      .gh-content {
+        font-family: 'Manrope', sans-serif;
+        font-weight: 300;
+        color: #44403c;
+        line-height: 1.85; /* More generous line-height */
+        font-size: 1.125rem;
+      }
+
+      /* Headings */
+      .gh-content h1, .gh-content h2, .gh-content h3, 
+      .gh-content h4, .gh-content h5, .gh-content h6 {
+        font-family: 'Tenor Sans', sans-serif;
+        color: #111110;
+        font-weight: 400;
+        letter-spacing: -0.01em; 
+        margin-top: 3.5rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.25;
+        scroll-margin-top: 100px;
+      }
+      .gh-content h2 { font-size: 2rem; border-bottom: 1px solid #e7e5e4; padding-bottom: 1rem; }
+      .gh-content h3 { font-size: 1.6rem; }
+
+      /* Paragraphs & Lists */
+      .gh-content p { margin-bottom: 2rem; }
+      .gh-content ul, .gh-content ol { margin-bottom: 2rem; padding-left: 1.2rem; }
+      .gh-content ul { list-style-type: disc; }
+      .gh-content ol { list-style-type: decimal; }
+      .gh-content li { margin-bottom: 0.75rem; padding-left: 0.75rem; color: #57534e; }
+
+      /* Elegant Blockquotes */
+      .gh-content blockquote {
+        border-left: 2px solid #111110;
+        padding: 0.5rem 0 0.5rem 2.5rem;
+        margin: 3.5rem 0;
+        font-family: 'Tenor Sans', sans-serif;
+        font-size: 1.8rem;
+        color: #111110;
+        background: transparent;
+        line-height: 1.35;
+        font-style: italic;
+      }
+
+      /* Links */
+      .gh-content a {
+        color: #111110;
+        text-decoration: underline;
+        text-decoration-color: #d6d3d1;
+        text-underline-offset: 6px; /* Lower underline for modern look */
+        text-decoration-thickness: 1px;
+        transition: all 0.2s;
+        font-weight: 500;
+      }
+      .gh-content a:hover {
+        text-decoration-color: #111110;
+        text-decoration-thickness: 1.5px;
+      }
+
+      /* Images (Standard) */
+      .gh-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 2px;
+        margin: 3rem auto;
+        display: block;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      }
+      .gh-content figure { margin: 3.5rem 0; }
+      .gh-content figcaption {
+        text-align: center;
+        font-size: 0.8rem;
+        color: #a8a29e;
+        margin-top: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+      }
+
+      .gh-content hr {
+        border: 0;
+        border-top: 1px solid #e7e5e4;
+        margin: 4rem auto;
+        width: 100%;
+      }
+      
+      /* --- Ghost Cards (Inherits font) --- */
+      .gh-content .kg-bookmark-card { width: 100%; margin: 3rem 0; }
+      .gh-content .kg-bookmark-container { display: flex; text-decoration: none; background: #fafaf9; border: 1px solid #e7e5e4; transition: border-color 0.2s; border-radius: 2px; overflow: hidden; }
+      .gh-content .kg-bookmark-container:hover { border-color: #78716c; }
+      .gh-content .kg-bookmark-content { display: flex; flex-direction: column; justify-content: center; padding: 2rem; flex-grow: 1; }
+      .gh-content .kg-bookmark-title { font-family: 'Tenor Sans', sans-serif; font-size: 1.25rem; color: #1c1917; margin-bottom: 0.5rem; text-decoration: none !important; }
+      .gh-content .kg-bookmark-description { font-size: 0.9rem; line-height: 1.6; color: #78716c; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-weight: 300; }
+      .gh-content .kg-bookmark-metadata { display: flex; align-items: center; margin-top: 1.25rem; font-size: 0.75rem; color: #a8a29e; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+      .gh-content .kg-bookmark-icon { width: 16px; height: 16px; margin-right: 8px; }
+      .gh-content .kg-bookmark-thumbnail { position: relative; flex-shrink: 0; min-width: 30%; max-width: 30%; min-height: 100%; }
+      .gh-content .kg-bookmark-thumbnail img { position: absolute; width: 100%; height: 100%; object-fit: cover; border-radius: 0; margin: 0; box-shadow: none; }
+      
+      @media (max-width: 640px) {
+        .gh-content .kg-bookmark-container { flex-direction: column; }
+        .gh-content .kg-bookmark-thumbnail { min-width: 100%; height: 200px; position: relative; order: 1; }
+         .gh-content .kg-bookmark-content { order: 2; }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@18.3.1/",
+    "react": "https://esm.sh/react@18.3.1",
+    "react-dom/": "https://esm.sh/react-dom@18.3.1/",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "lucide-react": "https://esm.sh/lucide-react@0.263.1?deps=react@18.3.1",
+    "react-helmet-async": "https://esm.sh/react-helmet-async@2.0.4?deps=react@18.3.1,react-dom@18.3.1",
+    "date-fns": "https://esm.sh/date-fns@2.30.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
