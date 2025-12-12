@@ -6,29 +6,28 @@ import SearchModal from './SearchModal';
 
 // --- Custom Router Implementation ---
 
-// Get current location from hash
-const getLoc = () => {
-  try {
-    const hash = window.location.hash;
-    const pathname = hash.replace(/^#/, '') || '/';
-    return {
-      hash,
-      pathname: decodeURIComponent(pathname)
-    };
-  } catch (e) {
-    return { hash: '', pathname: '/' };
-  }
-};
+// Get current location from window.location (History API)
+const getLoc = () => ({
+  pathname: window.location.pathname,
+  search: window.location.search,
+  hash: window.location.hash
+});
 
 export const useLocation = () => {
   const [location, setLocation] = useState(getLoc());
 
   useEffect(() => {
-    const handler = () => {
-      setLocation(getLoc());
+    const handler = () => setLocation(getLoc());
+    
+    // Listen for browser navigation (back/forward)
+    window.addEventListener('popstate', handler);
+    // Listen for custom pushstate event (internal navigation)
+    window.addEventListener('pushstate', handler);
+    
+    return () => {
+      window.removeEventListener('popstate', handler);
+      window.removeEventListener('pushstate', handler);
     };
-    window.addEventListener('hashchange', handler);
-    return () => window.removeEventListener('hashchange', handler);
   }, []);
 
   return location;
@@ -55,13 +54,17 @@ export const Link: React.FC<{ to: string; className?: string; children: React.Re
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 
     e.preventDefault();
-    // Update hash manually to trigger router
-    window.location.hash = to;
+    
+    // Update URL without reload
+    window.history.pushState({}, '', to);
+    
+    // Dispatch custom event to trigger React re-render
+    window.dispatchEvent(new Event('pushstate'));
     window.scrollTo(0, 0);
   };
 
   return (
-    <a href={`#${to}`} className={`${className || ''} cursor-pointer`} onClick={handleClick}>
+    <a href={to} className={`${className || ''} cursor-pointer`} onClick={handleClick}>
       {children}
     </a>
   );
