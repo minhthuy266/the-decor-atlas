@@ -134,61 +134,59 @@ const Navbar: React.FC = () => {
   // Determine styles based on route and scroll state
   const isHome = location.pathname === '/';
   const isTransparent = isHome && !scrolled;
-  const isExploreActive = location.pathname.startsWith('/tag/');
 
   // Base colors
   const textBase = isTransparent ? 'text-white' : 'text-stone-600';
   const textHover = isTransparent ? 'hover:text-stone-200' : 'hover:text-stone-900';
   const logoClass = isTransparent
-    ? 'text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]'
+    ? 'text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]'
     : 'text-stone-900';
   const iconClass = isTransparent
-    ? 'text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)] hover:text-stone-100'
-    : 'text-stone-400 hover:text-stone-900';
+    ? 'text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] hover:text-stone-100'
+    : 'text-stone-500 hover:text-stone-900';
 
   // Helper for active state
-  const getLinkClass = (path: string, isActiveOverride?: boolean) => {
-    const isActive = isActiveOverride || location.pathname === path;
+  const getLinkClass = (path: string) => {
+    const isActive = location.pathname === path;
     const activeStyle = isActive 
-      ? (isTransparent ? 'opacity-100 border-b border-white' : 'text-stone-900 opacity-100 border-b border-stone-900') 
-      : 'opacity-80 hover:opacity-100 border-b border-transparent';
+      ? (isTransparent ? 'opacity-100 border-b-2 border-white' : 'text-stone-900 opacity-100 border-b-2 border-stone-900') 
+      : 'opacity-70 hover:opacity-100 border-b-2 border-transparent';
     
-    return `${textBase} ${textHover} transition-all duration-300 pb-0.5 tracking-wide text-xs uppercase font-bold ${activeStyle}`;
+    return `${textBase} ${textHover} transition-all duration-300 pb-1 ${activeStyle}`;
   };
 
   return (
     <>
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
       
-      <header className={`fixed top-0 left-0 right-0 z-[40] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] border-b ${scrolled ? 'bg-white/95 backdrop-blur-md border-stone-100 py-4' : 'bg-transparent border-transparent py-6'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-[40] transition-all duration-500 ease-in-out border-b ${scrolled ? 'bg-stone-50/95 backdrop-blur-sm border-stone-200 py-3' : 'bg-transparent border-transparent py-6'}`}>
         <div className="container mx-auto px-4 md:px-8 max-w-7xl flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" className="z-50 relative group">
-            <h1 className={`font-serif text-2xl md:text-3xl tracking-tight transition-colors duration-300 ${logoClass}`}>
-              The Decor Atlas<span className="text-stone-400 group-hover:text-current transition-colors">.</span>
+          <Link to="/" className="z-50 relative">
+            <h1 className={`font-serif text-2xl md:text-3xl tracking-tight font-bold transition-colors duration-300 ${logoClass}`}>
+              The Decor Atlas.
             </h1>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center space-x-10">
+          <nav className="hidden md:flex items-center space-x-8 text-sm font-semibold tracking-wide transition-colors duration-300">
             <Link to="/" className={getLinkClass('/')}>Journal</Link>
             
             {/* Explore Dropdown */}
-            <div className="relative group h-full flex items-center">
-              <button className={`flex items-center transition-all duration-300 focus:outline-none pb-0.5 border-b border-transparent text-xs uppercase font-bold tracking-wide ${textBase} ${textHover} ${isExploreActive ? (isTransparent ? 'opacity-100 border-white' : 'text-stone-900 border-stone-900') : 'opacity-80'}`}>
-                Explore <ChevronDown size={12} className="ml-1 opacity-70" />
+            <div className="relative group">
+              <button className={`flex items-center transition-all duration-300 focus:outline-none pb-1 border-b-2 border-transparent ${textBase} ${textHover} opacity-70 hover:opacity-100`}>
+                Explore <ChevronDown size={14} className="ml-1" />
               </button>
               
               {/* Dropdown Menu - appears on hover */}
-              <div className="absolute top-full -left-2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 origin-top-left">
-                <div className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.08)] border border-stone-100 rounded-sm w-56 py-3 flex flex-col">
-                    <span className="px-6 py-2 text-[9px] uppercase tracking-widest text-stone-400 font-bold border-b border-stone-50 mb-1">Collections</span>
+              <div className="absolute top-full -left-4 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
+                <div className="bg-white shadow-xl border border-stone-100 rounded-sm w-64 max-h-[60vh] overflow-y-auto no-scrollbar py-2 flex flex-col">
                     {tags.length > 0 ? (
                       tags.map(tag => (
                         <Link 
                           key={tag.id} 
                           to={`/tag/${tag.slug}`} 
-                          className="px-6 py-2.5 text-stone-500 hover:text-stone-900 hover:bg-stone-50 transition-colors text-xs tracking-wide block text-left"
+                          className="px-6 py-3 text-stone-500 hover:text-stone-900 hover:bg-stone-50 transition-colors capitalize text-sm block text-left font-medium"
                         >
                           {tag.name}
                         </Link>
@@ -200,24 +198,24 @@ const Navbar: React.FC = () => {
               </div>
             </div>
             
+            <Link to="/about" className={getLinkClass('/about')}>About</Link>
+            
             <Link to="/shop" className={`flex items-center ${getLinkClass('/shop')}`}>
               Shop
             </Link>
-
-             <Link to="/about" className={getLinkClass('/about')}>About</Link>
             
             <button 
               aria-label="Search" 
-              className={`ml-2 transition-transform hover:scale-105 active:scale-95 ${iconClass}`}
+              className={`ml-4 transition-colors ${iconClass}`}
               onClick={() => setIsSearchOpen(true)}
             >
-              <Search size={18} strokeWidth={2} />
+              <Search size={20} strokeWidth={2} />
             </button>
           </nav>
 
           {/* Mobile Toggle */}
           <button 
-            className={`md:hidden z-50 transition-colors duration-300 ${isTransparent ? 'text-white drop-shadow-md' : 'text-stone-900'}`}
+            className={`md:hidden z-50 transition-colors duration-300 ${isTransparent ? 'text-white drop-shadow-md' : 'text-stone-800'}`}
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -225,39 +223,37 @@ const Navbar: React.FC = () => {
           </button>
 
           {/* Mobile Menu Overlay */}
-          <div className={`fixed inset-0 bg-white z-40 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-4'}`}>
-            <div className="flex flex-col h-full pt-32 px-8 pb-10">
+          <div className={`fixed inset-0 bg-stone-50 z-40 transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+            <div className="flex flex-col h-full pt-28 px-8 pb-10">
               {/* Scrollable container */}
-              <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col items-center space-y-8">
-                <Link to="/" className="font-serif text-4xl text-stone-900 hover:text-stone-600 transition-colors">Journal</Link>
-                <Link to="/shop" className="font-serif text-4xl text-stone-900 hover:text-stone-600 transition-colors">Shop</Link>
+              <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col items-center space-y-6">
+                <Link to="/" className="font-serif text-3xl text-stone-900 hover:text-stone-600 font-bold">Journal</Link>
                 
                 {/* Divider & Header */}
-                <div className="w-8 h-px bg-stone-200 my-4 shrink-0"></div>
-                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-400 shrink-0">Browse By Category</span>
+                <div className="w-12 h-px bg-stone-200 my-2 shrink-0"></div>
+                <span className="text-xs font-bold tracking-widest uppercase text-stone-400 shrink-0">Collections</span>
 
                 {/* Tags List */}
-                <div className="flex flex-col items-center space-y-5 w-full">
+                <div className="flex flex-col items-center space-y-4 w-full">
                   {tags.map(tag => (
-                    <Link key={tag.id} to={`/tag/${tag.slug}`} className="font-sans text-lg text-stone-600 hover:text-stone-900 capitalize tracking-wide">
+                    <Link key={tag.id} to={`/tag/${tag.slug}`} className="font-serif text-2xl text-stone-800 hover:text-stone-500 capitalize text-center font-semibold">
                       {tag.name}
                     </Link>
                   ))}
                 </div>
 
                 {/* Divider */}
-                <div className="w-8 h-px bg-stone-200 my-4 shrink-0"></div>
+                <div className="w-12 h-px bg-stone-200 my-2 shrink-0"></div>
                 
-                <div className="flex flex-col items-center gap-6 pb-12">
-                     <button 
-                    onClick={() => { setIsOpen(false); setIsSearchOpen(true); }}
-                    className="font-serif text-3xl text-stone-900 hover:text-stone-600 shrink-0"
-                    >
-                    Search
-                    </button>
+                <button 
+                  onClick={() => { setIsOpen(false); setIsSearchOpen(true); }}
+                  className="font-serif text-3xl text-stone-900 hover:text-stone-600 shrink-0 font-bold"
+                >
+                  Search
+                </button>
 
-                    <Link to="/about" className="font-serif text-3xl text-stone-900 hover:text-stone-600 shrink-0">About</Link>
-                </div>
+                <Link to="/shop" className="font-serif text-3xl text-stone-900 hover:text-stone-600 shrink-0 font-bold">Shop</Link>
+                <Link to="/about" className="font-serif text-3xl text-stone-900 hover:text-stone-600 shrink-0 pb-8 font-bold">About</Link>
               </div>
             </div>
           </div>

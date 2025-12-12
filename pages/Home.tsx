@@ -40,7 +40,7 @@ const Home: React.FC = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-stone-50">
         <div className="flex flex-col items-center animate-pulse">
-          <span className="font-serif text-2xl text-stone-300 tracking-[0.2em] uppercase">The Decor Atlas</span>
+          <span className="font-serif text-2xl text-stone-300 tracking-widest uppercase font-bold">The Decor Atlas</span>
         </div>
       </div>
     );
@@ -60,7 +60,7 @@ const Home: React.FC = () => {
 
   // Updated Mock Curated Products (Fixed broken link)
   const CURATED_PICKS = [
-    { name: "Travertine Bowl", price: "$145", img: "https://images.unsplash.com/photo-1615529182904-14819c35db37?q=80&w=800&auto=format&fit=crop" },
+    { name: "Travertine Bowl", price: "$145", img: "https://images.unsplash.com/photo-1615529182904-14819c35db37?q=80&w=800&auto=format&fit=crop" }, // Replaced broken image
     { name: "Linen Lounge Chair", price: "$890", img: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=800&auto=format&fit=crop" },
     { name: "Ceramic Vase No. 4", price: "$65", img: "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?q=80&w=800&auto=format&fit=crop" },
     { name: "Oak Coffee Table", price: "$420", img: "https://images.unsplash.com/photo-1532372320572-cda25653a26d?q=80&w=800&auto=format&fit=crop" },
@@ -77,7 +77,7 @@ const Home: React.FC = () => {
       <main className="bg-stone-50 overflow-x-hidden">
         
         {/* --- HERO SECTION --- */}
-        <section className="relative w-full h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+        <section className="relative w-full h-[85vh] min-h-[550px] flex items-center justify-center overflow-hidden">
             <div className="absolute inset-0 z-0">
               <img 
                 src={HERO_IMAGE} 
@@ -86,111 +86,110 @@ const Home: React.FC = () => {
               />
               
               {/* Layer 0: Top Gradient for Header Visibility */}
-              <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black/50 to-transparent z-10 pointer-events-none" />
+              <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none" />
 
-              {/* Layer 1: Subtle warm overlay */}
+              {/* Layer 1: Overall darken for mood */}
               <div className="absolute inset-0 bg-stone-900/10" />
-              
               {/* Layer 2: Bottom Gradient for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-transparent to-transparent" />
             </div>
 
-            <div className="relative z-20 container mx-auto px-4 text-center text-white mt-10">
+            <div className="relative z-20 container mx-auto px-4 text-center text-white mt-16">
               <div className="animate-fade-in-up">
-                <span className="inline-block mb-6 text-[10px] font-bold tracking-[0.3em] uppercase opacity-90 text-shadow-sm">
-                  Est. 2024 • A Design Journal
+                <span className="inline-block py-2 px-6 border border-white/20 bg-white/5 backdrop-blur-md rounded-full text-[10px] font-bold tracking-[0.3em] uppercase mb-8 shadow-lg">
+                  Est. 2024
                 </span>
                 
-                <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl leading-[0.9] mb-8 font-normal tracking-tight drop-shadow-lg">
-                  Curated <br/> <span className="italic font-light opacity-90">Simplicity.</span>
+                <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl leading-none mb-6 drop-shadow-2xl font-bold tracking-tight">
+                  Curated <span className="font-light text-stone-200">Simplicity</span>
                 </h1>
                 
-                <p className="text-sm md:text-lg text-stone-100 font-light max-w-lg mx-auto leading-relaxed mb-12 drop-shadow-md opacity-90">
+                <p className="text-sm md:text-lg text-stone-100 font-normal max-w-lg mx-auto leading-relaxed mb-10 drop-shadow-md text-shadow">
                   A digital sanctuary for those who believe a home is not just built, but intentionally curated.
                 </p>
                 
                 <div 
                    onClick={() => document.getElementById('journal-start')?.scrollIntoView({ behavior: 'smooth' })}
-                   className="flex flex-col items-center animate-bounce-slow opacity-70 hover:opacity-100 transition-opacity cursor-pointer group"
+                   className="flex flex-col items-center animate-bounce-slow opacity-80 hover:opacity-100 transition-opacity cursor-pointer"
                 >
-                   <span className="text-[9px] uppercase tracking-widest mb-3 font-bold group-hover:translate-y-1 transition-transform">Discover</span>
-                   <ArrowDown size={18} />
+                   <span className="text-[9px] uppercase tracking-widest mb-2 drop-shadow-md font-bold">Discover</span>
+                   <ArrowDown size={20} className="drop-shadow-md" />
                 </div>
               </div>
             </div>
         </section>
 
         {/* --- TRUST BAR --- */}
-        <div className="bg-white border-b border-stone-100 py-10 overflow-hidden">
-          <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-center space-y-6 md:space-y-0 md:space-x-16 opacity-100">
-             <span className="text-[9px] uppercase tracking-widest font-bold text-stone-400 hidden md:block">As seen in</span>
-             <div className="flex flex-wrap justify-center gap-8 md:gap-14 items-center opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-700">
+        <div className="bg-stone-100 border-b border-stone-200 py-8 overflow-hidden">
+          <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-12 opacity-60 grayscale hover:grayscale-0 hover:opacity-90 transition-all duration-500">
+             <span className="text-[10px] uppercase tracking-widest font-bold hidden md:block">As seen in</span>
+             <div className="flex flex-wrap justify-center gap-8 md:gap-12">
                {TRUST_LOGOS.map((logo, i) => (
-                 <span key={i} className="font-serif text-xl md:text-2xl text-stone-900">{logo}</span>
+                 <span key={i} className="font-serif italic text-lg md:text-xl text-stone-900 font-semibold tracking-tight">{logo}</span>
                ))}
              </div>
           </div>
         </div>
 
         {/* --- SCROLLING MARQUEE --- */}
-        <div className="bg-stone-900 text-stone-400 border-b border-stone-800 overflow-hidden relative z-20 flex select-none py-1">
+        <div className="bg-stone-900 text-stone-400 border-b border-stone-800 overflow-hidden relative z-20 flex select-none">
           <div className="animate-marquee flex min-w-full shrink-0 items-center justify-around gap-10 px-10 py-4">
             {MARQUEE_ITEMS.map((item, i) => (
               <React.Fragment key={i}>
-                <span className="text-[10px] font-bold tracking-[0.25em] uppercase whitespace-nowrap hover:text-white transition-colors cursor-default">{item}</span>
-                <span className="text-[8px] opacity-20">•</span>
+                <span className="text-[10px] font-bold tracking-[0.3em] uppercase whitespace-nowrap hover:text-white transition-colors cursor-default">{item}</span>
+                <span className="text-[8px] opacity-30">•</span>
               </React.Fragment>
             ))}
           </div>
           <div className="animate-marquee flex min-w-full shrink-0 items-center justify-around gap-10 px-10 py-4" aria-hidden="true">
             {MARQUEE_ITEMS.map((item, i) => (
               <React.Fragment key={`dup-${i}`}>
-                <span className="text-[10px] font-bold tracking-[0.25em] uppercase whitespace-nowrap hover:text-white transition-colors cursor-default">{item}</span>
-                <span className="text-[8px] opacity-20">•</span>
+                <span className="text-[10px] font-bold tracking-[0.3em] uppercase whitespace-nowrap hover:text-white transition-colors cursor-default">{item}</span>
+                <span className="text-[8px] opacity-30">•</span>
               </React.Fragment>
             ))}
           </div>
         </div>
 
         {/* --- MAGAZINE GRID --- */}
-        <div id="journal-start" className="container mx-auto px-4 md:px-8 max-w-7xl pt-24 pb-20">
+        <div id="journal-start" className="container mx-auto px-4 md:px-8 max-w-7xl pt-20 pb-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
             
             {/* Main Feature (Left) */}
             <div className="lg:col-span-8">
               {latestPost && (
-                <Link to={`/${latestPost.slug}`} className="group flex flex-col md:flex-row shadow-sm hover:shadow-2xl transition-all duration-700 bg-white rounded-sm overflow-hidden h-full min-h-[550px]">
+                <Link to={`/${latestPost.slug}`} className="group flex flex-col md:flex-row shadow-sm hover:shadow-xl transition-shadow duration-500 rounded-sm overflow-hidden h-full min-h-[500px]">
                   {/* Image Half */}
-                  <div className="w-full md:w-[60%] relative overflow-hidden bg-stone-100">
+                  <div className="w-full md:w-[65%] relative overflow-hidden bg-stone-300">
                     <img 
                       src={latestPost.feature_image} 
                       alt={latestPost.title}
                       className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
                     />
-                    <div className="absolute top-6 left-6 bg-white/90 backdrop-blur px-4 py-2 text-[9px] font-bold tracking-widest uppercase z-10 text-stone-900">
+                    <div className="absolute top-0 left-0 bg-stone-900 text-white px-5 py-3 text-[10px] font-bold tracking-widest uppercase z-10">
                       Cover Story
                     </div>
                   </div>
                   
                   {/* Text Half - Modern Sans Layout */}
-                  <div className="w-full md:w-[40%] bg-white p-8 md:p-12 flex flex-col justify-center relative border-l border-stone-50">
-                     <div className="flex items-center space-x-3 mb-8 text-[10px] uppercase tracking-[0.2em] text-stone-400 font-bold">
-                        <span className="text-stone-900 border-b border-stone-200 pb-0.5">{latestPost.primary_tag?.name || 'Design'}</span>
-                        <span className="w-px h-3 bg-stone-300" />
+                  <div className="w-full md:w-[35%] bg-stone-100 p-8 flex flex-col justify-center relative border-l border-white/50">
+                     <div className="flex items-center space-x-2 mb-6 text-[10px] uppercase tracking-widest text-stone-500 font-bold">
+                        <span className="text-stone-800">{latestPost.primary_tag?.name || 'Design'}</span>
+                        <span className="w-1 h-1 rounded-full bg-stone-400" />
                         <time>{format(new Date(latestPost.published_at), 'MMM d')}</time>
                      </div>
                     
-                    <h2 className="font-serif text-3xl md:text-4xl text-stone-900 leading-tight mb-6 group-hover:text-stone-600 transition-colors font-medium">
+                    <h2 className="font-serif text-3xl md:text-3xl text-stone-900 leading-tight mb-6 group-hover:text-stone-600 transition-colors font-bold tracking-tight">
                       {latestPost.title}
                     </h2>
                     
-                    <p className="text-stone-500 font-light leading-relaxed line-clamp-4 text-sm mb-10">
+                    <p className="text-stone-500 font-normal leading-relaxed line-clamp-4 text-sm mb-8">
                       {latestPost.custom_excerpt || latestPost.excerpt}
                     </p>
                     
-                    <div className="mt-auto">
-                      <span className="inline-flex items-center text-[10px] font-bold tracking-[0.2em] uppercase text-stone-900 border-b border-stone-200 pb-1 group-hover:border-stone-900 transition-colors">
-                        Read Story <ArrowRight size={12} className="ml-3 group-hover:translate-x-1 transition-transform" />
+                    <div className="mt-auto pt-6 border-t border-stone-200 w-full">
+                      <span className="inline-flex items-center text-xs font-bold tracking-widest uppercase text-stone-900 group-hover:translate-x-2 transition-transform duration-300">
+                        Read Story <ArrowRight size={12} className="ml-2" />
                       </span>
                     </div>
                   </div>
@@ -199,32 +198,32 @@ const Home: React.FC = () => {
             </div>
 
             {/* Sidebar (Right) */}
-            <div className="lg:col-span-4 flex flex-col border-l border-stone-100 pl-0 lg:pl-12 pt-4 lg:pt-0">
-              <div className="flex items-center justify-between mb-10 pb-4 border-b border-stone-100">
-                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-400">Trending Now</span>
-                <Link to="/tag/all" className="text-[10px] font-bold uppercase tracking-wider text-stone-900 hover:text-stone-600">View All</Link>
+            <div className="lg:col-span-4 flex flex-col border-l border-stone-100 pl-0 lg:pl-12">
+              <div className="flex items-center justify-between mb-8 pb-2 border-b border-stone-200">
+                <span className="text-xs font-bold tracking-widest uppercase text-stone-400">Trending Now</span>
+                <Link to="/tag/all" className="text-[10px] font-bold uppercase text-stone-900 hover:text-stone-600">View All</Link>
               </div>
 
-              <div className="space-y-12">
+              <div className="space-y-10">
                 {recentPosts.map((post, idx) => (
                   <article key={post.id} className="group flex flex-col">
-                    <Link to={`/${post.slug}`} className="flex gap-5 items-start">
-                       <span className="text-3xl font-serif text-stone-200 font-bold leading-none -mt-1 w-8 group-hover:text-stone-400 transition-colors">
+                    <Link to={`/${post.slug}`} className="flex gap-4 items-start">
+                       <span className="text-2xl font-serif text-stone-300 font-bold leading-none -mt-1 w-6 group-hover:text-stone-400">
                          0{idx + 1}
                        </span>
                        <div className="flex-1">
-                          <span className="block text-[9px] font-bold tracking-[0.15em] uppercase text-stone-400 mb-2">
+                          <span className="block text-[10px] font-bold tracking-widest uppercase text-stone-400 mb-1">
                              {post.primary_tag?.name || 'Design'}
                           </span>
-                          <h3 className="font-serif text-lg text-stone-900 leading-snug mb-2 group-hover:underline decoration-stone-200 underline-offset-4 transition-all">
+                          <h3 className="font-serif text-lg text-stone-900 leading-snug mb-2 group-hover:underline decoration-stone-200 underline-offset-4 font-semibold tracking-tight">
                             {post.title}
                           </h3>
                        </div>
-                       <div className="w-20 h-20 bg-stone-100 shrink-0 overflow-hidden rounded-sm">
+                       <div className="w-16 h-16 bg-stone-100 shrink-0 overflow-hidden rounded-sm">
                           <img 
                             src={post.feature_image} 
                             alt={post.title} 
-                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100" 
+                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" 
                           />
                        </div>
                     </Link>
@@ -232,16 +231,18 @@ const Home: React.FC = () => {
                 ))}
               </div>
 
-              {/* Enhanced Sidebar Newsletter */}
-              <div className="mt-auto pt-16">
-                <div className="bg-stone-50 border border-stone-100 p-8 text-center rounded-sm relative overflow-hidden group">
-                   <h4 className="font-serif text-xl mb-3 relative z-10 text-stone-900">The Weekly Edit</h4>
-                   <p className="text-xs text-stone-500 mb-6 font-light relative z-10 leading-relaxed px-2">
-                     Join 15,000+ tastemakers receiving our curated digest.
+              {/* Enhanced Sidebar Newsletter - Native React Modal */}
+              <div className="mt-auto pt-12">
+                <div className="bg-stone-900 text-stone-100 p-8 text-center rounded-sm shadow-xl relative overflow-hidden">
+                   <div className="absolute top-0 right-0 p-4 opacity-10"><Star size={64} /></div>
+                   <h4 className="font-serif text-xl mb-2 relative z-10 font-bold">The Weekly Edit</h4>
+                   <p className="text-xs opacity-70 mb-6 font-normal relative z-10 leading-relaxed">
+                     Join 15,000+ tastemakers receiving our curated digest of design, travel, and culture.
                    </p>
+                   {/* Changed to button with programmatic trigger */}
                    <button 
                      onClick={handleSubscribe}
-                     className="w-full block py-3 bg-stone-900 text-white text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-stone-700 transition-colors relative z-10 cursor-pointer shadow-md"
+                     className="w-full block py-3 bg-white text-stone-900 text-[10px] font-bold tracking-widest uppercase hover:bg-stone-200 transition-colors relative z-10 cursor-pointer"
                    >
                      Subscribe
                    </button>
@@ -253,40 +254,31 @@ const Home: React.FC = () => {
         </div>
 
         {/* --- THE CURATED EDIT (Shopping) --- */}
-        <section className="bg-white py-24 border-t border-stone-100">
+        <section className="bg-white py-20 border-t border-stone-100">
           <div className="container mx-auto px-4 md:px-8 max-w-7xl">
-             <div className="flex justify-between items-end mb-12">
+             <div className="flex justify-between items-end mb-10">
                <div>
-                  <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-400 mb-3 block">The Shop</span>
-                  <h3 className="font-serif text-3xl md:text-4xl text-stone-900 font-normal">Curated Objects</h3>
+                  <span className="text-xs font-bold tracking-[0.2em] uppercase text-stone-400 mb-2 block">The Shop</span>
+                  <h3 className="font-serif text-3xl text-stone-900 font-bold tracking-tight">Curated Objects</h3>
                </div>
-               <a href="/shop" className="hidden md:flex items-center text-[10px] font-bold tracking-[0.2em] uppercase text-stone-900 hover:text-stone-600 transition-colors border-b border-stone-200 pb-1 hover:border-stone-900">
+               <a href="#" className="hidden md:flex items-center text-xs font-bold tracking-widest uppercase text-stone-900 hover:text-stone-600 transition-colors">
                   Visit Shop <ArrowRight size={12} className="ml-2" />
                </a>
              </div>
 
-             <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
+             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {CURATED_PICKS.map((item, i) => (
                   <div key={i} className="group cursor-pointer">
-                     <div className="aspect-[4/5] bg-stone-100 mb-4 overflow-hidden relative rounded-sm">
+                     <div className="aspect-square bg-stone-100 mb-4 overflow-hidden relative">
                         <img src={item.img} alt={item.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                        <div className="absolute inset-0 bg-stone-900/0 group-hover:bg-stone-900/5 transition-colors" />
-                         <div className="absolute bottom-4 left-0 right-0 text-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
-                             <span className="bg-white/90 backdrop-blur px-4 py-2 text-[9px] font-bold uppercase tracking-widest text-stone-900 shadow-sm">Shop Now</span>
-                         </div>
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
                      </div>
-                     <div className="flex justify-between items-start">
-                        <h4 className="font-serif text-base text-stone-900 group-hover:text-stone-600 transition-colors">{item.name}</h4>
-                        <p className="text-xs text-stone-500 font-bold mt-0.5">{item.price}</p>
+                     <div className="text-center">
+                        <h4 className="font-serif text-lg text-stone-900 font-bold">{item.name}</h4>
+                        <p className="text-xs text-stone-500 font-bold mt-1">{item.price}</p>
                      </div>
                   </div>
                 ))}
-             </div>
-             
-             <div className="mt-10 md:hidden text-center">
-                <a href="/shop" className="inline-flex items-center text-[10px] font-bold tracking-[0.2em] uppercase text-stone-900 border-b border-stone-200 pb-1">
-                  Visit Shop <ArrowRight size={12} className="ml-2" />
-               </a>
              </div>
           </div>
         </section>
@@ -296,12 +288,12 @@ const Home: React.FC = () => {
           className="relative w-full h-[60vh] md:h-[70vh] flex items-center justify-center bg-fixed-parallax"
           style={{ backgroundImage: `url(${PARALLAX_IMAGE})` }}
         >
-           <div className="absolute inset-0 bg-black/30" />
-           <div className="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in-up">
-              <blockquote className="font-serif text-3xl md:text-5xl lg:text-6xl text-white leading-tight italic drop-shadow-xl mb-8 font-light">
+           <div className="absolute inset-0 bg-stone-900/40" />
+           <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
+              <blockquote className="font-serif text-3xl md:text-5xl text-white leading-tight italic drop-shadow-xl mb-6 font-semibold">
                  "The details are not the details. They make the design."
               </blockquote>
-              <cite className="block text-white/80 text-[10px] font-bold not-italic tracking-[0.25em] uppercase drop-shadow-md">
+              <cite className="block text-white/90 text-xs font-bold not-italic tracking-[0.2em] uppercase drop-shadow-md">
                  Charles Eames
               </cite>
            </div>
@@ -309,46 +301,46 @@ const Home: React.FC = () => {
 
         {/* --- ARCHIVE FEED --- */}
         <div className="container mx-auto px-4 md:px-8 max-w-7xl py-24">
-          <div className="flex items-end justify-between mb-16 border-b border-stone-200 pb-6">
+          <div className="flex items-end justify-between mb-12 border-b border-stone-200 pb-4">
              <div>
-                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-400 mb-3 block">Journal</span>
-                <h3 className="font-serif text-3xl md:text-4xl text-stone-900 font-normal">Recent Stories</h3>
+                <span className="text-xs font-bold tracking-[0.2em] uppercase text-stone-400 mb-2 block">Journal</span>
+                <h3 className="font-serif text-3xl md:text-4xl text-stone-900 font-bold tracking-tight">Recent Stories</h3>
              </div>
              <div className="hidden md:flex gap-2">
-                <button className="p-3 border border-stone-200 text-stone-400 hover:text-stone-900 hover:border-stone-900 transition-all rounded-full"><ArrowDown size={16}/></button>
+                <button className="p-2 border border-stone-200 text-stone-400 hover:text-stone-900 hover:border-stone-900 transition-all"><ArrowDown size={16}/></button>
              </div>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
             {archivePosts.map((post) => (
               <article key={post.id} className="group flex flex-col h-full">
-                <Link to={`/${post.slug}`} className="block overflow-hidden bg-stone-100 mb-5 relative aspect-[3/4] rounded-sm">
+                <Link to={`/${post.slug}`} className="block overflow-hidden bg-stone-100 mb-4 relative aspect-[4/3]">
                   <img 
                     src={post.feature_image} 
                     alt={post.title} 
-                    className="object-cover w-full h-full transition-transform duration-[1s] group-hover:scale-105"
+                    className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur p-2.5 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0 shadow-md">
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                      <ArrowUpRight size={14} className="text-stone-900" />
                   </div>
                 </Link>
                 
                 <div className="flex flex-col flex-1">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="text-[9px] tracking-[0.15em] uppercase text-stone-500 font-bold">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-[10px] tracking-widest uppercase text-stone-500 font-bold">
                       {post.primary_tag?.name || 'Living'}
                     </span>
-                    <span className="text-[9px] text-stone-400 uppercase tracking-widest">
-                       {post.reading_time || 5} min
+                    <span className="text-[10px] text-stone-400">
+                       {post.reading_time || 5} min read
                     </span>
                   </div>
                   
-                  <h3 className="font-serif text-xl text-stone-900 mb-3 leading-snug group-hover:text-stone-600 transition-colors font-medium">
+                  <h3 className="font-serif text-xl text-stone-900 mb-2 leading-snug group-hover:text-stone-600 transition-colors font-bold tracking-tight">
                     <Link to={`/${post.slug}`}>{post.title}</Link>
                   </h3>
                   
-                  <p className="text-sm text-stone-500 font-light line-clamp-2 mt-auto leading-relaxed">
+                  <p className="text-sm text-stone-500 font-normal line-clamp-2 mt-auto pt-2">
                     {post.custom_excerpt}
                   </p>
                 </div>
@@ -356,8 +348,8 @@ const Home: React.FC = () => {
             ))}
           </div>
 
-          <div className="mt-24 flex justify-center">
-             <Link to="/tag/all" className="group flex items-center gap-3 px-10 py-4 border border-stone-200 text-stone-600 text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-all bg-white shadow-sm hover:shadow-lg">
+          <div className="mt-20 flex justify-center">
+             <Link to="/tag/all" className="group flex items-center gap-3 px-8 py-4 border border-stone-900 text-stone-900 text-xs font-bold tracking-widest uppercase hover:bg-stone-900 hover:text-white transition-all">
                 Load More Stories <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
              </Link>
           </div>
