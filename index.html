@@ -196,6 +196,196 @@
         .gh-content .kg-bookmark-thumbnail { min-width: 100%; height: 200px; position: relative; order: 1; }
          .gh-content .kg-bookmark-content { order: 2; }
       }
+
+      /* --- PRODUCT CARD STYLES (Clean / Minimalist) --- */
+      
+      /* Base Card Wrapper */
+      .gh-content .kg-product-card {
+        background: #fff;
+        border: 1px solid #e7e5e4;
+        border-radius: 4px;
+        margin: 2rem 0;
+        width: 100%;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .gh-content .kg-product-card:hover {
+        border-color: #a8a29e;
+        box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+      }
+
+      /* Card Container - Default Mobile (Stacked) */
+      .gh-content .kg-product-card-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1.5rem;
+        align-items: start;
+      }
+
+      /* Image */
+      .gh-content .kg-product-card-image {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4/3;
+        object-fit: contain;
+        background-color: #fafaf9;
+        border-radius: 2px;
+        margin: 0 !important;
+      }
+
+      /* Title */
+      .gh-content .kg-product-card-title-container {
+        margin-bottom: 0.5rem;
+      }
+      .gh-content .kg-product-card-title {
+        font-family: 'Tenor Sans', sans-serif !important;
+        font-size: 1.25rem !important;
+        margin: 0 !important;
+        text-transform: none !important;
+        font-weight: 500 !important;
+        line-height: 1.2 !important;
+      }
+      /* Description */
+      .gh-content .kg-product-card-description {
+        font-family: 'Manrope', sans-serif;
+        font-size: 0.95rem;
+        color: #78716c;
+        line-height: 1.6;
+      }
+      .gh-content .kg-product-card-description p {
+        margin: 0 !important;
+      }
+
+      /* Button Link */
+      .gh-content .kg-product-card-button {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background-color: #111110;
+        color: white !important;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        text-decoration: none !important;
+        transition: background-color 0.2s;
+        border-radius: 2px;
+        width: 100%; /* Full width on mobile */
+      }
+      .gh-content .kg-product-card-button:hover {
+        background-color: #44403c;
+      }
+
+      /* --- Desktop Layout (Image Left / Content Right) --- */
+      @media (min-width: 768px) {
+        .gh-content .kg-product-card-container {
+          grid-template-columns: 240px 1fr; /* Fixed image width */
+          grid-template-rows: auto auto 1fr; /* Title, Desc, Button push down */
+          column-gap: 2rem;
+          row-gap: 0.5rem;
+        }
+
+        .gh-content .kg-product-card-image {
+          grid-column: 1;
+          grid-row: 1 / span 4; /* Image spans full height */
+          height: 100%;
+          max-height: 240px; 
+        }
+
+        .gh-content .kg-product-card-title-container {
+          grid-column: 2;
+          grid-row: 1;
+        }
+
+        .gh-content .kg-product-card-description {
+          grid-column: 2;
+          grid-row: 2;
+          margin-bottom: 1rem;
+        }
+
+        .gh-content .kg-product-card-button {
+          grid-column: 2;
+          grid-row: 3;
+          width: fit-content; /* Auto width on desktop */
+          align-self: start;
+        }
+      }
+
+      /* --- HORIZONTAL PRODUCT SLIDER (Overrides) --- */
+      .gh-product-slider-wrapper {
+        position: relative;
+        margin: 4rem 0;
+        width: 100%;
+      }
+      .gh-product-slider-wrapper::before {
+        content: "Shop The Look";
+        display: block;
+        font-family: 'Tenor Sans', sans-serif;
+        font-size: 1.25rem;
+        color: #111110;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #e7e5e4;
+        padding-bottom: 0.5rem;
+      }
+
+      .gh-product-slider-container {
+        display: flex;
+        overflow-x: auto;
+        gap: 1.5rem;
+        padding-bottom: 1.5rem;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+      .gh-product-slider-container::-webkit-scrollbar {
+        height: 6px;
+      }
+      .gh-product-slider-container::-webkit-scrollbar-thumb {
+        background: #d6d3d1;
+        border-radius: 4px;
+      }
+
+      /* Slider Item - FORCE Vertical Stack & Fixed Width */
+      .gh-product-slider-container .kg-product-card {
+        flex: 0 0 280px; /* Don't shrink/grow, fixed width */
+        width: 280px !important; 
+        scroll-snap-align: start;
+        margin: 0 !important;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      /* Reset Grid to Flex Column inside Slider */
+      .gh-product-slider-container .kg-product-card .kg-product-card-container {
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 1.25rem;
+        gap: 1rem;
+        height: 100%;
+      }
+
+      .gh-product-slider-container .kg-product-card-image {
+        grid-column: auto !important;
+        grid-row: auto !important;
+        width: 100%;
+        height: 180px; /* Fixed height for uniformity */
+        margin-bottom: 0.5rem;
+      }
+
+      .gh-product-slider-container .kg-product-card-title-container,
+      .gh-product-slider-container .kg-product-card-description,
+      .gh-product-slider-container .kg-product-card-button {
+        grid-column: auto !important;
+        grid-row: auto !important;
+        width: 100% !important;
+      }
+
+      .gh-product-slider-container .kg-product-card-button {
+        margin-top: auto; /* Push button to bottom */
+      }
     </style>
   <script type="importmap">
 {
@@ -208,7 +398,8 @@
     "react-helmet-async": "https://esm.sh/react-helmet-async@2.0.4?deps=react@18.3.1,react-dom@18.3.1",
     "date-fns": "https://esm.sh/date-fns@2.30.0",
     "vite": "https://esm.sh/vite@^7.2.7",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+    "path": "https://esm.sh/path@^0.12.7"
   }
 }
 </script>

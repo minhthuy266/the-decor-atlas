@@ -111,6 +111,72 @@ const Post: React.FC = () => {
     setToc(tocData);
   }, [post]);
 
+  // --- Logic to Create Product Sliders (Swipe) ---
+  useEffect(() => {
+    // Only run this logic if we have rendered HTML
+    if (!processedHtml) return;
+
+    // Use a small timeout to ensure React has rendered the dangerouslySetInnerHTML
+    const timer = setTimeout(() => {
+        const contentDiv = document.querySelector('.gh-content');
+        if (!contentDiv) return;
+
+        // Find all product cards
+        const productCards = Array.from(contentDiv.querySelectorAll('.kg-product-card'));
+
+        if (productCards.length > 1) {
+            // Group consecutive cards
+            let i = 0;
+            while (i < productCards.length) {
+                const group = [productCards[i]];
+                let j = i + 1;
+
+                // Check subsequent siblings
+                while (j < productCards.length) {
+                    const current = productCards[j - 1];
+                    const next = productCards[j];
+                    
+                    // Check if they are immediate siblings (ignoring text nodes or whitespace)
+                    if (current.nextElementSibling === next) {
+                        group.push(next);
+                        j++;
+                    } else {
+                        break;
+                    }
+                }
+
+                // If we found a group of 2 or more, wrap them
+                if (group.length > 1) {
+                    // Create Wrapper Structure
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'gh-product-slider-wrapper';
+                    
+                    const container = document.createElement('div');
+                    container.className = 'gh-product-slider-container';
+                    
+                    wrapper.appendChild(container);
+
+                    // Insert wrapper before the first card
+                    const firstCard = group[0];
+                    if(firstCard.parentNode) {
+                        firstCard.parentNode.insertBefore(wrapper, firstCard);
+                        
+                        // Move cards into container
+                        group.forEach(card => {
+                            container.appendChild(card);
+                        });
+                    }
+                }
+                
+                // Advance index
+                i = j;
+            }
+        }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [processedHtml]);
+
   // Scroll Listener for Active State
   useEffect(() => {
     if (toc.length === 0) return;

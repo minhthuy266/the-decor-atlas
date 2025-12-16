@@ -4,6 +4,41 @@ const URL = "https://slaymua.com";
 const KEY = "ab74a5f89d0a4a3c4451decb46";
 const DEFAULT_COVER = "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop";
 
+// --- MOCK PRODUCT CARD HTML ---
+// This replicates the Ghost HTML structure for testing.
+const MOCK_PRODUCT_HTML = `
+<div class="kg-card kg-product-card">
+    <div class="kg-product-card-container">
+        <img src="https://images.unsplash.com/photo-1615529182904-14819c35db37?q=80&w=600" width="600" height="400" class="kg-product-card-image" loading="lazy">
+        <div class="kg-product-card-title-container">
+            <h4 class="kg-product-card-title"><b><strong style="white-space: pre-wrap;">Travertine Coffee Table</strong></b></h4>
+        </div>
+        <div class="kg-product-card-description"><p dir="ltr"><span style="white-space: pre-wrap;">Solid stone with a hexagonal base. The perfect centerpiece for a minimalist living room.</span></p></div>
+        <a href="#" class="kg-product-card-button kg-product-card-btn-accent" target="_blank" rel="noopener noreferrer"><span>View Details</span></a>
+    </div>
+</div>
+<div class="kg-card kg-product-card">
+    <div class="kg-product-card-container">
+        <img src="https://images.unsplash.com/photo-1513506003011-38f044aff2dd?q=80&w=600" width="600" height="400" class="kg-product-card-image" loading="lazy">
+        <div class="kg-product-card-title-container">
+            <h4 class="kg-product-card-title"><b><strong style="white-space: pre-wrap;">Akari 1A Table Lamp</strong></b></h4>
+        </div>
+        <div class="kg-product-card-description"><p dir="ltr"><span style="white-space: pre-wrap;">Handcrafted from traditional washi paper. Provides a soft, warm glow.</span></p></div>
+        <a href="#" class="kg-product-card-button kg-product-card-btn-accent" target="_blank" rel="noopener noreferrer"><span>Buy Now</span></a>
+    </div>
+</div>
+<div class="kg-card kg-product-card">
+    <div class="kg-product-card-container">
+        <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=600" width="600" height="400" class="kg-product-card-image" loading="lazy">
+        <div class="kg-product-card-title-container">
+            <h4 class="kg-product-card-title"><b><strong style="white-space: pre-wrap;">Pacha Lounge Chair</strong></b></h4>
+        </div>
+        <div class="kg-product-card-description"><p dir="ltr"><span style="white-space: pre-wrap;">Designed by Pierre Paulin. A low-profile armchair that feels like sitting on a cloud.</span></p></div>
+        <a href="#" class="kg-product-card-button kg-product-card-btn-accent" target="_blank" rel="noopener noreferrer"><span>Check Price</span></a>
+    </div>
+</div>
+`;
+
 // --- MOCK DATA FALLBACK (Used when API is 404 or unreachable) ---
 const MOCK_DATA = {
     posts: [
@@ -13,7 +48,7 @@ const MOCK_DATA = {
             uuid: 'uuid-1',
             title: "Japandi: The Art of Imperfect Minimalism",
             slug: "japandi-art-of-imperfect-minimalism",
-            html: "<p>Content...</p>",
+            html: `<p>In an era defined by noise and digital clutter, the home has returned to its primal role: a sanctuary.</p><p>Below are some essential items to achieve this look.</p> ${MOCK_PRODUCT_HTML} <p>By incorporating these elements, you create a space that breathes.</p>`,
             feature_image: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=2000&auto=format&fit=crop",
             featured: true,
             created_at: new Date().toISOString(),
@@ -31,6 +66,7 @@ const MOCK_DATA = {
             uuid: 'uuid-2',
             title: "Material Focus: The Renaissance of Travertine",
             slug: "renaissance-of-travertine",
+            html: "<p>For decades, marble has reigned supreme. But now, Travertine is back.</p>",
             feature_image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=2000&auto=format&fit=crop",
             featured: false,
             created_at: new Date().toISOString(),
@@ -47,6 +83,7 @@ const MOCK_DATA = {
              uuid: 'uuid-3',
              title: "The Parisian Apartment: Mastering Small Spaces",
              slug: "parisian-apartment-guide",
+             html: "<p>Parisian apartments are famous for their charm, but also their lack of space.</p>",
              feature_image: "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop",
              featured: true,
              published_at: new Date(Date.now() - 40000000).toISOString(),
