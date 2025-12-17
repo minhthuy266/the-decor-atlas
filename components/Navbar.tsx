@@ -4,19 +4,43 @@ import { getTags } from '../lib/ghost';
 import { Tag } from '../types';
 import SearchModal from './SearchModal';
 
+// --- ROUTER CONFIGURATION ---
+// We use an environment variable to control the router mode.
+// In .env, set VITE_USE_HASH_ROUTER=false for production (clean URLs)
+// Default is true (Hash Router) for preview environments to prevent crashes.
+
+// Safe access to environment variable to prevent "Cannot read properties of undefined"
+const getEnvRouterConfig = () => {
+  try {
+    // If import.meta.env exists, check the var. Otherwise default to true (Hash).
+    return import.meta.env?.VITE_USE_HASH_ROUTER !== 'false';
+  } catch {
+    return true;
+  }
+};
+
+const USE_HASH_ROUTER = getEnvRouterConfig();
+
 // --- Custom Router Implementation ---
 
-// Get current location from hash
 const getLoc = () => {
-  try {
-    const hash = window.location.hash;
-    const pathname = hash.replace(/^#/, '') || '/';
+  if (typeof window === 'undefined') return { pathname: '/', search: '', hash: '' };
+
+  if (USE_HASH_ROUTER) {
+    // Hash Mode: /#/about -> pathname: /about
+    const hashPath = window.location.hash.slice(1);
     return {
-      hash,
-      pathname: decodeURIComponent(pathname)
+      pathname: hashPath || '/',
+      search: window.location.search,
+      hash: window.location.hash
     };
-  } catch (e) {
-    return { hash: '', pathname: '/' };
+  } else {
+    // History Mode: /about -> pathname: /about
+    return {
+      pathname: window.location.pathname,
+      search: window.location.search,
+      hash: window.location.hash
+    };
   }
 };
 
@@ -24,11 +48,16 @@ export const useLocation = () => {
   const [location, setLocation] = useState(getLoc());
 
   useEffect(() => {
-    const handler = () => {
-      setLocation(getLoc());
-    };
-    window.addEventListener('hashchange', handler);
-    return () => window.removeEventListener('hashchange', handler);
+    const handler = () => setLocation(getLoc());
+
+    if (USE_HASH_ROUTER) {
+      window.addEventListener('hashchange', handler);
+      return () => window.removeEventListener('hashchange', handler);
+    } else {
+      // Listen for browser back/forward interactions
+      window.addEventListener('popstate', handler);
+      return () => window.removeEventListener('popstate', handler);
+    }
   }, []);
 
   return location;
@@ -42,7 +71,7 @@ export const useParams = <T extends Record<string, string | undefined>>() => {
 
   if (pathname.startsWith('/tag/')) {
     slug = pathname.replace(/^\/tag\//, '');
-  } else if (pathname !== '/' && !pathname.includes('/about') && !pathname.includes('/shop')) { 
+  } else if (pathname !== '/' && !pathname.startsWith('/about') && !pathname.startsWith('/shop')) { 
     slug = pathname.replace(/^\//, '');
   }
 
@@ -55,13 +84,27 @@ export const Link: React.FC<{ to: string; className?: string; children: React.Re
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 
     e.preventDefault();
-    // Update hash manually to trigger router
-    window.location.hash = to;
+    
+    if (USE_HASH_ROUTER) {
+        // Hash Mode Update
+        window.location.hash = to;
+    } else {
+        // History Mode Update
+        window.history.pushState({}, '', to);
+        // Manually dispatch popstate to trigger re-render in useLocation
+        window.dispatchEvent(new Event('popstate'));
+    }
+    
     window.scrollTo(0, 0);
   };
 
+  // Construct href for accessibility and hover status bar
+  const href = USE_HASH_ROUTER 
+    ? (to.startsWith('#') ? to : `#${to}`) 
+    : to;
+
   return (
-    <a href={`#${to}`} className={`${className || ''} cursor-pointer`} onClick={handleClick}>
+    <a href={href} className={`${className || ''} cursor-pointer`} onClick={handleClick}>
       {children}
     </a>
   );
@@ -79,20 +122,20 @@ export const Routes: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     
     const props = child.props as { path: string; element: React.ReactNode };
     
-    // 1. Generic Exact Match (Prioritize explicit static paths like '/' or '/about')
+    // 1. Generic Exact Match
     if (props.path === pathname) {
       match = props.element;
       return;
     }
     
-    // 2. Specific match for Tags (Categories)
+    // 2. Specific match for Tags
     if (props.path === '/tag/:slug' && pathname.startsWith('/tag/')) {
       match = props.element;
       return;
     }
 
-    // 3. Match for Post slug (Catch-all for simple slugs)
-    if (props.path === '/:slug' && pathname !== '/' && !pathname.startsWith('/tag/') && !pathname.startsWith('/shop')) {
+    // 3. Match for Post slug (Catch-all)
+    if (props.path === '/:slug' && pathname !== '/' && !pathname.startsWith('/tag/') && !pathname.startsWith('/shop') && !pathname.startsWith('/about')) {
        match = props.element;
     }
   });
