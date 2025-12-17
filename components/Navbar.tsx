@@ -9,19 +9,11 @@ import SearchModal from './SearchModal';
 // Safe access to environment variable
 const getEnvRouterConfig = () => {
   try {
-    // Check various ways the env might be exposed
-    const envValue = import.meta.env?.VITE_USE_HASH_ROUTER;
-    
-    // Logic: Only use Hash Router if explicitly set to 'true'.
-    // Otherwise, default to History API (Clean URLs).
-    if (envValue === 'true') {
-      return true;
-    }
-    
-    // Default to false (History Mode / Clean URLs)
-    // This fixes the issue where undefined defaulted to Hash.
-    return false;
+    // We strictly check if it is the string "true".
+    // Any other value (undefined, "false", null) will return false (History API).
+    return import.meta.env.VITE_USE_HASH_ROUTER === 'true';
   } catch {
+    // Fallback to History API (Clean URLs) if any error occurs
     return false;
   }
 };
