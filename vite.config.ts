@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
     },
     // Configuration for Production Build
     build: {
-      outDir: '../dist', // Output to parent directory as requested
+      outDir: 'dist', // Output to parent directory as requested
       emptyOutDir: true,
       sourcemap: false,  // Disable sourcemaps for production
     },
@@ -28,7 +28,9 @@ export default defineConfig(({ mode }) => {
     // Inject environment variables (Required for AI Studio templates)
     define: {
       'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+      // Explicitly define VITE_USE_HASH_ROUTER to ensure client receives it
+      'import.meta.env.VITE_USE_HASH_ROUTER': JSON.stringify(env.VITE_USE_HASH_ROUTER)
     }
   };
 });

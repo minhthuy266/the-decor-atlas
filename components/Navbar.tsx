@@ -9,20 +9,20 @@ import SearchModal from './SearchModal';
 // Safe access to environment variable
 const getEnvRouterConfig = () => {
   try {
-    // IMPORTANT: Environment variables are always STRINGS in Vite/Node.
-    // 'false' in .env becomes the string "false", which is truthy in JS.
-    // We must compare explicitly against the string 'false'.
+    // Check various ways the env might be exposed
     const envValue = import.meta.env?.VITE_USE_HASH_ROUTER;
     
-    // If explicitly set to the string "false", use History API (clean URLs)
-    if (envValue === 'false') {
-      return false;
+    // Logic: Only use Hash Router if explicitly set to 'true'.
+    // Otherwise, default to History API (Clean URLs).
+    if (envValue === 'true') {
+      return true;
     }
     
-    // Default to true (Hash Router) for safety if undefined or any other value
-    return true;
+    // Default to false (History Mode / Clean URLs)
+    // This fixes the issue where undefined defaulted to Hash.
+    return false;
   } catch {
-    return true;
+    return false;
   }
 };
 
