@@ -58,12 +58,20 @@ const Category: React.FC = () => {
   if (loading) return <div className="min-h-screen flex items-center justify-center text-stone-400 font-serif">Loading Collection...</div>;
   if (!tag) return <div className="min-h-screen flex items-center justify-center text-stone-400 font-serif">Category not found.</div>;
 
+  const breadcrumbs = [
+    { name: "Home", item: "/" },
+    { name: tag.name, item: `/tag/${tag.slug}` }
+  ];
+
   return (
     <>
       <SEO 
         title={tag.name} 
         description={tag.description || `Articles about ${tag.name}`}
         type="website"
+        schemaType="CollectionPage"
+        breadcrumbs={breadcrumbs}
+        canonical={`https://thedecoratlas.com/tag/${tag.slug}`}
       />
       <main className="pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto min-h-screen">
         

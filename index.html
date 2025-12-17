@@ -3,13 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A minimalist, sophisticated interior design blog featuring high-quality photography, curated home decor, and architectural inspiration." />
     <meta name="p:domain_verify" content="ecd139aa26a9e8fd9f666d3379a8bd99"/>
     <title>The Decor Atlas</title>
+    <link rel="icon" href="/favicon.ico" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Tenor Sans for High-end Display (Sans serif with personality), Manrope for clean body -->
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Tenor+Sans&display=swap" rel="stylesheet">
+    <!-- Preload Tenor Sans as it is the display font for LCP elements -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap"></noscript>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {

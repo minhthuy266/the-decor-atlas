@@ -77,12 +77,18 @@ const Home: React.FC = () => {
       <main className="bg-stone-50 overflow-x-hidden">
         
         {/* --- HERO SECTION --- */}
+        {/* LCP OPTIMIZATION: Removed lazy loading, added fetchpriority, ensured image is loaded immediately */}
         <section className="relative w-full h-[85vh] min-h-[550px] flex items-center justify-center overflow-hidden">
             <div className="absolute inset-0 z-0">
               <img 
                 src={HERO_IMAGE} 
-                alt="Minimalist Interior"
+                alt="Minimalist Interior Sanctuary"
                 className="w-full h-full object-cover object-center animate-slow-zoom"
+                loading="eager"
+                // @ts-ignore
+                fetchpriority="high"
+                width="2600"
+                height="1600"
               />
               
               {/* Layer 0: Top Gradient for Header Visibility */}
@@ -165,6 +171,9 @@ const Home: React.FC = () => {
                       src={latestPost.feature_image} 
                       alt={latestPost.title}
                       className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
+                      loading="lazy" // Lazy load below fold images
+                      width="800"
+                      height="600"
                     />
                     <div className="absolute top-0 left-0 bg-stone-900 text-white px-5 py-3 text-[10px] font-bold tracking-widest uppercase z-10">
                       Cover Story
@@ -224,6 +233,9 @@ const Home: React.FC = () => {
                             src={post.feature_image} 
                             alt={post.title} 
                             className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" 
+                            loading="lazy"
+                            width="100"
+                            height="100"
                           />
                        </div>
                     </Link>
@@ -270,7 +282,14 @@ const Home: React.FC = () => {
                 {CURATED_PICKS.map((item, i) => (
                   <div key={i} className="group cursor-pointer">
                      <div className="aspect-square bg-stone-100 mb-4 overflow-hidden relative">
-                        <img src={item.img} alt={item.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                        <img 
+                            src={item.img} 
+                            alt={item.name} 
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                            loading="lazy"
+                            width="400"
+                            height="400"
+                        />
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
                      </div>
                      <div className="text-center">
@@ -320,6 +339,8 @@ const Home: React.FC = () => {
                     alt={post.title} 
                     className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
+                    width="600"
+                    height="450"
                   />
                   <div className="absolute top-3 right-3 bg-white/90 backdrop-blur p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                      <ArrowUpRight size={14} className="text-stone-900" />

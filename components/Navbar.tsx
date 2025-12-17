@@ -9,6 +9,11 @@ import SearchModal from './SearchModal';
 // Safe access to environment variable
 const getEnvRouterConfig = () => {
   try {
+    // Auto-detect blob environment (preview sandboxes) to avoid SecurityError with pushState
+    if (typeof window !== 'undefined' && window.location.protocol === 'blob:') {
+      return true;
+    }
+
     // We strictly check if it is the string "true".
     // Any other value (undefined, "false", null) will return false (History API).
     return import.meta.env.VITE_USE_HASH_ROUTER === 'true';
@@ -27,6 +32,7 @@ const getLoc = () => {
 
   if (USE_HASH_ROUTER) {
     // Hash Mode: /#/about -> pathname: /about
+    // We remove the # and ensure we have at least /
     const hashPath = window.location.hash.slice(1);
     return {
       pathname: hashPath || '/',
@@ -89,9 +95,15 @@ export const Link: React.FC<{ to: string; className?: string; children: React.Re
         window.location.hash = to;
     } else {
         // History Mode Update
-        window.history.pushState({}, '', to);
-        // Manually dispatch popstate to trigger re-render in useLocation
-        window.dispatchEvent(new Event('popstate'));
+        try {
+            window.history.pushState({}, '', to);
+            // Manually dispatch popstate to trigger re-render in useLocation
+            window.dispatchEvent(new Event('popstate'));
+        } catch (err) {
+            console.error("Navigation error:", err);
+            // Fallback for weird environments if pushState fails despite checks
+            window.location.href = to;
+        }
     }
     
     window.scrollTo(0, 0);
@@ -212,6 +224,9 @@ const Navbar: React.FC = () => {
       ? (isTransparent ? 'opacity-100 border-b-2 border-white' : 'text-stone-900 opacity-100 border-b-2 border-stone-900')
       : 'opacity-70 hover:opacity-100 border-b-2 border-transparent';
 
+  // Semantic Tag Logic: H1 on Home, Div on inner pages (for SEO)
+  const LogoTag = isHome ? 'h1' : 'div';
+
   return (
     <>
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
@@ -219,10 +234,10 @@ const Navbar: React.FC = () => {
       <header className={`fixed top-0 left-0 right-0 z-[40] transition-all duration-500 ease-in-out border-b ${scrolled ? 'bg-stone-50/95 backdrop-blur-sm border-stone-200 py-3' : 'bg-transparent border-transparent py-6'}`}>
         <div className="container mx-auto px-4 md:px-8 max-w-7xl flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" className="z-50 relative">
-            <h1 className={`font-serif text-2xl md:text-3xl tracking-tight font-bold transition-colors duration-300 ${logoClass}`}>
+          <Link to="/" className="z-50 relative block">
+            <LogoTag className={`font-serif text-2xl md:text-3xl tracking-tight font-bold transition-colors duration-300 ${logoClass}`}>
               The Decor Atlas.
-            </h1>
+            </LogoTag>
           </Link>
 
           {/* Desktop Nav */}

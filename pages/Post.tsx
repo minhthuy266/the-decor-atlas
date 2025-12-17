@@ -113,30 +113,19 @@ const Post: React.FC = () => {
 
   // --- Logic to Create Product Sliders (Swipe) ---
   useEffect(() => {
-    // Only run this logic if we have rendered HTML
     if (!processedHtml) return;
-
-    // Use a small timeout to ensure React has rendered the dangerouslySetInnerHTML
     const timer = setTimeout(() => {
         const contentDiv = document.querySelector('.gh-content');
         if (!contentDiv) return;
-
-        // Find all product cards
         const productCards = Array.from(contentDiv.querySelectorAll('.kg-product-card'));
-
         if (productCards.length > 1) {
-            // Group consecutive cards
             let i = 0;
             while (i < productCards.length) {
                 const group = [productCards[i]];
                 let j = i + 1;
-
-                // Check subsequent siblings
                 while (j < productCards.length) {
                     const current = productCards[j - 1];
                     const next = productCards[j];
-                    
-                    // Check if they are immediate siblings (ignoring text nodes or whitespace)
                     if (current.nextElementSibling === next) {
                         group.push(next);
                         j++;
@@ -144,47 +133,31 @@ const Post: React.FC = () => {
                         break;
                     }
                 }
-
-                // If we found a group of 2 or more, wrap them
                 if (group.length > 1) {
-                    // Create Wrapper Structure
                     const wrapper = document.createElement('div');
                     wrapper.className = 'gh-product-slider-wrapper';
-                    
                     const container = document.createElement('div');
                     container.className = 'gh-product-slider-container';
-                    
                     wrapper.appendChild(container);
-
-                    // Insert wrapper before the first card
                     const firstCard = group[0];
                     if(firstCard.parentNode) {
                         firstCard.parentNode.insertBefore(wrapper, firstCard);
-                        
-                        // Move cards into container
-                        group.forEach(card => {
-                            container.appendChild(card);
-                        });
+                        group.forEach(card => container.appendChild(card));
                     }
                 }
-                
-                // Advance index
                 i = j;
             }
         }
     }, 100);
-
     return () => clearTimeout(timer);
   }, [processedHtml]);
 
   // Scroll Listener for Active State
   useEffect(() => {
     if (toc.length === 0) return;
-
     const handleScroll = () => {
       const headerOffset = 150;
       let currentId = "";
-
       for (const item of toc) {
         const element = document.getElementById(item.id);
         if (element) {
@@ -196,10 +169,8 @@ const Post: React.FC = () => {
       }
       setActiveId(currentId);
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    
     return () => window.removeEventListener('scroll', handleScroll);
   }, [toc]);
 
@@ -226,7 +197,25 @@ const Post: React.FC = () => {
   };
 
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-stone-50 text-stone-400 font-serif">Loading Story...</div>;
-  if (!post) return <div className="min-h-screen flex items-center justify-center bg-stone-50 text-stone-400 font-serif">Story not found.</div>;
+  
+  // 404 HANDLING: Render Soft 404 with NoIndex
+  if (!post) return (
+    <>
+      <SEO title="Page Not Found" robots="noindex" />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-stone-50 text-stone-900 font-serif p-4 text-center">
+         <h1 className="text-4xl mb-4">Story not found.</h1>
+         <p className="text-stone-500 mb-8">The article you are looking for might have been moved or deleted.</p>
+         <Link to="/" className="text-xs font-bold uppercase tracking-widest border-b border-stone-900 pb-1">Back to Journal</Link>
+      </div>
+    </>
+  );
+
+  // Construct Breadcrumbs
+  const breadcrumbs = [
+    { name: "Home", item: "/" },
+    ...(post.primary_tag ? [{ name: post.primary_tag.name, item: `/tag/${post.primary_tag.slug}` }] : []),
+    { name: post.title, item: `/${post.slug}` }
+  ];
 
   return (
     <>
@@ -234,9 +223,12 @@ const Post: React.FC = () => {
         title={post.title}
         description={post.custom_excerpt}
         type="article"
+        schemaType="Article"
         ogImage={post.feature_image}
         publishedTime={post.published_at}
         author={post.primary_author?.name}
+        breadcrumbs={breadcrumbs}
+        canonical={`https://thedecoratlas.com/${post.slug}`}
       />
 
       <div className="bg-stone-50 min-h-screen pb-24">
@@ -249,7 +241,7 @@ const Post: React.FC = () => {
                 </Link>
                 
                 <div className="flex items-center justify-center space-x-3 text-[10px] font-bold tracking-[0.2em] uppercase text-stone-500 mb-6">
-                  {post.primary_tag && <span className="text-stone-900 bg-stone-100 px-2 py-1">{post.primary_tag.name}</span>}
+                  {post.primary_tag && <Link to={`/tag/${post.primary_tag.slug}`} className="text-stone-900 bg-stone-100 px-2 py-1 hover:bg-stone-200 transition-colors">{post.primary_tag.name}</Link>}
                   <span className="text-stone-300">•</span>
                   <time dateTime={post.published_at}>{format(new Date(post.published_at), 'MMMM d, yyyy')}</time>
                 </div>
@@ -268,10 +260,16 @@ const Post: React.FC = () => {
             {/* Feature Image - Aligned to max-w-7xl */}
             <div className="container mx-auto px-4 md:px-8 max-w-7xl mt-12">
                 <div className="aspect-[21/9] md:aspect-[2.4/1] overflow-hidden bg-stone-100 shadow-sm relative">
+                    {/* LCP OPTIMIZATION: Eager load, high priority, explicit size */}
                     <img 
-                    src={post.feature_image} 
-                    alt={post.title}
-                    className="w-full h-full object-cover"
+                      src={post.feature_image} 
+                      alt={post.title}
+                      className="w-full h-full object-cover"
+                      loading="eager"
+                      // @ts-ignore
+                      fetchpriority="high"
+                      width="1200"
+                      height="600"
                     />
                 </div>
                 
@@ -457,6 +455,7 @@ const Post: React.FC = () => {
                                 src={post.primary_author.profile_image || "https://picsum.photos/100/100"} 
                                 alt={post.primary_author.name}
                                 className="w-16 h-16 rounded-full grayscale object-cover border border-stone-100 shrink-0"
+                                loading="lazy"
                             />
                             <div>
                                 <h4 className="font-serif text-xl text-stone-900 mb-1 font-bold">{post.primary_author.name}</h4>
@@ -480,6 +479,7 @@ const Post: React.FC = () => {
                                             src={product.image} 
                                             alt={product.name} 
                                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                            loading="lazy"
                                         />
                                     </div>
                                     <div className="flex-1 min-w-0">
@@ -515,6 +515,7 @@ const Post: React.FC = () => {
                                             src={trend.feature_image} 
                                             alt={trend.title} 
                                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                            loading="lazy"
                                         />
                                         <div className="absolute top-0 left-0 bg-white/95 backdrop-blur px-2 py-1">
                                             <span className="text-[10px] font-bold tracking-widest text-stone-900">0{idx + 1}</span>
@@ -567,6 +568,7 @@ const Post: React.FC = () => {
                                         src={post.feature_image} 
                                         alt={post.title} 
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        loading="lazy"
                                     />
                                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
                                 </div>
