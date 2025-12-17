@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => {
       'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
       // Explicitly define VITE_USE_HASH_ROUTER to ensure client receives it
-      'import.meta.env.VITE_USE_HASH_ROUTER': JSON.stringify(env.VITE_USE_HASH_ROUTER)
+      'process.env.VITE_USE_HASH_ROUTER': JSON.stringify(env.VITE_USE_HASH_ROUTER)
     }
   };
 });
