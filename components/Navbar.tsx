@@ -5,15 +5,22 @@ import { Tag } from '../types';
 import SearchModal from './SearchModal';
 
 // --- ROUTER CONFIGURATION ---
-// We use an environment variable to control the router mode.
-// In .env, set VITE_USE_HASH_ROUTER=false for production (clean URLs)
-// Default is true (Hash Router) for preview environments to prevent crashes.
 
-// Safe access to environment variable to prevent "Cannot read properties of undefined"
+// Safe access to environment variable
 const getEnvRouterConfig = () => {
   try {
-    // If import.meta.env exists, check the var. Otherwise default to true (Hash).
-    return import.meta.env?.VITE_USE_HASH_ROUTER !== 'false';
+    // IMPORTANT: Environment variables are always STRINGS in Vite/Node.
+    // 'false' in .env becomes the string "false", which is truthy in JS.
+    // We must compare explicitly against the string 'false'.
+    const envValue = import.meta.env?.VITE_USE_HASH_ROUTER;
+    
+    // If explicitly set to the string "false", use History API (clean URLs)
+    if (envValue === 'false') {
+      return false;
+    }
+    
+    // Default to true (Hash Router) for safety if undefined or any other value
+    return true;
   } catch {
     return true;
   }
