@@ -30,6 +30,9 @@ const Post: React.FC = () => {
   const [toc, setToc] = useState<TOCItem[]>([]);
   const [activeId, setActiveId] = useState<string>("");
   const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
+  
+  // Reading Progress State
+  const [readingProgress, setReadingProgress] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -152,10 +155,16 @@ const Post: React.FC = () => {
     return () => clearTimeout(timer);
   }, [processedHtml]);
 
-  // Scroll Listener for Active State
+  // Scroll Listener for Active State & Reading Progress
   useEffect(() => {
-    if (toc.length === 0) return;
     const handleScroll = () => {
+      // 1. Reading Progress
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      setReadingProgress(progress);
+
+      // 2. TOC Active State
+      if (toc.length === 0) return;
       const headerOffset = 150;
       let currentId = "";
       for (const item of toc) {
@@ -169,8 +178,8 @@ const Post: React.FC = () => {
       }
       setActiveId(currentId);
     };
+    
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, [toc]);
 
@@ -230,6 +239,9 @@ const Post: React.FC = () => {
         breadcrumbs={breadcrumbs}
         canonical={`https://thedecoratlas.com/${post.slug}`}
       />
+
+      {/* Reading Progress Bar */}
+      <div className="fixed top-0 left-0 h-1 bg-stone-900 z-[100] transition-all duration-200" style={{ width: `${readingProgress}%` }} />
 
       <div className="bg-stone-50 min-h-screen pb-24">
         

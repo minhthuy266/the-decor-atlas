@@ -13,7 +13,7 @@ interface ExtendedSeoProps extends SeoProps {
 
 const SEO: React.FC<ExtendedSeoProps> = ({ 
   title, 
-  description = "A minimalist interior design blog featuring high-quality photography and curated home decor content.", 
+  description = "A minimalist, sophisticated interior design blog featuring high-quality photography and curated home decor content.", 
   canonical, 
   ogImage, 
   type = 'website',
@@ -55,7 +55,8 @@ const SEO: React.FC<ExtendedSeoProps> = ({
     "logo": "https://ui-avatars.com/api/?name=The+Decor+Atlas&background=111110&color=fff",
     "sameAs": [
         "https://instagram.com/thedecoratlas",
-        "https://pinterest.com/thedecoratlas"
+        "https://pinterest.com/thedecoratlas",
+        "https://twitter.com/thedecoratlas"
     ]
   };
 

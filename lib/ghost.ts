@@ -4,8 +4,7 @@ const URL = "https://slaymua.com";
 const KEY = "ab74a5f89d0a4a3c4451decb46";
 const DEFAULT_COVER = "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop";
 
-// --- MOCK PRODUCT CARD HTML ---
-// This replicates the Ghost HTML structure for testing.
+// --- MOCK PRODUCT CARD HTML (Reusable) ---
 const MOCK_PRODUCT_HTML = `
 <div class="kg-card kg-product-card">
     <div class="kg-product-card-container">
@@ -17,87 +16,110 @@ const MOCK_PRODUCT_HTML = `
         <a href="#" class="kg-product-card-button kg-product-card-btn-accent" target="_blank" rel="noopener noreferrer"><span>View Details</span></a>
     </div>
 </div>
-<div class="kg-card kg-product-card">
-    <div class="kg-product-card-container">
-        <img src="https://images.unsplash.com/photo-1513506003011-38f044aff2dd?q=80&w=600" width="600" height="400" class="kg-product-card-image" loading="lazy">
-        <div class="kg-product-card-title-container">
-            <h4 class="kg-product-card-title"><b><strong style="white-space: pre-wrap;">Akari 1A Table Lamp</strong></b></h4>
-        </div>
-        <div class="kg-product-card-description"><p dir="ltr"><span style="white-space: pre-wrap;">Handcrafted from traditional washi paper. Provides a soft, warm glow.</span></p></div>
-        <a href="#" class="kg-product-card-button kg-product-card-btn-accent" target="_blank" rel="noopener noreferrer"><span>Buy Now</span></a>
-    </div>
-</div>
-<div class="kg-card kg-product-card">
-    <div class="kg-product-card-container">
-        <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=600" width="600" height="400" class="kg-product-card-image" loading="lazy">
-        <div class="kg-product-card-title-container">
-            <h4 class="kg-product-card-title"><b><strong style="white-space: pre-wrap;">Pacha Lounge Chair</strong></b></h4>
-        </div>
-        <div class="kg-product-card-description"><p dir="ltr"><span style="white-space: pre-wrap;">Designed by Pierre Paulin. A low-profile armchair that feels like sitting on a cloud.</span></p></div>
-        <a href="#" class="kg-product-card-button kg-product-card-btn-accent" target="_blank" rel="noopener noreferrer"><span>Check Price</span></a>
-    </div>
-</div>
 `;
 
-// --- MOCK DATA FALLBACK (Used when API is 404 or unreachable) ---
+// --- MOCK DATA FALLBACK ---
 const MOCK_DATA = {
+    tags: [
+        // --- SHOP ---
+        { id: 'amazon', name: "Amazon Finds", slug: "amazon-finds", description: "Hidden gems and prime-eligible decor favorites." },
+        { id: 'looks', name: "Shop The Look", slug: "shop-the-look", description: "Curated rooms and exactly where to buy them." },
+        { id: 'splurge', name: "Splurge vs. Save", slug: "splurge-vs-save", description: "High-end looks for every budget." },
+        { id: 'gifts', name: "Gift Guides", slug: "gift-guides", description: "Thoughtful presents for design lovers." },
+        
+        // --- ORGANIZATION ---
+        { id: 'kitchen', name: "Kitchen & Pantry", slug: "kitchen-pantry", description: "Aesthetic storage solutions for the heart of the home." },
+        { id: 'closet', name: "Closet Organization", slug: "closet-organization", description: "Maximize your wardrobe space." },
+        { id: 'small', name: "Small Space Solutions", slug: "small-spaces", description: "Big style for apartments and compact living." },
+        
+        // --- ROOMS ---
+        { id: 'living', name: "Living Room", slug: "living-room", description: "Sofas, rugs, and coffee table styling." },
+        { id: 'bedroom', name: "Bedroom", slug: "bedroom", description: "Create a restful, cozy sanctuary." },
+        { id: 'office', name: "Home Office", slug: "home-office", description: "Productivity meets style." },
+        
+        // --- STYLES ---
+        { id: 'organic', name: "Organic Modern", slug: "organic-modern", description: "Warm neutrals, wood textures, and soft lines." },
+        { id: 'seasonal', name: "Seasonal Decor", slug: "seasonal-decor", description: "Holiday updates and seasonal refreshes." },
+        
+        // --- SYSTEM ---
+        { id: 'product', name: "product", slug: "product", description: "Shop items" }
+    ],
     posts: [
-        // --- BLOG POSTS ---
+        // --- BLOG POSTS (Re-tagged for Strategy) ---
         {
             id: '1',
             uuid: 'uuid-1',
-            title: "Japandi: The Art of Imperfect Minimalism",
-            slug: "japandi-art-of-imperfect-minimalism",
-            html: `<p>In an era defined by noise and digital clutter, the home has returned to its primal role: a sanctuary.</p><p>Below are some essential items to achieve this look.</p> ${MOCK_PRODUCT_HTML} <p>By incorporating these elements, you create a space that breathes.</p>`,
-            feature_image: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=2000&auto=format&fit=crop",
+            title: "20 Amazon Home Finds That Look Expensive",
+            slug: "amazon-home-finds-look-expensive",
+            html: `<p>You don't need to spend a fortune to get that high-end organic modern look. We've scoured Amazon for the best ceramics, textiles, and lighting.</p><p>Below are our top picks for this month.</p> ${MOCK_PRODUCT_HTML} <p>These pieces sell out fast, so grab them while you can.</p>`,
+            feature_image: "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?q=80&w=2000&auto=format&fit=crop",
             featured: true,
             created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
             published_at: new Date(Date.now() - 10000000).toISOString(),
-            custom_excerpt: "Exploring the fusion of Scandinavian functionality and Japanese rustic minimalism in modern homes.",
+            custom_excerpt: "From travertine trays to linen curtains, here are the Prime-eligible pieces designers are secretly buying.",
             visibility: "public",
-            reading_time: 5,
-            primary_tag: { id: '1', name: "Minimalism", slug: "minimalism" },
-            tags: [{ id: '1', name: "Minimalism", slug: "minimalism" }],
+            primary_tag: { id: 'amazon', name: "Amazon Finds", slug: "amazon-finds" },
+            tags: [
+                { id: 'amazon', name: "Amazon Finds", slug: "amazon-finds" },
+                { id: 'splurge', name: "Splurge vs. Save", slug: "splurge-vs-save" }
+            ],
             primary_author: { id: '1', name: "The Decor Atlas", slug: "the-decor-atlas" }
         },
         {
             id: '2',
             uuid: 'uuid-2',
-            title: "Material Focus: The Renaissance of Travertine",
-            slug: "renaissance-of-travertine",
-            html: "<p>For decades, marble has reigned supreme. But now, Travertine is back.</p>",
-            feature_image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=2000&auto=format&fit=crop",
-            featured: false,
+            title: "Small Apartment Organization: 5 Rental Hacks",
+            slug: "small-apartment-organization-hacks",
+            html: "<p>Living in a rental doesn't mean you have to sacrifice style for storage.</p>",
+            feature_image: "https://images.unsplash.com/photo-1595515106967-0f3fa03068e8?q=80&w=2000&auto=format&fit=crop",
+            featured: true,
             created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
             published_at: new Date(Date.now() - 20000000).toISOString(),
-            custom_excerpt: "Why the design world is trading high-gloss marble for the earthy, porous textures of limestone.",
+            custom_excerpt: "Maximize your vertical space and declutter your life with these renter-friendly solutions.",
             visibility: "public",
-            primary_tag: { id: '3', name: "Materials", slug: "materials" },
-            tags: [{ id: '3', name: "Materials", slug: "materials" }],
+            primary_tag: { id: 'small', name: "Small Space Solutions", slug: "small-spaces" },
+            tags: [
+                { id: 'small', name: "Small Space Solutions", slug: "small-spaces" },
+                { id: 'closet', name: "Closet Organization", slug: "closet-organization" }
+            ],
             primary_author: { id: '1', name: "The Decor Atlas", slug: "the-decor-atlas" }
         },
         {
              id: '3',
              uuid: 'uuid-3',
-             title: "The Parisian Apartment: Mastering Small Spaces",
-             slug: "parisian-apartment-guide",
-             html: "<p>Parisian apartments are famous for their charm, but also their lack of space.</p>",
-             feature_image: "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop",
-             featured: true,
+             title: "The Ultimate Kitchen Pantry Reset",
+             slug: "ultimate-kitchen-pantry-reset",
+             html: "<p>A disorganized pantry leads to food waste and cooking stress. Let's fix that.</p>",
+             feature_image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=2000&auto=format&fit=crop",
+             featured: false,
              published_at: new Date(Date.now() - 40000000).toISOString(),
              created_at: new Date().toISOString(),
-             updated_at: new Date().toISOString(),
-             custom_excerpt: "Lessons in verticality, mixing eras, and the art of curated clutter from the French capital.",
+             custom_excerpt: "Glass jars, woven baskets, and the exact labels we use to keep everything pristine.",
              visibility: "public",
-             primary_tag: { id: '5', name: "Small Spaces", slug: "small-spaces" },
-             tags: [{ id: '5', name: "Small Spaces", slug: "small-spaces" }],
+             primary_tag: { id: 'kitchen', name: "Kitchen & Pantry", slug: "kitchen-pantry" },
+             tags: [{ id: 'kitchen', name: "Kitchen & Pantry", slug: "kitchen-pantry" }],
              primary_author: { id: '1', name: "The Decor Atlas", slug: "the-decor-atlas" }
         },
-        
-        // --- SHOP PRODUCTS (Mocking Ghost Posts tagged as 'product') ---
-        // Convention: custom_excerpt = "Price | Retailer | Brand"
+        {
+             id: '4',
+             uuid: 'uuid-4',
+             title: "Organic Modern Living Room Refresh",
+             slug: "organic-modern-living-room",
+             html: "<p>How to balance clean lines with warm textures.</p>",
+             feature_image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=2000&auto=format&fit=crop",
+             featured: false,
+             published_at: new Date(Date.now() - 50000000).toISOString(),
+             created_at: new Date().toISOString(),
+             custom_excerpt: "We style a neutral living room using wood, stone, and bouclé fabric.",
+             visibility: "public",
+             primary_tag: { id: 'organic', name: "Organic Modern", slug: "organic-modern" },
+             tags: [
+                { id: 'organic', name: "Organic Modern", slug: "organic-modern" },
+                { id: 'living', name: "Living Room", slug: "living-room" }
+             ],
+             primary_author: { id: '1', name: "The Decor Atlas", slug: "the-decor-atlas" }
+        },
+        // --- PRODUCTS ---
         {
             id: 'p1',
             uuid: 'prod-1',
@@ -106,137 +128,50 @@ const MOCK_DATA = {
             feature_image: "https://images.unsplash.com/photo-1513506003011-38f044aff2dd?q=80&w=800&auto=format&fit=crop",
             featured: false,
             published_at: new Date().toISOString(),
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            custom_excerpt: "$210 | Design Within Reach | Vitra", 
+            custom_excerpt: "$210 | Amazon | Vitra", 
             visibility: "public",
-            primary_tag: { id: '4', name: "Lighting", slug: "lighting" },
-            tags: [{ id: 'shop', name: "product", slug: "product" }, { id: '4', name: "Lighting", slug: "lighting" }],
-            primary_author: { id: '1', name: "The Decor Atlas", slug: "the-decor-atlas" }
+            primary_tag: { id: 'amazon', name: "Amazon Finds", slug: "amazon-finds" },
+            tags: [{ id: 'product', name: "product", slug: "product" }, { id: 'amazon', name: "Amazon Finds", slug: "amazon-finds" }]
         },
         {
             id: 'p2',
             uuid: 'prod-2',
-            title: "Travertine Coffee Table",
-            slug: "product-travertine-table",
-            feature_image: "https://images.unsplash.com/photo-1615529182904-14819c35db37?q=80&w=800&auto=format&fit=crop",
+            title: "Clear Stackable Bins (Set of 4)",
+            slug: "product-bins",
+            feature_image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=800&auto=format&fit=crop",
             featured: true,
             published_at: new Date().toISOString(),
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            custom_excerpt: "$1,450 | Finnish Design Shop | GUBI",
+            custom_excerpt: "$24.99 | Amazon | The Home Edit",
             visibility: "public",
-            primary_tag: { id: 'f', name: "Furniture", slug: "furniture" },
-            tags: [{ id: 'shop', name: "product", slug: "product" }, { id: 'f', name: "Furniture", slug: "furniture" }],
-            primary_author: { id: '1', name: "The Decor Atlas", slug: "the-decor-atlas" }
+            primary_tag: { id: 'kitchen', name: "Kitchen & Pantry", slug: "kitchen-pantry" },
+            tags: [{ id: 'product', name: "product", slug: "product" }, { id: 'amazon', name: "Amazon Finds", slug: "amazon-finds" }]
         },
         {
             id: 'p3',
             uuid: 'prod-3',
-            title: "Pacha Lounge Chair",
-            slug: "product-pacha-chair",
-            feature_image: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=800&auto=format&fit=crop",
+            title: "Linen Duvet Cover",
+            slug: "product-linen",
+            feature_image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=800&auto=format&fit=crop",
             featured: true,
             published_at: new Date().toISOString(),
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            custom_excerpt: "$2,800 | 2Modern | GUBI",
+            custom_excerpt: "$180 | Amazon | Simple&Opulence",
             visibility: "public",
-            primary_tag: { id: 'f', name: "Furniture", slug: "furniture" },
-            tags: [{ id: 'shop', name: "product", slug: "product" }, { id: 'f', name: "Furniture", slug: "furniture" }],
-            primary_author: { id: '1', name: "The Decor Atlas", slug: "the-decor-atlas" }
+            primary_tag: { id: 'amazon', name: "Amazon Finds", slug: "amazon-finds" },
+            tags: [{ id: 'product', name: "product", slug: "product" }, { id: 'amazon', name: "Amazon Finds", slug: "amazon-finds" }]
         },
         {
             id: 'p4',
             uuid: 'prod-4',
-            title: "Stoneware Vase No. 04",
-            slug: "product-stoneware-vase",
+            title: "Stoneware Vase",
+            slug: "product-vase",
             feature_image: "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?q=80&w=800&auto=format&fit=crop",
             featured: false,
             published_at: new Date().toISOString(),
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            custom_excerpt: "$85 | Nordic Nest | Menu Space",
+            custom_excerpt: "$35 | H&M Home | H&M",
             visibility: "public",
-            primary_tag: { id: 'd', name: "Decor", slug: "decor" },
-            tags: [{ id: 'shop', name: "product", slug: "product" }, { id: 'd', name: "Decor", slug: "decor" }],
-            primary_author: { id: '1', name: "The Decor Atlas", slug: "the-decor-atlas" }
-        },
-        {
-            id: 'p5',
-            uuid: 'prod-5',
-            title: "Linen Duvet Set",
-            slug: "product-linen-duvet",
-            feature_image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=800&auto=format&fit=crop",
-            featured: false,
-            published_at: new Date().toISOString(),
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            custom_excerpt: "$329 | Parachute Home | Parachute",
-            visibility: "public",
-            primary_tag: { id: 't', name: "Textiles", slug: "textiles" },
-            tags: [{ id: 'shop', name: "product", slug: "product" }, { id: 't', name: "Textiles", slug: "textiles" }],
-            primary_author: { id: '1', name: "The Decor Atlas", slug: "the-decor-atlas" }
-        },
-        {
-            id: 'p6',
-            uuid: 'prod-6',
-            title: "Walnut Dining Chair",
-            slug: "product-walnut-chair",
-            feature_image: "https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=800&auto=format&fit=crop",
-            featured: false,
-            published_at: new Date().toISOString(),
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            custom_excerpt: "$895 | Herman Miller | Eames",
-            visibility: "public",
-            primary_tag: { id: 'f', name: "Furniture", slug: "furniture" },
-            tags: [{ id: 'shop', name: "product", slug: "product" }, { id: 'f', name: "Furniture", slug: "furniture" }],
-            primary_author: { id: '1', name: "The Decor Atlas", slug: "the-decor-atlas" }
-        },
-        {
-            id: 'p7',
-            uuid: 'prod-7',
-            title: "Anglepoise Desk Lamp",
-            slug: "product-anglepoise",
-            feature_image: "https://images.unsplash.com/photo-1534349762948-3a47050e3903?q=80&w=800&auto=format&fit=crop",
-            featured: false,
-            published_at: new Date().toISOString(),
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            custom_excerpt: "$190 | Amazon | Anglepoise",
-            visibility: "public",
-            primary_tag: { id: '4', name: "Lighting", slug: "lighting" },
-            tags: [{ id: 'shop', name: "product", slug: "product" }, { id: '4', name: "Lighting", slug: "lighting" }],
-            primary_author: { id: '1', name: "The Decor Atlas", slug: "the-decor-atlas" }
-        },
-        {
-            id: 'p8',
-            uuid: 'prod-8',
-            title: "Abstract Wall Art",
-            slug: "product-wall-art",
-            feature_image: "https://images.unsplash.com/photo-1580130601254-05fa235e1e54?q=80&w=800&auto=format&fit=crop",
-            featured: false,
-            published_at: new Date().toISOString(),
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            custom_excerpt: "$120 | The Poster Club | Studio 5",
-            visibility: "public",
-            primary_tag: { id: 'd', name: "Decor", slug: "decor" },
-            tags: [{ id: 'shop', name: "product", slug: "product" }, { id: 'd', name: "Decor", slug: "decor" }],
-            primary_author: { id: '1', name: "The Decor Atlas", slug: "the-decor-atlas" }
+            primary_tag: { id: 'looks', name: "Shop The Look", slug: "shop-the-look" },
+            tags: [{ id: 'product', name: "product", slug: "product" }, { id: 'looks', name: "Shop The Look", slug: "shop-the-look" }]
         }
-    ],
-    tags: [
-        { id: '1', name: "Minimalism", slug: "minimalism", description: "The pursuit of simplicity and clarity." },
-        { id: '2', name: "Design Theory", slug: "design-theory", description: "Understanding the why behind the what." },
-        { id: '3', name: "Materials", slug: "materials", description: "Exploring stone, wood, and textiles." },
-        { id: '4', name: "Lighting", slug: "lighting", description: "Illuminating spaces with intention." },
-        { id: '5', name: "Small Spaces", slug: "small-spaces", description: "Maximizing life in minimal square footage." },
-        { id: '6', name: "Architecture", slug: "architecture", description: "Structural design and spatial theory." },
-        { id: 'f', name: "Furniture", slug: "furniture", description: "Statement pieces." },
-        { id: 'd', name: "Decor", slug: "decor", description: "Finishing touches." },
-        { id: 't', name: "Textiles", slug: "textiles", description: "Soft goods." }
     ]
 };
 
@@ -267,12 +202,10 @@ const mapTag = (t: any): Tag => ({
 
 export async function getPosts(): Promise<Post[]> {
   try {
-    // Exclude posts with tag 'product' from main blog feed
     const endpoint = `${URL}/ghost/api/content/posts/?key=${KEY}&include=tags,authors&limit=20&formats=html&filter=tag:-product`;
     const response = await fetch(endpoint);
     
     if (!response.ok) {
-        // Filter mock data to exclude products
         return MOCK_DATA.posts.filter(p => !p.tags?.some(t => t.slug === 'product')).map(mapPost);
     }
 
@@ -307,52 +240,39 @@ export async function getSinglePost(slug: string): Promise<Post | null> {
 // --- NEW FUNCTION: Get Products (Posts tagged with 'product') ---
 export async function getProducts(): Promise<Post[]> {
   try {
-    // Fetch posts specifically tagged as 'product'
     const endpoint = `${URL}/ghost/api/content/posts/?key=${KEY}&filter=tag:product&include=tags&limit=all`;
     const response = await fetch(endpoint);
     
     if (!response.ok) {
-        // Filter mock data for products
         return MOCK_DATA.posts.filter(p => p.tags?.some(t => t.slug === 'product')).map(mapPost);
     }
     
     const data = await response.json();
     return (data.posts || []).map(mapPost);
   } catch (error) {
-    console.warn("Using Mock Products");
     return MOCK_DATA.posts.filter(p => p.tags?.some(t => t.slug === 'product')).map(mapPost);
   }
 }
 
 export async function getTags(): Promise<Tag[]> {
-  try {
-    const endpoint = `${URL}/ghost/api/content/tags/?key=${KEY}&limit=all&include=count.posts&order=count.posts%20desc`;
-    const response = await fetch(endpoint);
-    if (!response.ok) {
-        return MOCK_DATA.tags.map(mapTag);
-    }
-    const data = await response.json();
-    return (data.tags || []).map(mapTag);
-  } catch (error) {
-    return MOCK_DATA.tags.map(mapTag);
-  }
+  // Return the Mock Tags structure for consistent menu regardless of API
+  return new Promise((resolve) => {
+    resolve(MOCK_DATA.tags.map(mapTag));
+  });
 }
 
 export async function getSingleTag(slug: string): Promise<Tag | null> {
-  try {
-    const endpoint = `${URL}/ghost/api/content/tags/slug/${slug}/?key=${KEY}`;
-    const response = await fetch(endpoint);
-    if (!response.ok) {
-        const mock = MOCK_DATA.tags.find(t => t.slug === slug);
-        return mock ? mapTag(mock) : null;
-    }
-    const data = await response.json();
-    if (!data.tags || data.tags.length === 0) return null;
-    return mapTag(data.tags[0]);
-  } catch (error) {
-    const mock = MOCK_DATA.tags.find(t => t.slug === slug);
-    return mock ? mapTag(mock) : null;
+  if (slug === 'all') {
+    return {
+      id: 'archive-all',
+      name: 'The Archive',
+      slug: 'all',
+      description: 'A complete collection of journal entries, sorted chronologically.',
+      feature_image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=2000&auto=format&fit=crop'
+    };
   }
+  const mock = MOCK_DATA.tags.find(t => t.slug === slug);
+  return mock ? mapTag(mock) : null;
 }
 
 export interface PaginatedPosts {
@@ -371,7 +291,14 @@ export interface PaginatedPosts {
 
 export async function getPostsByTag(slug: string, page: number = 1, limit: number = 9): Promise<PaginatedPosts> {
   try {
-    const endpoint = `${URL}/ghost/api/content/posts/?key=${KEY}&filter=tag:${slug}&include=tags,authors&limit=${limit}&page=${page}&formats=html`;
+    let endpoint = '';
+    
+    if (slug === 'all') {
+         endpoint = `${URL}/ghost/api/content/posts/?key=${KEY}&filter=tag:-product&include=tags,authors&limit=${limit}&page=${page}&formats=html`;
+    } else {
+         endpoint = `${URL}/ghost/api/content/posts/?key=${KEY}&filter=tag:${slug}&include=tags,authors&limit=${limit}&page=${page}&formats=html`;
+    }
+
     const response = await fetch(endpoint);
     
     if (!response.ok) throw new Error("API Failed");
@@ -382,7 +309,13 @@ export async function getPostsByTag(slug: string, page: number = 1, limit: numbe
       meta: data.meta
     };
   } catch (error) {
-    const filtered = MOCK_DATA.posts.filter(p => p.tags?.some(t => t.slug === slug));
+    let filtered;
+    if (slug === 'all') {
+        filtered = MOCK_DATA.posts.filter(p => !p.tags?.some(t => t.slug === 'product'));
+    } else {
+        filtered = MOCK_DATA.posts.filter(p => p.tags?.some(t => t.slug === slug));
+    }
+    
     return { 
       posts: filtered.map(mapPost), 
       meta: { pagination: { page: 1, limit, pages: 1, total: filtered.length, next: null, prev: null } } 

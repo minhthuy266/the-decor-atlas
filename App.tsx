@@ -7,6 +7,10 @@ import Post from './pages/Post';
 import Category from './pages/Category';
 import About from './pages/About';
 import Shop from './pages/Shop';
+import Contact from './pages/Contact';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+import Accessibility from './pages/Accessibility';
 import NewsletterModal from './components/NewsletterModal';
 
 // ScrollToTop component to ensure view resets on route change
@@ -32,6 +36,10 @@ const App: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/shop" element={<Shop />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/accessibility" element={<Accessibility />} />
             <Route path="/tag/:slug" element={<Category />} />
             <Route path="/:slug" element={<Post />} />
           </Routes>
