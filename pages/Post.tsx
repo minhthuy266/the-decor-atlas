@@ -179,22 +179,27 @@ const Post: React.FC = () => {
   };
 
   /**
-   * Cải thiện hàm cuộn:
-   * 1. Sử dụng scrollIntoView với thuộc tính scroll-padding-top đã định nghĩa trong index.html
-   * 2. Nếu cần tính toán thủ công, sử dụng offsetTop thay vì getBoundingClientRect 
-   * để tránh sai số do thanh địa chỉ trình duyệt di động.
+   * Cải thiện hàm cuộn cho di động:
+   * 1. Tính toán vị trí tuyệt đối của phần tử so với trang.
+   * 2. Trừ đi chiều cao Header (offset) một cách thủ công.
+   * 3. Sử dụng window.scrollTo để đảm bảo tính ổn định cao nhất trên Safari/Chrome iOS.
    */
   const scrollToHeading = (id: string, isMobile: boolean = false) => {
     const element = document.getElementById(id);
     if (element) {
-      // Đóng menu TOC mobile trước
       if (isMobile) setIsMobileTocOpen(false);
 
-      // Cách tối ưu nhất: dùng scrollIntoView.
-      // Trình duyệt sẽ tự động áp dụng scroll-padding-top từ thẻ <html>.
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
+      // Tính toán khoảng cách offset an toàn:
+      // Mobile header (fixed) thường cao ~64px. Chúng ta lùi lại 90-100px để tiêu đề nằm giữa vùng thoáng.
+      const offset = isMobile ? 100 : 120;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
       });
       
       setActiveId(id);
