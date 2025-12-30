@@ -23,21 +23,28 @@ const ScrollToTop = () => {
       window.history.scrollRestoration = 'manual';
     }
 
-    // Use a small timeout or requestAnimationFrame to ensure the DOM has updated
-    // and to bypass any mobile browser scroll-locking during transition.
-    const scrollHandler = () => {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'instant' // Use 'instant' to avoid conflicts with CSS smooth scroll
-      });
+    const resetScroll = () => {
+      // Ensure we hit the top of the body and html
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     };
 
-    scrollHandler();
-    // Double-check after a short delay for mobile Safari/Chrome quirk
-    const timer = setTimeout(scrollHandler, 10);
+    // Immediate attempt
+    resetScroll();
+
+    // Use requestAnimationFrame for mobile browser sync
+    const rafId = requestAnimationFrame(() => {
+      resetScroll();
+    });
+
+    // Final fallback for slow mobile rendering
+    const timer = setTimeout(resetScroll, 50);
     
-    return () => clearTimeout(timer);
+    return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(timer);
+    };
   }, [location.pathname]);
 
   return null;

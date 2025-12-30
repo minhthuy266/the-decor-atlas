@@ -182,13 +182,17 @@ const Post: React.FC = () => {
   const scrollToHeading = (id: string, isMobile: boolean = false) => {
     const element = document.getElementById(id);
     if (element) {
-      // Calculate offset: Header height + some breathing room
-      // Desktop header is around 80px, Mobile is around 60px.
-      const offset = isMobile ? 90 : 110;
-      const y = element.getBoundingClientRect().top + window.scrollY - offset;
+      // Calculate offset carefully. 
+      // If it "scrolled too far" (meaning it went too low), we need a LARGER offset.
+      // 100-110px is generally better for mobile safe areas and address bars.
+      const offset = isMobile ? 110 : 110;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
       
       window.scrollTo({
-        top: y,
+        top: offsetPosition,
         behavior: 'smooth'
       });
       
@@ -322,7 +326,7 @@ const Post: React.FC = () => {
                     <div className="gh-content max-w-none prose prose-stone prose-base md:prose-lg mx-auto prose-headings:font-serif prose-headings:font-normal prose-img:rounded-sm prose-img:w-full prose-a:text-stone-900 hover:prose-a:text-stone-600" dangerouslySetInnerHTML={{ __html: processedHtml || post.html }} />
                     <div className="flex items-center justify-center mt-12 md:mt-20 mb-10 md:mb-16 opacity-20"><div className="w-12 md:w-16 h-px bg-stone-900"></div></div>
                     {post.primary_author && (
-                        <div className="flex items-center gap-4 md:gap-6 pt-8 border-t border-stone-100">
+                        <div className="flex items-center justify-center gap-4 md:gap-6 pt-8 border-t border-stone-100">
                             <img src={post.primary_author.profile_image || "https://picsum.photos/100/100"} alt={post.primary_author.name} className="w-12 h-12 md:w-16 md:h-16 rounded-full grayscale object-cover border border-stone-100 shrink-0" loading="lazy" />
                             <div>
                                 <h4 className="font-serif text-lg md:text-xl text-stone-900 mb-0.5 font-bold">{post.primary_author.name}</h4>
