@@ -214,7 +214,6 @@ const Post: React.FC = () => {
             </div>
             <div className="container mx-auto px-4 md:px-8 max-w-7xl mt-12">
                 <div className="aspect-[21/9] md:aspect-[2.4/1] overflow-hidden bg-stone-100 shadow-sm relative">
-                    {/* Fix: changed fetchpriority to fetchPriority to resolve TS error */}
                     <img src={post.feature_image} alt={post.title} className="w-full h-full object-cover" loading="eager" fetchPriority="high" width="1200" height="600" />
                 </div>
                 <div className="flex justify-between items-start mt-4 px-1 relative">
@@ -280,7 +279,8 @@ const Post: React.FC = () => {
                         </div>
                     )}
                 </aside>
-                <main className="col-span-1 lg:col-span-8 order-2 min-w-0 bg-white p-8 md:p-14 shadow-sm rounded-sm">
+                {/* Main container with much bolder border and pronounced shadow to avoid looking sunken */}
+                <main className="col-span-1 lg:col-span-8 order-2 min-w-0 bg-white p-8 md:p-14 border border-stone-300/80 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] rounded-sm">
                     {toc.length > 0 && (
                     <div className="lg:hidden mb-8 border-b border-t border-stone-100 py-4">
                         <button onClick={() => setIsMobileTocOpen(!isMobileTocOpen)} className="w-full flex items-center justify-between text-left">
@@ -331,7 +331,7 @@ const Post: React.FC = () => {
                         <div className="space-y-10">
                             {trendingPosts.map((trend, idx) => (
                                 <Link to={`/${trend.slug}`} key={trend.id} className="group block">
-                                    <div className="aspect-[4/3] bg-stone-200 overflow-hidden mb-3 relative rounded-sm shadow-sm">
+                                    <div className="aspect-[4/3] bg-stone-200 overflow-hidden mb-3 relative rounded-sm shadow-sm border border-stone-200/50">
                                         <img src={trend.feature_image} alt={trend.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
                                         <div className="absolute top-0 left-0 bg-white/95 backdrop-blur px-2 py-1"><span className="text-[10px] font-bold tracking-widest text-stone-900">0{idx + 1}</span></div>
                                     </div>
@@ -358,7 +358,7 @@ const Post: React.FC = () => {
                     {relatedPosts.map(post => (
                         <article key={post.id} className="group cursor-pointer">
                              <Link to={`/${post.slug}`}>
-                                <div className="aspect-[3/2] overflow-hidden bg-stone-200 mb-4 relative rounded-sm"><img src={post.feature_image} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" /><div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" /></div>
+                                <div className="aspect-[3/2] overflow-hidden bg-stone-200 mb-4 relative rounded-sm border border-stone-200/50"><img src={post.feature_image} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" /><div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" /></div>
                                 <div className="flex flex-col"><div className="mb-2 text-[10px] font-bold tracking-widest uppercase text-stone-400">{post.primary_tag?.name || 'Journal'}</div><h4 className="font-serif text-xl text-stone-900 leading-snug group-hover:text-stone-600 transition-colors font-bold">{post.title}</h4></div>
                              </Link>
                         </article>

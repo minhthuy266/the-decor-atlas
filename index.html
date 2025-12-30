@@ -138,20 +138,22 @@
 
       .gh-content img { max-width: 100%; height: auto; margin: 2rem auto; display: block; }
       
-      /* --- REFINED INTERNAL LINK CARD (Fixed Overflow Version) --- */
+      /* --- REFINED INTERNAL LINK CARD (Enhanced Visibility) --- */
       .da-internal-card {
-        margin: 4rem 0;
+        margin: 4.5rem 0;
         width: 100%;
         max-width: 100%;
         background: #fff;
-        border: 1px solid #f5f5f4;
+        /* Darker, more visible border */
+        border: 1px solid #d6d3d1; 
         transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         position: relative;
         box-sizing: border-box;
-        overflow: hidden; /* Cắt bớt phần thừa nếu có */
+        overflow: hidden;
+        /* Subtle shadow to prevent looking sunken */
+        box-shadow: 0 4px 15px -3px rgba(0,0,0,0.03);
       }
       
-      /* Badge Fix: Đưa vào trong khung để không bị tràn màn hình */
       .da-internal-card::before {
         content: "Featured Story";
         position: absolute;
@@ -168,8 +170,8 @@
       }
 
       .da-internal-card:hover {
-        border-color: #e7e5e4;
-        box-shadow: 0 20px 50px -15px rgba(0,0,0,0.06);
+        border-color: #111110; /* Focus border on hover */
+        box-shadow: 0 20px 50px -15px rgba(0,0,0,0.08);
         transform: translateY(-2px);
       }
       
@@ -181,7 +183,7 @@
       }
       
       .da-internal-image {
-        width: 35%; /* Giảm bớt 5% để rộng rãi hơn cho text */
+        width: 35%;
         min-width: 120px;
         aspect-ratio: 1;
         overflow: hidden;
@@ -209,8 +211,9 @@
         justify-content: center;
         flex-grow: 1;
         position: relative;
-        border-left: 1px solid #f5f5f4;
-        min-width: 0; /* Quan trọng để flex không bị tràn text */
+        /* Match internal divider to outer border */
+        border-left: 1px solid #d6d3d1;
+        min-width: 0;
       }
       
       .da-internal-tag {
@@ -219,7 +222,7 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.25em;
-        color: #a8a29e;
+        color: #78716c; /* Slightly darker for readability */
         margin-bottom: 0.75rem;
         display: block;
       }
@@ -237,7 +240,7 @@
       
       .da-internal-excerpt {
         font-size: 0.9rem;
-        color: #78716c;
+        color: #57534e; /* Darker for readability */
         line-height: 1.6;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -280,14 +283,14 @@
         .da-internal-card { margin: 2.5rem 0; }
         .da-internal-card a { flex-direction: column; }
         .da-internal-image { width: 100%; aspect-ratio: 16/9; }
-        .da-internal-content { padding: 1.5rem; border-left: none; border-top: 1px solid #f5f5f4; }
+        .da-internal-content { padding: 1.5rem; border-left: none; border-top: 1px solid #d6d3d1; }
         .da-internal-title { font-size: 1.2rem !important; }
       }
 
       /* --- PRODUCT CARD STYLES --- */
       .gh-content .kg-product-card {
         background: #fff;
-        border: 1px solid #e7e5e4;
+        border: 1px solid #d6d3d1; /* Stronger border for products too */
         border-radius: 4px;
         margin: 2rem 0;
         width: 100%;
@@ -295,8 +298,8 @@
         transition: transform 0.3s ease, box-shadow 0.3s ease;
       }
       .gh-content .kg-product-card:hover {
-        border-color: #a8a29e;
-        box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+        border-color: #111110;
+        box-shadow: 0 10px 30px -10px rgba(0,0,0,0.08);
       }
       .gh-content .kg-product-card-container {
         display: grid;
