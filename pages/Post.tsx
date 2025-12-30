@@ -178,6 +178,25 @@ const Post: React.FC = () => {
     }
   };
 
+  // Improved Scroll Handler for TOC
+  const scrollToHeading = (id: string, isMobile: boolean = false) => {
+    const element = document.getElementById(id);
+    if (element) {
+      // Calculate offset: Header height + some breathing room
+      // Desktop header is around 80px, Mobile is around 60px.
+      const offset = isMobile ? 90 : 110;
+      const y = element.getBoundingClientRect().top + window.scrollY - offset;
+      
+      window.scrollTo({
+        top: y,
+        behavior: 'smooth'
+      });
+      
+      if (isMobile) setIsMobileTocOpen(false);
+      setActiveId(id);
+    }
+  };
+
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-stone-50 text-stone-400 font-serif">Loading Story...</div>;
   if (!post) return (
     <>
@@ -250,12 +269,7 @@ const Post: React.FC = () => {
                                         <a href={`#${item.id}`} className={`block py-2 pl-4 text-xs leading-relaxed transition-all duration-300 border-l-2 -ml-[1px] ${item.level === 3 ? 'pl-8 text-[11px] opacity-90' : ''} ${isActive ? 'border-stone-900 text-stone-900 font-bold' : 'border-transparent text-stone-400 hover:text-stone-600 hover:border-stone-300'}`}
                                             onClick={(e) => {
                                             e.preventDefault();
-                                            const el = document.getElementById(item.id);
-                                            if (el) {
-                                                const y = el.getBoundingClientRect().top + window.scrollY - 120;
-                                                window.scrollTo({ top: y, behavior: 'smooth' });
-                                                setActiveId(item.id);
-                                            }
+                                            scrollToHeading(item.id, false);
                                             }}>
                                             {item.text}
                                         </a>
@@ -293,13 +307,7 @@ const Post: React.FC = () => {
                                 <a href={`#${item.id}`} className={`block py-1 ${activeId === item.id ? 'text-stone-900 font-bold' : 'text-stone-500 hover:text-stone-900'}`}
                                     onClick={(e) => {
                                     e.preventDefault();
-                                    const el = document.getElementById(item.id);
-                                    if (el) {
-                                        const y = el.getBoundingClientRect().top + window.scrollY - 100;
-                                        window.scrollTo({ top: y, behavior: 'smooth' });
-                                        setIsMobileTocOpen(false);
-                                        setActiveId(item.id);
-                                    }
+                                    scrollToHeading(item.id, true);
                                     }}>
                                     {item.text}
                                 </a>
