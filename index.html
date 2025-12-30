@@ -92,9 +92,12 @@
         font-weight: 300;
         color: #44403c;
         line-height: 1.8;
-        font-size: 1.125rem;
+        font-size: 1.05rem; /* Slightly smaller base font for mobile harmony */
         max-width: 100%;
         overflow-wrap: break-word;
+      }
+      @media (min-width: 768px) {
+        .gh-content { font-size: 1.125rem; }
       }
 
       .gh-content h1, .gh-content h2, .gh-content h3, 
@@ -102,15 +105,22 @@
         font-family: 'Tenor Sans', sans-serif;
         color: #111110;
         font-weight: 400;
-        letter-spacing: 0.02em; 
-        margin-top: 3.5rem;
-        margin-bottom: 1.5rem;
+        letter-spacing: 0.05em; 
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
         line-height: 1.3;
         scroll-margin-top: 100px;
         text-transform: uppercase;
       }
-      .gh-content h2 { font-size: 2rem; border-bottom: 1px solid #e7e5e4; padding-bottom: 0.5rem; }
-      .gh-content h3 { font-size: 1.5rem; }
+      
+      .gh-content h2 { font-size: 1.5rem; border-bottom: 1px solid #e7e5e4; padding-bottom: 0.5rem; }
+      .gh-content h3 { font-size: 1.25rem; }
+      
+      @media (min-width: 768px) {
+        .gh-content h2 { font-size: 2rem; }
+        .gh-content h3 { font-size: 1.5rem; }
+        .gh-content h1, .gh-content h2, .gh-content h3 { margin-top: 3.5rem; margin-bottom: 1.5rem; }
+      }
 
       .gh-content p { margin-bottom: 1.5rem; }
       .gh-content ul, .gh-content ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
@@ -118,13 +128,16 @@
 
       .gh-content blockquote {
         border-left: 2px solid #111110;
-        padding-left: 2rem;
-        margin: 3rem 0;
+        padding-left: 1.5rem;
+        margin: 2.5rem 0;
         font-family: 'Tenor Sans', sans-serif;
-        font-size: 1.6rem;
+        font-size: 1.25rem;
         color: #111110;
         background: transparent;
         line-height: 1.4;
+      }
+      @media (min-width: 768px) {
+        .gh-content blockquote { font-size: 1.6rem; padding-left: 2rem; margin: 3rem 0; }
       }
 
       .gh-content a {
@@ -136,22 +149,26 @@
       }
       .gh-content a:hover { text-decoration-color: #111110; }
 
-      .gh-content img { max-width: 100%; height: auto; margin: 2rem auto; display: block; }
+      .gh-content img { max-width: 100%; height: auto; margin: 1.5rem auto; display: block; }
+      @media (min-width: 768px) {
+        .gh-content img { margin: 2rem auto; }
+      }
       
       /* --- REFINED INTERNAL LINK CARD (Enhanced Visibility) --- */
       .da-internal-card {
-        margin: 4.5rem 0;
+        margin: 3.5rem 0;
         width: 100%;
         max-width: 100%;
         background: #fff;
-        /* Darker, more visible border */
         border: 1px solid #d6d3d1; 
         transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         position: relative;
         box-sizing: border-box;
         overflow: hidden;
-        /* Subtle shadow to prevent looking sunken */
         box-shadow: 0 4px 15px -3px rgba(0,0,0,0.03);
+      }
+      @media (min-width: 768px) {
+        .da-internal-card { margin: 4.5rem 0; }
       }
       
       .da-internal-card::before {
@@ -161,8 +178,8 @@
         left: 0;
         background: #111110;
         color: #fff;
-        padding: 5px 14px;
-        font-size: 9px;
+        padding: 4px 10px;
+        font-size: 8px;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.2em;
@@ -170,7 +187,7 @@
       }
 
       .da-internal-card:hover {
-        border-color: #111110; /* Focus border on hover */
+        border-color: #111110; 
         box-shadow: 0 20px 50px -15px rgba(0,0,0,0.08);
         transform: translateY(-2px);
       }
@@ -184,7 +201,7 @@
       
       .da-internal-image {
         width: 35%;
-        min-width: 120px;
+        min-width: 100px;
         aspect-ratio: 1;
         overflow: hidden;
         background: #f5f5f4;
@@ -205,65 +222,70 @@
       }
       
       .da-internal-content {
-        padding: 2.5rem;
+        padding: 1.25rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
         flex-grow: 1;
         position: relative;
-        /* Match internal divider to outer border */
         border-left: 1px solid #d6d3d1;
         min-width: 0;
+      }
+      @media (min-width: 768px) {
+        .da-internal-content { padding: 2.5rem; }
       }
       
       .da-internal-tag {
         font-family: 'Manrope', sans-serif !important;
-        font-size: 9px;
+        font-size: 8px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.25em;
-        color: #78716c; /* Slightly darker for readability */
-        margin-bottom: 0.75rem;
+        letter-spacing: 0.2em;
+        color: #78716c; 
+        margin-bottom: 0.5rem;
         display: block;
       }
       
       .da-internal-title {
         font-family: 'Tenor Sans', sans-serif !important;
-        font-size: 1.35rem !important;
+        font-size: 1.1rem !important;
         color: #111110 !important;
-        margin: 0 0 0.75rem 0 !important;
+        margin: 0 0 0.5rem 0 !important;
         line-height: 1.3 !important;
         text-transform: none !important;
         letter-spacing: -0.01em !important;
         font-weight: 400 !important;
       }
+      @media (min-width: 768px) {
+        .da-internal-title { font-size: 1.35rem !important; margin: 0 0 0.75rem 0 !important; }
+      }
       
       .da-internal-excerpt {
-        font-size: 0.9rem;
-        color: #57534e; /* Darker for readability */
-        line-height: 1.6;
+        font-size: 0.85rem;
+        color: #57534e; 
+        line-height: 1.5;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        margin-bottom: 1.25rem;
+        margin-bottom: 1rem;
         font-weight: 300;
       }
       
       .da-internal-cta {
-        font-size: 10px;
+        font-size: 9px;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.15em;
         color: #111110;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.4rem;
       }
       
       .da-internal-cta::after {
         content: "";
-        width: 15px;
+        width: 12px;
         height: 1px;
         background: #111110;
         display: block;
@@ -271,31 +293,34 @@
       }
       
       .da-internal-card:hover .da-internal-cta::after {
-        width: 25px;
+        width: 20px;
       }
 
       @media (max-width: 1024px) {
         .da-internal-image { width: 30%; }
-        .da-internal-content { padding: 1.75rem; }
+        .da-internal-content { padding: 1.25rem; }
       }
 
       @media (max-width: 640px) {
         .da-internal-card { margin: 2.5rem 0; }
         .da-internal-card a { flex-direction: column; }
         .da-internal-image { width: 100%; aspect-ratio: 16/9; }
-        .da-internal-content { padding: 1.5rem; border-left: none; border-top: 1px solid #d6d3d1; }
-        .da-internal-title { font-size: 1.2rem !important; }
+        .da-internal-content { padding: 1.25rem; border-left: none; border-top: 1px solid #d6d3d1; }
+        .da-internal-title { font-size: 1.15rem !important; }
       }
 
       /* --- PRODUCT CARD STYLES --- */
       .gh-content .kg-product-card {
         background: #fff;
-        border: 1px solid #d6d3d1; /* Stronger border for products too */
+        border: 1px solid #d6d3d1; 
         border-radius: 4px;
-        margin: 2rem 0;
+        margin: 1.5rem 0;
         width: 100%;
         overflow: hidden;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      @media (min-width: 768px) {
+        .gh-content .kg-product-card { margin: 2rem 0; }
       }
       .gh-content .kg-product-card:hover {
         border-color: #111110;
@@ -304,14 +329,14 @@
       .gh-content .kg-product-card-container {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 1rem;
-        padding: 1.5rem;
+        gap: 0.75rem;
+        padding: 1.25rem;
         align-items: start;
       }
       .gh-content .kg-product-card-image {
         width: 100%;
         height: auto;
-        aspect-ratio: 4/3;
+        aspect-ratio: 1;
         object-fit: contain;
         background-color: #fafaf9;
         border-radius: 2px;
@@ -319,27 +344,31 @@
       }
       .gh-content .kg-product-card-title {
         font-family: 'Tenor Sans', sans-serif !important;
-        font-size: 1.25rem !important;
+        font-size: 1.15rem !important;
         margin: 0 !important;
         text-transform: none !important;
         font-weight: 500 !important;
         line-height: 1.2 !important;
       }
+      @media (min-width: 768px) {
+        .gh-content .kg-product-card-title { font-size: 1.25rem !important; }
+        .gh-content .kg-product-card-image { aspect-ratio: 4/3; }
+      }
       .gh-content .kg-product-card-description {
         font-family: 'Manrope', sans-serif;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         color: #78716c;
-        line-height: 1.6;
+        line-height: 1.5;
       }
       .gh-content .kg-product-card-button {
         display: inline-flex;
         justify-content: center;
         align-items: center;
         margin-top: 0.5rem;
-        padding: 0.75rem 1.5rem;
+        padding: 0.65rem 1.25rem;
         background-color: #111110;
         color: white !important;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.1em;
@@ -354,9 +383,10 @@
           grid-template-rows: auto auto 1fr;
           column-gap: 2rem;
           row-gap: 0.5rem;
+          padding: 1.5rem;
         }
         .gh-content .kg-product-card-image { grid-column: 1; grid-row: 1 / span 4; max-height: 240px; }
-        .gh-content .kg-product-card-button { width: fit-content; }
+        .gh-content .kg-product-card-button { width: fit-content; padding: 0.75rem 1.5rem; font-size: 0.8rem; }
       }
     </style>
   <script type="importmap">

@@ -179,8 +179,8 @@ const Navbar: React.FC = () => {
   const isTransparent = isHome && !scrolled && !isOpen;
   const textBase = isTransparent ? 'text-white' : 'text-stone-600';
   const textHover = isTransparent ? 'hover:text-stone-200' : 'hover:text-stone-900';
-  const logoClass = isTransparent ? 'text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]' : 'text-stone-900';
-  const iconClass = isTransparent ? 'text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] hover:text-stone-100' : 'text-stone-50 hover:text-stone-900';
+  const logoClass = isTransparent ? 'text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)]' : 'text-stone-900';
+  const iconClass = isTransparent ? 'text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)] hover:text-stone-100' : 'text-stone-500 hover:text-stone-900';
 
   const toggleAccordion = (slug: string) => {
     setActiveMobileMenu(activeMobileMenu === slug ? null : slug);
@@ -195,7 +195,7 @@ const Navbar: React.FC = () => {
       <header className={`fixed top-0 left-0 right-0 z-[50] transition-all duration-500 ease-in-out border-b ${scrolled || isOpen ? 'bg-stone-50/95 backdrop-blur-sm border-stone-200 py-3' : 'bg-transparent border-transparent py-6'}`}>
         <div className="container mx-auto px-4 md:px-8 max-w-7xl flex justify-between items-center relative">
           <Link to="/" className="block">
-            <LogoTag className={`font-serif text-2xl md:text-3xl tracking-tight font-bold transition-colors duration-300 ${isOpen ? 'text-stone-900' : logoClass}`}>
+            <LogoTag className={`font-serif text-xl md:text-3xl tracking-tight font-bold transition-colors duration-300 ${isOpen ? 'text-stone-900' : logoClass}`}>
               The Decor Atlas.
             </LogoTag>
           </Link>
@@ -229,17 +229,17 @@ const Navbar: React.FC = () => {
             <Link to="/about" className={`${textBase} ${textHover} border-b-2 border-transparent pb-1`}>About</Link>
             
             <button aria-label="Search" className={`ml-2 transition-colors ${iconClass}`} onClick={() => setIsSearchOpen(true)}>
-              <Search size={20} strokeWidth={2} />
+              <Search size={18} strokeWidth={2} />
             </button>
           </nav>
 
           {/* Mobile Toggle */}
           <button 
-            className={`md:hidden transition-colors duration-300 ${isOpen || !isTransparent ? 'text-stone-900' : 'text-white'}`}
+            className={`md:hidden transition-colors duration-300 p-1 ${isOpen || !isTransparent ? 'text-stone-900' : 'text-white'}`}
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </header>
@@ -249,39 +249,39 @@ const Navbar: React.FC = () => {
         <div className={`absolute inset-0 bg-stone-900/40 backdrop-blur-sm transition-opacity duration-500 ${isOpen ? 'opacity-100' : 'opacity-0'}`} onClick={() => setIsOpen(false)} />
         
         <div className={`absolute top-0 right-0 h-full w-full md:w-[400px] bg-[#fafaf9] shadow-2xl transition-transform duration-500 ease-out transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-           <div className="flex flex-col h-full pt-24 px-8 pb-10">
-              <div className="mb-8">
+           <div className="flex flex-col h-full pt-24 px-6 pb-10">
+              <div className="mb-6">
                  <button onClick={() => { setIsOpen(false); setIsSearchOpen(true); }} className="w-full flex items-center justify-between bg-white border border-stone-200 px-4 py-3 text-stone-400 text-sm font-medium rounded-sm active:bg-stone-50 transition-colors">
                     <span>Search...</span>
                     <Search size={16} />
                  </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col items-start space-y-4">
+              <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col items-start space-y-3">
                 
-                <Link to="/" className="font-serif text-3xl text-stone-900 hover:text-stone-600 font-bold w-full border-b border-stone-100 pb-4 flex justify-between items-center group">
+                <Link to="/" className="font-serif text-2xl text-stone-900 hover:text-stone-600 font-bold w-full border-b border-stone-100 pb-3 flex justify-between items-center group">
                    <span>Journal</span>
                 </Link>
 
                 {menuItems.map((item) => (
-                    <div key={item.slug} className="w-full border-b border-stone-100 pb-4">
+                    <div key={item.slug} className="w-full border-b border-stone-100 pb-3">
                         <button 
                             onClick={() => toggleAccordion(item.slug)}
-                            className="w-full flex items-center justify-between font-serif text-3xl text-stone-900 font-bold hover:text-stone-600 transition-colors text-left"
+                            className="w-full flex items-center justify-between font-serif text-2xl text-stone-900 font-bold hover:text-stone-600 transition-colors text-left"
                         >
                             <span>{item.label}</span>
-                            {item.children.length > 0 && (activeMobileMenu === item.slug ? <Minus size={24} className="text-stone-400" /> : <Plus size={24} className="text-stone-400" />)}
+                            {item.children.length > 0 && (activeMobileMenu === item.slug ? <Minus size={20} className="text-stone-400" /> : <Plus size={20} className="text-stone-400" />)}
                         </button>
                         
                         {item.children.length > 0 && (
-                            <div className={`overflow-hidden transition-all duration-500 ease-in-out ${activeMobileMenu === item.slug ? 'max-h-[500px] opacity-100 mt-6' : 'max-h-0 opacity-0'}`}>
-                                <div className="flex flex-col space-y-4 pl-2 border-l border-stone-200 ml-2">
+                            <div className={`overflow-hidden transition-all duration-500 ease-in-out ${activeMobileMenu === item.slug ? 'max-h-[500px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+                                <div className="flex flex-col space-y-3 pl-2 border-l border-stone-200 ml-2">
                                     {item.children.map((sub, idx) => (
                                         <Link 
                                             key={sub.slug} 
                                             to={`/tag/${sub.slug}`} 
-                                            className="font-serif text-xl text-stone-500 hover:text-stone-900 transition-colors block"
-                                            style={{ transitionDelay: `${idx * 50}ms` }}
+                                            className="font-serif text-lg text-stone-500 hover:text-stone-900 transition-colors block"
+                                            style={{ transitionDelay: `${idx * 40}ms` }}
                                         >
                                             {sub.name}
                                         </Link>
@@ -293,8 +293,8 @@ const Navbar: React.FC = () => {
                 ))}
               </div>
 
-              <div className="mt-auto pt-8 border-t border-stone-200">
-                  <div className="flex justify-between items-center text-xs font-bold uppercase tracking-widest text-stone-400">
+              <div className="mt-auto pt-6 border-t border-stone-200">
+                  <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-stone-400">
                      <Link to="/contact">Contact</Link>
                      <Link to="/privacy">Privacy</Link>
                      <span>NY, USA</span>
