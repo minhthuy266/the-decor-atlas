@@ -4,7 +4,24 @@ const URL = "https://slaymua.com";
 const KEY = "ab74a5f89d0a4a3c4451decb46";
 const DEFAULT_COVER = "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop";
 
-// --- MOCK PRODUCT CARD HTML (Reusable) ---
+// --- CUSTOM INTERNAL CARD SNIPPET (For Ghost HTML Cards) ---
+export const MOCK_INTERNAL_LINK_HTML = `
+<div class="da-internal-card">
+    <a href="/renaissance-of-travertine">
+        <div class="da-internal-image">
+            <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=800" alt="Renaissance of Travertine">
+        </div>
+        <div class="da-internal-content">
+            <span class="da-internal-tag">Materials</span>
+            <h4 class="da-internal-title">The Renaissance of Travertine</h4>
+            <p class="da-internal-excerpt">Why the design world is trading high-gloss marble for the earthy, porous textures of limestone.</p>
+            <span class="da-internal-cta">Read Story</span>
+        </div>
+    </a>
+</div>
+`;
+
+// --- MOCK PRODUCT CARD HTML ---
 const MOCK_PRODUCT_HTML = `
 <div class="kg-card kg-product-card">
     <div class="kg-product-card-container">
@@ -21,37 +38,27 @@ const MOCK_PRODUCT_HTML = `
 // --- MOCK DATA FALLBACK ---
 const MOCK_DATA = {
     tags: [
-        // --- SHOP ---
         { id: 'amazon', name: "Amazon Finds", slug: "amazon-finds", description: "Hidden gems and prime-eligible decor favorites." },
         { id: 'looks', name: "Shop The Look", slug: "shop-the-look", description: "Curated rooms and exactly where to buy them." },
         { id: 'splurge', name: "Splurge vs. Save", slug: "splurge-vs-save", description: "High-end looks for every budget." },
         { id: 'gifts', name: "Gift Guides", slug: "gift-guides", description: "Thoughtful presents for design lovers." },
-        
-        // --- ORGANIZATION ---
         { id: 'kitchen', name: "Kitchen & Pantry", slug: "kitchen-pantry", description: "Aesthetic storage solutions for the heart of the home." },
         { id: 'closet', name: "Closet Organization", slug: "closet-organization", description: "Maximize your wardrobe space." },
         { id: 'small', name: "Small Space Solutions", slug: "small-spaces", description: "Big style for apartments and compact living." },
-        
-        // --- ROOMS ---
         { id: 'living', name: "Living Room", slug: "living-room", description: "Sofas, rugs, and coffee table styling." },
         { id: 'bedroom', name: "Bedroom", slug: "bedroom", description: "Create a restful, cozy sanctuary." },
         { id: 'office', name: "Home Office", slug: "home-office", description: "Productivity meets style." },
-        
-        // --- STYLES ---
         { id: 'organic', name: "Organic Modern", slug: "organic-modern", description: "Warm neutrals, wood textures, and soft lines." },
         { id: 'seasonal', name: "Seasonal Decor", slug: "seasonal-decor", description: "Holiday updates and seasonal refreshes." },
-        
-        // --- SYSTEM ---
         { id: 'product', name: "product", slug: "product", description: "Shop items" }
     ],
     posts: [
-        // --- BLOG POSTS (Re-tagged for Strategy) ---
         {
             id: '1',
             uuid: 'uuid-1',
             title: "20 Amazon Home Finds That Look Expensive",
             slug: "amazon-home-finds-look-expensive",
-            html: `<p>You don't need to spend a fortune to get that high-end organic modern look. We've scoured Amazon for the best ceramics, textiles, and lighting.</p><p>Below are our top picks for this month.</p> ${MOCK_PRODUCT_HTML} <p>These pieces sell out fast, so grab them while you can.</p>`,
+            html: `<p>You don't need to spend a fortune to get that high-end organic modern look. We've scoured Amazon for the best ceramics, textiles, and lighting.</p><p>Below is a story you might also like:</p> ${MOCK_INTERNAL_LINK_HTML} <p>Back to our top picks for this month.</p> ${MOCK_PRODUCT_HTML}`,
             feature_image: "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?q=80&w=2000&auto=format&fit=crop",
             featured: true,
             created_at: new Date().toISOString(),
@@ -119,7 +126,6 @@ const MOCK_DATA = {
              ],
              primary_author: { id: '1', name: "The Decor Atlas", slug: "the-decor-atlas" }
         },
-        // --- PRODUCTS ---
         {
             id: 'p1',
             uuid: 'prod-1',
@@ -175,7 +181,6 @@ const MOCK_DATA = {
     ]
 };
 
-// Helper to ensure images have absolute URLs
 const normalizeUrl = (url?: string) => {
   if (!url) return null;
   if (url.startsWith('http')) return url;
@@ -183,7 +188,6 @@ const normalizeUrl = (url?: string) => {
   return `${URL}${url}`;
 };
 
-// Helper to map Ghost API response to our Post type
 const mapPost = (p: any): Post => ({
   ...p,
   feature_image: normalizeUrl(p.feature_image) || DEFAULT_COVER,
@@ -204,15 +208,10 @@ export async function getPosts(): Promise<Post[]> {
   try {
     const endpoint = `${URL}/ghost/api/content/posts/?key=${KEY}&include=tags,authors&limit=20&formats=html&filter=tag:-product`;
     const response = await fetch(endpoint);
-    
-    if (!response.ok) {
-        return MOCK_DATA.posts.filter(p => !p.tags?.some(t => t.slug === 'product')).map(mapPost);
-    }
-
+    if (!response.ok) return MOCK_DATA.posts.filter(p => !p.tags?.some(t => t.slug === 'product')).map(mapPost);
     const data = await response.json();
     return (data.posts || []).map(mapPost);
   } catch (error) {
-    console.warn("Failed to fetch posts, using Mock Data");
     return MOCK_DATA.posts.filter(p => !p.tags?.some(t => t.slug === 'product')).map(mapPost);
   }
 }
@@ -221,15 +220,12 @@ export async function getSinglePost(slug: string): Promise<Post | null> {
   try {
     const endpoint = `${URL}/ghost/api/content/posts/slug/${slug}/?key=${KEY}&include=tags,authors&formats=html`;
     const response = await fetch(endpoint);
-
     if (!response.ok) {
         const mock = MOCK_DATA.posts.find(p => p.slug === slug);
         return mock ? mapPost(mock) : null;
     }
-
     const data = await response.json();
     if (!data.posts || data.posts.length === 0) return null;
-    
     return mapPost(data.posts[0]);
   } catch (error) {
     const mock = MOCK_DATA.posts.find(p => p.slug === slug);
@@ -237,16 +233,11 @@ export async function getSinglePost(slug: string): Promise<Post | null> {
   }
 }
 
-// --- NEW FUNCTION: Get Products (Posts tagged with 'product') ---
 export async function getProducts(): Promise<Post[]> {
   try {
     const endpoint = `${URL}/ghost/api/content/posts/?key=${KEY}&filter=tag:product&include=tags&limit=all`;
     const response = await fetch(endpoint);
-    
-    if (!response.ok) {
-        return MOCK_DATA.posts.filter(p => p.tags?.some(t => t.slug === 'product')).map(mapPost);
-    }
-    
+    if (!response.ok) return MOCK_DATA.posts.filter(p => p.tags?.some(t => t.slug === 'product')).map(mapPost);
     const data = await response.json();
     return (data.posts || []).map(mapPost);
   } catch (error) {
@@ -255,10 +246,7 @@ export async function getProducts(): Promise<Post[]> {
 }
 
 export async function getTags(): Promise<Tag[]> {
-  // Return the Mock Tags structure for consistent menu regardless of API
-  return new Promise((resolve) => {
-    resolve(MOCK_DATA.tags.map(mapTag));
-  });
+  return new Promise((resolve) => resolve(MOCK_DATA.tags.map(mapTag)));
 }
 
 export async function getSingleTag(slug: string): Promise<Tag | null> {
@@ -291,35 +279,18 @@ export interface PaginatedPosts {
 
 export async function getPostsByTag(slug: string, page: number = 1, limit: number = 9): Promise<PaginatedPosts> {
   try {
-    let endpoint = '';
-    
-    if (slug === 'all') {
-         endpoint = `${URL}/ghost/api/content/posts/?key=${KEY}&filter=tag:-product&include=tags,authors&limit=${limit}&page=${page}&formats=html`;
-    } else {
-         endpoint = `${URL}/ghost/api/content/posts/?key=${KEY}&filter=tag:${slug}&include=tags,authors&limit=${limit}&page=${page}&formats=html`;
-    }
-
+    let endpoint = slug === 'all' 
+        ? `${URL}/ghost/api/content/posts/?key=${KEY}&filter=tag:-product&include=tags,authors&limit=${limit}&page=${page}&formats=html`
+        : `${URL}/ghost/api/content/posts/?key=${KEY}&filter=tag:${slug}&include=tags,authors&limit=${limit}&page=${page}&formats=html`;
     const response = await fetch(endpoint);
-    
     if (!response.ok) throw new Error("API Failed");
-
     const data = await response.json();
-    return {
-      posts: (data.posts || []).map(mapPost),
-      meta: data.meta
-    };
+    return { posts: (data.posts || []).map(mapPost), meta: data.meta };
   } catch (error) {
-    let filtered;
-    if (slug === 'all') {
-        filtered = MOCK_DATA.posts.filter(p => !p.tags?.some(t => t.slug === 'product'));
-    } else {
-        filtered = MOCK_DATA.posts.filter(p => p.tags?.some(t => t.slug === slug));
-    }
-    
-    return { 
-      posts: filtered.map(mapPost), 
-      meta: { pagination: { page: 1, limit, pages: 1, total: filtered.length, next: null, prev: null } } 
-    };
+    let filtered = slug === 'all' 
+        ? MOCK_DATA.posts.filter(p => !p.tags?.some(t => t.slug === 'product'))
+        : MOCK_DATA.posts.filter(p => p.tags?.some(t => t.slug === slug));
+    return { posts: filtered.map(mapPost), meta: { pagination: { page: 1, limit, pages: 1, total: filtered.length, next: null, prev: null } } };
   }
 }
 
@@ -333,7 +304,6 @@ export async function searchPosts(query: string): Promise<Post[]> {
     return (data.posts || []).map(mapPost);
   } catch (error) {
     const lowerQ = query.toLowerCase();
-    const filtered = MOCK_DATA.posts.filter(p => p.title.toLowerCase().includes(lowerQ));
-    return filtered.map(mapPost);
+    return MOCK_DATA.posts.filter(p => p.title.toLowerCase().includes(lowerQ)).map(mapPost);
   }
 }

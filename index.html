@@ -21,10 +21,7 @@
         theme: {
           extend: {
             fontFamily: {
-              // 'sans' uses Manrope for excellent readability and modern geometric feel
               sans: ['Manrope', 'sans-serif'],
-              // Mapping 'serif' to Tenor Sans to keep codebase consistent but achieve the visual update.
-              // Tenor Sans is a Humanist Sans-Serif often used in fashion/luxury headers.
               serif: ['Tenor Sans', 'sans-serif'], 
               display: ['Tenor Sans', 'sans-serif'],
             },
@@ -39,7 +36,7 @@
                 600: '#57534e',
                 700: '#44403c',
                 800: '#292524',
-                900: '#111110', // Darker black for higher contrast
+                900: '#111110',
               }
             },
             animation: {
@@ -72,51 +69,39 @@
     </script>
     <style>
       body {
-        background-color: #fafaf9; /* stone-50 */
-        color: #111110; /* stone-900 */
+        background-color: #fafaf9;
+        color: #111110;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
       }
-      /* Hide scrollbar for clean horizontal scrolling if needed */
-      .no-scrollbar::-webkit-scrollbar {
-        display: none;
-      }
-      .no-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-      /* Parallax Class */
       .bg-fixed-parallax {
         background-attachment: fixed;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
       }
-      @media (hover: none) {
-        /* Disable fixed bg on mobile to prevent jitters */
-        .bg-fixed-parallax {
-          background-attachment: scroll;
-        }
-      }
+      @media (hover: none) { .bg-fixed-parallax { background-attachment: scroll; } }
 
-      /* --- Ghost Content Styles (Updated for Sans-Serif) --- */
-      
-      /* Typography Override */
+      /* --- Ghost Content Styles --- */
       .gh-content {
         font-family: 'Manrope', sans-serif;
         font-weight: 300;
-        color: #44403c; /* stone-700 */
+        color: #44403c;
         line-height: 1.8;
         font-size: 1.125rem;
+        max-width: 100%;
+        overflow-wrap: break-word;
       }
 
-      /* Headings */
       .gh-content h1, .gh-content h2, .gh-content h3, 
       .gh-content h4, .gh-content h5, .gh-content h6 {
         font-family: 'Tenor Sans', sans-serif;
-        color: #111110; /* stone-900 */
-        font-weight: 400; /* Tenor Sans doesn't need bold */
+        color: #111110;
+        font-weight: 400;
         letter-spacing: 0.02em; 
         margin-top: 3.5rem;
         margin-bottom: 1.5rem;
@@ -127,14 +112,10 @@
       .gh-content h2 { font-size: 2rem; border-bottom: 1px solid #e7e5e4; padding-bottom: 0.5rem; }
       .gh-content h3 { font-size: 1.5rem; }
 
-      /* Paragraphs & Lists */
       .gh-content p { margin-bottom: 1.5rem; }
       .gh-content ul, .gh-content ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
-      .gh-content ul { list-style-type: disc; }
-      .gh-content ol { list-style-type: decimal; }
       .gh-content li { margin-bottom: 0.5rem; padding-left: 0.5rem; }
 
-      /* Blockquotes */
       .gh-content blockquote {
         border-left: 2px solid #111110;
         padding-left: 2rem;
@@ -146,66 +127,164 @@
         line-height: 1.4;
       }
 
-      /* Links */
       .gh-content a {
         color: #111110;
         text-decoration: underline;
-        text-decoration-color: #d6d3d1; /* stone-300 */
+        text-decoration-color: #d6d3d1;
         text-underline-offset: 4px;
         transition: all 0.2s;
       }
-      .gh-content a:hover {
-        text-decoration-color: #111110;
-      }
+      .gh-content a:hover { text-decoration-color: #111110; }
 
-      /* Images (Standard) */
-      .gh-content img {
+      .gh-content img { max-width: 100%; height: auto; margin: 2rem auto; display: block; }
+      
+      /* --- REFINED INTERNAL LINK CARD (Fixed Overflow Version) --- */
+      .da-internal-card {
+        margin: 4rem 0;
+        width: 100%;
         max-width: 100%;
-        height: auto;
-        border-radius: 0px; /* Sharp corners for luxury feel */
-        margin: 2rem auto;
-        display: block;
+        background: #fff;
+        border: 1px solid #f5f5f4;
+        transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        position: relative;
+        box-sizing: border-box;
+        overflow: hidden; /* Cắt bớt phần thừa nếu có */
       }
-      .gh-content figure { margin: 3rem 0; }
-      .gh-content figcaption {
-        text-align: center;
-        font-size: 0.8rem;
-        color: #78716c; /* stone-500 */
-        margin-top: 1rem;
-        font-weight: 500;
+      
+      /* Badge Fix: Đưa vào trong khung để không bị tràn màn hình */
+      .da-internal-card::before {
+        content: "Featured Story";
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #111110;
+        color: #fff;
+        padding: 5px 14px;
+        font-size: 9px;
+        font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.2em;
+        z-index: 10;
       }
 
-      /* HR / Divider */
-      .gh-content hr {
-        border: 0;
-        border-top: 1px solid #e7e5e4;
-        margin: 4rem auto;
+      .da-internal-card:hover {
+        border-color: #e7e5e4;
+        box-shadow: 0 20px 50px -15px rgba(0,0,0,0.06);
+        transform: translateY(-2px);
+      }
+      
+      .da-internal-card a {
+        display: flex;
+        text-decoration: none !important;
+        color: inherit !important;
         width: 100%;
       }
       
-      /* --- Ghost Cards (Inherits font) --- */
-      .gh-content .kg-bookmark-card { width: 100%; margin: 2.5rem 0; }
-      .gh-content .kg-bookmark-container { display: flex; text-decoration: none; background: #fafaf9; border: 1px solid #e7e5e4; transition: border-color 0.2s; }
-      .gh-content .kg-bookmark-container:hover { border-color: #78716c; }
-      .gh-content .kg-bookmark-content { display: flex; flex-direction: column; justify-content: center; padding: 1.5rem; flex-grow: 1; }
-      .gh-content .kg-bookmark-title { font-family: 'Tenor Sans', sans-serif; font-size: 1.1rem; color: #1c1917; margin-bottom: 0.5rem; }
-      .gh-content .kg-bookmark-description { font-size: 0.875rem; line-height: 1.5; color: #78716c; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-weight: 400; }
-      .gh-content .kg-bookmark-metadata { display: flex; align-items: center; margin-top: 1rem; font-size: 0.75rem; color: #a8a29e; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
-      .gh-content .kg-bookmark-icon { width: 16px; height: 16px; margin-right: 8px; }
-      .gh-content .kg-bookmark-thumbnail { position: relative; flex-shrink: 0; min-width: 30%; max-width: 30%; min-height: 100%; }
-      .gh-content .kg-bookmark-thumbnail img { position: absolute; width: 100%; height: 100%; object-fit: cover; border-radius: 0; margin: 0; }
+      .da-internal-image {
+        width: 35%; /* Giảm bớt 5% để rộng rãi hơn cho text */
+        min-width: 120px;
+        aspect-ratio: 1;
+        overflow: hidden;
+        background: #f5f5f4;
+        flex-shrink: 0;
+        position: relative;
+      }
       
-      @media (max-width: 640px) {
-        .gh-content .kg-bookmark-container { flex-direction: column; }
-        .gh-content .kg-bookmark-thumbnail { min-width: 100%; height: 200px; position: relative; order: 1; }
-         .gh-content .kg-bookmark-content { order: 2; }
+      .da-internal-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        margin: 0 !important;
+        transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+      }
+      
+      .da-internal-card:hover .da-internal-image img {
+        transform: scale(1.05);
+      }
+      
+      .da-internal-content {
+        padding: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-grow: 1;
+        position: relative;
+        border-left: 1px solid #f5f5f4;
+        min-width: 0; /* Quan trọng để flex không bị tràn text */
+      }
+      
+      .da-internal-tag {
+        font-family: 'Manrope', sans-serif !important;
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        color: #a8a29e;
+        margin-bottom: 0.75rem;
+        display: block;
+      }
+      
+      .da-internal-title {
+        font-family: 'Tenor Sans', sans-serif !important;
+        font-size: 1.35rem !important;
+        color: #111110 !important;
+        margin: 0 0 0.75rem 0 !important;
+        line-height: 1.3 !important;
+        text-transform: none !important;
+        letter-spacing: -0.01em !important;
+        font-weight: 400 !important;
+      }
+      
+      .da-internal-excerpt {
+        font-size: 0.9rem;
+        color: #78716c;
+        line-height: 1.6;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 1.25rem;
+        font-weight: 300;
+      }
+      
+      .da-internal-cta {
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: #111110;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .da-internal-cta::after {
+        content: "";
+        width: 15px;
+        height: 1px;
+        background: #111110;
+        display: block;
+        transition: width 0.3s ease;
+      }
+      
+      .da-internal-card:hover .da-internal-cta::after {
+        width: 25px;
       }
 
-      /* --- PRODUCT CARD STYLES (Clean / Minimalist) --- */
-      
-      /* Base Card Wrapper */
+      @media (max-width: 1024px) {
+        .da-internal-image { width: 30%; }
+        .da-internal-content { padding: 1.75rem; }
+      }
+
+      @media (max-width: 640px) {
+        .da-internal-card { margin: 2.5rem 0; }
+        .da-internal-card a { flex-direction: column; }
+        .da-internal-image { width: 100%; aspect-ratio: 16/9; }
+        .da-internal-content { padding: 1.5rem; border-left: none; border-top: 1px solid #f5f5f4; }
+        .da-internal-title { font-size: 1.2rem !important; }
+      }
+
+      /* --- PRODUCT CARD STYLES --- */
       .gh-content .kg-product-card {
         background: #fff;
         border: 1px solid #e7e5e4;
@@ -219,8 +298,6 @@
         border-color: #a8a29e;
         box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
       }
-
-      /* Card Container - Default Mobile (Stacked) */
       .gh-content .kg-product-card-container {
         display: grid;
         grid-template-columns: 1fr;
@@ -228,8 +305,6 @@
         padding: 1.5rem;
         align-items: start;
       }
-
-      /* Image */
       .gh-content .kg-product-card-image {
         width: 100%;
         height: auto;
@@ -239,11 +314,6 @@
         border-radius: 2px;
         margin: 0 !important;
       }
-
-      /* Title */
-      .gh-content .kg-product-card-title-container {
-        margin-bottom: 0.5rem;
-      }
       .gh-content .kg-product-card-title {
         font-family: 'Tenor Sans', sans-serif !important;
         font-size: 1.25rem !important;
@@ -252,18 +322,12 @@
         font-weight: 500 !important;
         line-height: 1.2 !important;
       }
-      /* Description */
       .gh-content .kg-product-card-description {
         font-family: 'Manrope', sans-serif;
         font-size: 0.95rem;
         color: #78716c;
         line-height: 1.6;
       }
-      .gh-content .kg-product-card-description p {
-        margin: 0 !important;
-      }
-
-      /* Button Link */
       .gh-content .kg-product-card-button {
         display: inline-flex;
         justify-content: center;
@@ -279,118 +343,17 @@
         text-decoration: none !important;
         transition: background-color 0.2s;
         border-radius: 2px;
-        width: 100%; /* Full width on mobile */
+        width: 100%;
       }
-      .gh-content .kg-product-card-button:hover {
-        background-color: #44403c;
-      }
-
-      /* --- Desktop Layout (Image Left / Content Right) --- */
       @media (min-width: 768px) {
         .gh-content .kg-product-card-container {
-          grid-template-columns: 240px 1fr; /* Fixed image width */
-          grid-template-rows: auto auto 1fr; /* Title, Desc, Button push down */
+          grid-template-columns: 240px 1fr;
+          grid-template-rows: auto auto 1fr;
           column-gap: 2rem;
           row-gap: 0.5rem;
         }
-
-        .gh-content .kg-product-card-image {
-          grid-column: 1;
-          grid-row: 1 / span 4; /* Image spans full height */
-          height: 100%;
-          max-height: 240px; 
-        }
-
-        .gh-content .kg-product-card-title-container {
-          grid-column: 2;
-          grid-row: 1;
-        }
-
-        .gh-content .kg-product-card-description {
-          grid-column: 2;
-          grid-row: 2;
-          margin-bottom: 1rem;
-        }
-
-        .gh-content .kg-product-card-button {
-          grid-column: 2;
-          grid-row: 3;
-          width: fit-content; /* Auto width on desktop */
-          align-self: start;
-        }
-      }
-
-      /* --- HORIZONTAL PRODUCT SLIDER (Overrides) --- */
-      .gh-product-slider-wrapper {
-        position: relative;
-        margin: 4rem 0;
-        width: 100%;
-      }
-      .gh-product-slider-wrapper::before {
-        content: "Shop The Look";
-        display: block;
-        font-family: 'Tenor Sans', sans-serif;
-        font-size: 1.25rem;
-        color: #111110;
-        margin-bottom: 1.5rem;
-        border-bottom: 1px solid #e7e5e4;
-        padding-bottom: 0.5rem;
-      }
-
-      .gh-product-slider-container {
-        display: flex;
-        overflow-x: auto;
-        gap: 1.5rem;
-        padding-bottom: 1.5rem;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-      }
-      .gh-product-slider-container::-webkit-scrollbar {
-        height: 6px;
-      }
-      .gh-product-slider-container::-webkit-scrollbar-thumb {
-        background: #d6d3d1;
-        border-radius: 4px;
-      }
-
-      /* Slider Item - FORCE Vertical Stack & Fixed Width */
-      .gh-product-slider-container .kg-product-card {
-        flex: 0 0 280px; /* Don't shrink/grow, fixed width */
-        width: 280px !important; 
-        scroll-snap-align: start;
-        margin: 0 !important;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-      }
-
-      /* Reset Grid to Flex Column inside Slider */
-      .gh-product-slider-container .kg-product-card .kg-product-card-container {
-        display: flex !important;
-        flex-direction: column !important;
-        padding: 1.25rem;
-        gap: 1rem;
-        height: 100%;
-      }
-
-      .gh-product-slider-container .kg-product-card-image {
-        grid-column: auto !important;
-        grid-row: auto !important;
-        width: 100%;
-        height: 180px; /* Fixed height for uniformity */
-        margin-bottom: 0.5rem;
-      }
-
-      .gh-product-slider-container .kg-product-card-title-container,
-      .gh-product-slider-container .kg-product-card-description,
-      .gh-product-slider-container .kg-product-card-button {
-        grid-column: auto !important;
-        grid-row: auto !important;
-        width: 100% !important;
-      }
-
-      .gh-product-slider-container .kg-product-card-button {
-        margin-top: auto; /* Push button to bottom */
+        .gh-content .kg-product-card-image { grid-column: 1; grid-row: 1 / span 4; max-height: 240px; }
+        .gh-content .kg-product-card-button { width: fit-content; }
       }
     </style>
   <script type="importmap">
@@ -412,7 +375,6 @@
 </head>
   <body>
     <div id="root"></div>
-    <!-- Added entry point script -->
     <script type="module" src="./index.tsx"></script>
   </body>
 </html>
