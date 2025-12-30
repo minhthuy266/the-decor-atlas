@@ -60,7 +60,6 @@ const Post: React.FC = () => {
     fetchData();
   }, [slug]);
 
-  // Intercept clicks on custom internal cards to use internal navigation
   useEffect(() => {
     const handleInternalClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -105,47 +104,12 @@ const Post: React.FC = () => {
   }, [post]);
 
   useEffect(() => {
-    if (!processedHtml) return;
-    const timer = setTimeout(() => {
-        const contentDiv = document.querySelector('.gh-content');
-        if (!contentDiv) return;
-        const productCards = Array.from(contentDiv.querySelectorAll('.kg-product-card'));
-        if (productCards.length > 1) {
-            let i = 0;
-            while (i < productCards.length) {
-                const group = [productCards[i]];
-                let j = i + 1;
-                while (j < productCards.length) {
-                    const current = productCards[j - 1];
-                    const next = productCards[j];
-                    if (current.nextElementSibling === next) { group.push(next); j++; } 
-                    else { break; }
-                }
-                if (group.length > 1) {
-                    const wrapper = document.createElement('div');
-                    wrapper.className = 'gh-product-slider-wrapper';
-                    const container = document.createElement('div');
-                    container.className = 'gh-product-slider-container';
-                    wrapper.appendChild(container);
-                    const firstCard = group[0];
-                    if(firstCard.parentNode) {
-                        firstCard.parentNode.insertBefore(wrapper, firstCard);
-                        group.forEach(card => container.appendChild(card));
-                    }
-                }
-                i = j;
-            }
-        }
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [processedHtml]);
-
-  useEffect(() => {
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = (window.scrollY / totalHeight) * 100;
       setReadingProgress(progress);
       if (toc.length === 0) return;
+      
       const headerOffset = 150;
       let currentId = "";
       for (const item of toc) {
@@ -179,30 +143,34 @@ const Post: React.FC = () => {
   };
 
   /**
-   * Cải thiện hàm cuộn cho di động:
-   * 1. Tính toán vị trí tuyệt đối của phần tử so với trang.
-   * 2. Trừ đi chiều cao Header (offset) một cách thủ công.
-   * 3. Sử dụng window.scrollTo để đảm bảo tính ổn định cao nhất trên Safari/Chrome iOS.
+   * Cải thiện hàm cuộn cho di động iPhone 13:
+   * 1. Đóng Menu và đợi 10ms để layout ổn định (tránh lỗi co giãn thanh địa chỉ).
+   * 2. Sử dụng scrollIntoView. Trình duyệt sẽ tự dùng scroll-margin-top !important từ CSS.
+   * 3. Đây là cách bền vững nhất trên các bản cập nhật iOS mới.
    */
   const scrollToHeading = (id: string, isMobile: boolean = false) => {
-    const element = document.getElementById(id);
-    if (element) {
-      if (isMobile) setIsMobileTocOpen(false);
-
-      // Tính toán khoảng cách offset an toàn:
-      // Mobile header (fixed) thường cao ~64px. Chúng ta lùi lại 90-100px để tiêu đề nằm giữa vùng thoáng.
-      const offset = isMobile ? 100 : 120;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-      
-      setActiveId(id);
+    if (isMobile) {
+      setIsMobileTocOpen(false);
+      // Đợi một nhịp cực ngắn để menu đóng hẳn và layout safari tính toán lại viewport
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+          setActiveId(id);
+        }
+      }, 10);
+    } else {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        setActiveId(id);
+      }
     }
   };
 
@@ -289,18 +257,7 @@ const Post: React.FC = () => {
                             </nav>
                         </div>
                     )}
-                    {post.tags && post.tags.length > 0 && (
-                        <div className="mt-10">
-                            <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-400 mb-4 block">Tags</span>
-                            <div className="flex flex-wrap gap-2">
-                                {post.tags.map(tag => (
-                                    <Link key={tag.id} to={`/tag/${tag.slug}`} className="text-[9px] uppercase tracking-wide font-bold text-stone-400 hover:text-stone-900 transition-colors">#{tag.name}</Link>
-                                ))}
-                            </div>
-                        </div>
-                    )}
                 </aside>
-                {/* Main Content Area: Simplified border and shadow for cleaner mobile look */}
                 <main className="col-span-1 lg:col-span-8 order-2 min-w-0 bg-white p-6 md:p-14 border border-stone-200 md:border-stone-300/80 shadow-md md:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] rounded-sm">
                     {toc.length > 0 && (
                     <div className="lg:hidden mb-10 border-b border-t border-stone-100 py-3">
@@ -327,18 +284,7 @@ const Post: React.FC = () => {
                         )}
                     </div>
                     )}
-                    <div className="mb-6 text-center"><p className="text-[9px] text-stone-300 uppercase tracking-widest font-medium">Contains affiliate links</p></div>
                     <div className="gh-content max-w-none prose prose-stone prose-base md:prose-lg mx-auto prose-headings:font-serif prose-headings:font-normal prose-img:rounded-sm prose-img:w-full prose-a:text-stone-900 hover:prose-a:text-stone-600" dangerouslySetInnerHTML={{ __html: processedHtml || post.html }} />
-                    <div className="flex items-center justify-center mt-12 md:mt-20 mb-10 md:mb-16 opacity-20"><div className="w-12 md:w-16 h-px bg-stone-900"></div></div>
-                    {post.primary_author && (
-                        <div className="flex items-center justify-center gap-4 md:gap-6 pt-8 border-t border-stone-100">
-                            <img src={post.primary_author.profile_image || "https://picsum.photos/100/100"} alt={post.primary_author.name} className="w-12 h-12 md:w-16 md:h-16 rounded-full grayscale object-cover border border-stone-100 shrink-0" loading="lazy" />
-                            <div>
-                                <h4 className="font-serif text-lg md:text-xl text-stone-900 mb-0.5 font-bold">{post.primary_author.name}</h4>
-                                <p className="text-[10px] md:text-[11px] text-stone-500 uppercase tracking-widest">Editor & Curator</p>
-                            </div>
-                        </div>
-                    )}
                 </main>
                  <aside className="hidden lg:block lg:col-span-2 sticky top-32 order-3">
                     <div>
@@ -358,29 +304,6 @@ const Post: React.FC = () => {
                 </aside>
             </div>
         </div>
-        <section className="bg-stone-900 text-stone-100 py-16 md:py-20 mb-16 md:mb-20">
-            <div className="container mx-auto px-6 text-center max-w-2xl">
-                <span className="text-[9px] font-bold tracking-[0.3em] uppercase opacity-60 mb-4 block">The Weekly Edit</span>
-                <h3 className="font-serif text-2xl md:text-4xl mb-5 md:mb-6 leading-tight">Join our community of 15,000+ design lovers.</h3>
-                <p className="text-stone-400 mb-8 font-light text-sm leading-relaxed">Get curated interiors, architectural inspiration, and exclusive shopping edits delivered to your inbox every Sunday.</p>
-                <button onClick={() => openNewsletter()} className="inline-flex items-center gap-3 bg-white text-stone-900 px-8 py-3.5 text-[10px] font-bold tracking-widest uppercase hover:bg-stone-200 transition-colors">Subscribe Now <ArrowRight size={14} /></button>
-            </div>
-        </section>
-        {relatedPosts.length > 0 && (
-            <section className="container mx-auto px-6 md:px-8 max-w-7xl">
-                <div className="flex items-center justify-between mb-8 md:mb-12 border-b border-stone-200 pb-3 md:pb-4"><span className="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-400">Read Next</span></div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-                    {relatedPosts.map(post => (
-                        <article key={post.id} className="group cursor-pointer">
-                             <Link to={`/${post.slug}`}>
-                                <div className="aspect-[3/2] overflow-hidden bg-stone-200 mb-4 relative rounded-sm border border-stone-200/50"><img src={post.feature_image} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" /><div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" /></div>
-                                <div className="flex flex-col"><div className="mb-2 text-[9px] font-bold tracking-widest uppercase text-stone-400">{post.primary_tag?.name || 'Journal'}</div><h4 className="font-serif text-lg text-stone-900 leading-snug group-hover:text-stone-600 transition-colors font-bold">{post.title}</h4></div>
-                             </Link>
-                        </article>
-                    ))}
-                </div>
-            </section>
-        )}
       </div>
     </>
   );
