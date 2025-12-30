@@ -91,6 +91,8 @@ const Post: React.FC = () => {
     if (!post?.html) return;
     const parser = new DOMParser();
     const doc = parser.parseFromString(post.html, 'text/html');
+    
+    // 1. Xử lý Table of Contents
     const headings = doc.querySelectorAll('h2, h3');
     const tocData: TOCItem[] = [];
     headings.forEach((heading, index) => {
@@ -99,6 +101,44 @@ const Post: React.FC = () => {
       heading.id = id;
       tocData.push({ id, text, level: parseInt(heading.tagName.substring(1)) });
     });
+
+    // 2. Xử lý nhóm các Product Cards thành Slider
+    const productCards = Array.from(doc.querySelectorAll('.kg-product-card'));
+    if (productCards.length > 0) {
+      let i = 0;
+      while (i < productCards.length) {
+        const group: Element[] = [productCards[i]];
+        let j = i + 1;
+        while (j < productCards.length) {
+          const current = productCards[j - 1];
+          const next = productCards[j];
+          // Kiểm tra xem chúng có nằm cạnh nhau trong DOM không (bỏ qua text node rỗng)
+          let sibling = current.nextElementSibling;
+          if (sibling === next) {
+            group.push(next);
+            j++;
+          } else {
+            break;
+          }
+        }
+
+        if (group.length > 1) {
+          const wrapper = doc.createElement('div');
+          wrapper.className = 'gh-product-slider-wrapper';
+          const container = doc.createElement('div');
+          container.className = 'gh-product-slider-container';
+          wrapper.appendChild(container);
+
+          const firstCard = group[0];
+          if (firstCard.parentNode) {
+            firstCard.parentNode.insertBefore(wrapper, firstCard);
+            group.forEach(card => container.appendChild(card));
+          }
+        }
+        i = j;
+      }
+    }
+
     setProcessedHtml(doc.body.innerHTML);
     setToc(tocData);
   }, [post]);
@@ -142,16 +182,9 @@ const Post: React.FC = () => {
     }
   };
 
-  /**
-   * Cải thiện hàm cuộn cho di động iPhone 13:
-   * 1. Đóng Menu và đợi 10ms để layout ổn định (tránh lỗi co giãn thanh địa chỉ).
-   * 2. Sử dụng scrollIntoView. Trình duyệt sẽ tự dùng scroll-margin-top !important từ CSS.
-   * 3. Đây là cách bền vững nhất trên các bản cập nhật iOS mới.
-   */
   const scrollToHeading = (id: string, isMobile: boolean = false) => {
     if (isMobile) {
       setIsMobileTocOpen(false);
-      // Đợi một nhịp cực ngắn để menu đóng hẳn và layout safari tính toán lại viewport
       setTimeout(() => {
         const element = document.getElementById(id);
         if (element) {
@@ -176,14 +209,10 @@ const Post: React.FC = () => {
 
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-stone-50 text-stone-400 font-serif">Loading Story...</div>;
   if (!post) return (
-    <>
-      <SEO title="Page Not Found" robots="noindex" />
-      <div className="min-h-screen flex flex-col items-center justify-center bg-stone-50 text-stone-900 font-serif p-4 text-center">
-         <h1 className="text-3xl mb-4">Story not found.</h1>
-         <p className="text-stone-500 mb-8">The article you are looking for might have been moved or deleted.</p>
-         <Link to="/" className="text-[10px] font-bold uppercase tracking-widest border-b border-stone-900 pb-1">Back to Journal</Link>
-      </div>
-    </>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-stone-50 text-stone-900 font-serif p-4 text-center">
+       <h1 className="text-3xl mb-4">Story not found.</h1>
+       <Link to="/" className="text-[10px] font-bold uppercase tracking-widest border-b border-stone-900 pb-1">Back to Journal</Link>
+    </div>
   );
 
   const breadcrumbs = [{ name: "Home", item: "/" }, ...(post.primary_tag ? [{ name: post.primary_tag.name, item: `/tag/${post.primary_tag.slug}` }] : []), { name: post.title, item: `/${post.slug}` }];
@@ -209,25 +238,6 @@ const Post: React.FC = () => {
             <div className="container mx-auto px-4 md:px-8 max-w-7xl mt-8 md:mt-12">
                 <div className="aspect-[16/9] md:aspect-[2.4/1] overflow-hidden bg-stone-100 shadow-sm relative rounded-sm">
                     <img src={post.feature_image} alt={post.title} className="w-full h-full object-cover" loading="eager" fetchPriority="high" width="1200" height="600" />
-                </div>
-                <div className="flex justify-between items-start mt-4 px-1 relative">
-                    <p className="text-[9px] md:text-xs text-stone-900 font-bold tracking-widest uppercase">
-                        {post.primary_author?.name || 'The Decor Atlas'} <span className="text-stone-300 mx-1 md:mx-2">•</span> {post.reading_time || 5} min read
-                    </p>
-                    <div className="relative" ref={shareRef}>
-                        <button onClick={() => setIsShareOpen(!isShareOpen)} className="flex items-center gap-1.5 text-[9px] md:text-xs uppercase font-bold tracking-widest text-stone-500 hover:text-stone-900 transition-colors">
-                            <Share2 size={12} /> Share
-                        </button>
-                        {isShareOpen && (
-                            <div className="absolute right-0 top-full mt-2 w-44 bg-white border border-stone-100 shadow-xl rounded-sm z-50 animate-fade-in-up origin-top-right">
-                                <div className="p-1">
-                                    <button onClick={() => handleShare('facebook')} className="w-full flex items-center gap-3 px-4 py-2.5 text-[10px] font-bold text-stone-600 hover:bg-stone-50 hover:text-stone-900 transition-colors text-left"><Facebook size={12} /> Facebook</button>
-                                    <button onClick={() => handleShare('twitter')} className="w-full flex items-center gap-3 px-4 py-2.5 text-[10px] font-bold text-stone-600 hover:bg-stone-50 hover:text-stone-900 transition-colors text-left"><Twitter size={12} /> Twitter / X</button>
-                                    <button onClick={() => handleShare('copy')} className="w-full flex items-center gap-3 px-4 py-2.5 text-[10px] font-bold text-stone-600 hover:bg-stone-50 hover:text-stone-900 transition-colors text-left border-t border-stone-100">{copied ? <Check size={12} className="text-green-600" /> : <LinkIcon size={12} />}{copied ? 'Copied!' : 'Copy Link'}</button>
-                                </div>
-                            </div>
-                        )}
-                    </div>
                 </div>
             </div>
         </header>
