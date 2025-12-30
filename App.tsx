@@ -15,11 +15,30 @@ import NewsletterModal from './components/NewsletterModal';
 
 // ScrollToTop component to ensure view resets on route change
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const location = useLocation();
   
   React.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    // Disable browser's native scroll restoration to prevent it from jumping back
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    // Use a small timeout or requestAnimationFrame to ensure the DOM has updated
+    // and to bypass any mobile browser scroll-locking during transition.
+    const scrollHandler = () => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'instant' // Use 'instant' to avoid conflicts with CSS smooth scroll
+      });
+    };
+
+    scrollHandler();
+    // Double-check after a short delay for mobile Safari/Chrome quirk
+    const timer = setTimeout(scrollHandler, 10);
+    
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
 
   return null;
 };

@@ -58,7 +58,6 @@ const Post: React.FC = () => {
       }
     };
     fetchData();
-    window.scrollTo(0, 0);
   }, [slug]);
 
   // Intercept clicks on custom internal cards to use internal navigation
@@ -72,7 +71,6 @@ const Post: React.FC = () => {
           e.preventDefault();
           window.history.pushState({}, '', href);
           window.dispatchEvent(new Event('popstate'));
-          window.scrollTo(0, 0);
         }
       }
     };
