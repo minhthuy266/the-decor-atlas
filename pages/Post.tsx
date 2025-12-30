@@ -178,25 +178,25 @@ const Post: React.FC = () => {
     }
   };
 
-  // Improved Scroll Handler for TOC
+  /**
+   * Cải thiện hàm cuộn:
+   * 1. Sử dụng scrollIntoView với thuộc tính scroll-padding-top đã định nghĩa trong index.html
+   * 2. Nếu cần tính toán thủ công, sử dụng offsetTop thay vì getBoundingClientRect 
+   * để tránh sai số do thanh địa chỉ trình duyệt di động.
+   */
   const scrollToHeading = (id: string, isMobile: boolean = false) => {
     const element = document.getElementById(id);
     if (element) {
-      // Calculate offset carefully. 
-      // If it "scrolled too far" (meaning it went too low), we need a LARGER offset.
-      // 100-110px is generally better for mobile safe areas and address bars.
-      const offset = isMobile ? 110 : 110;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-      
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
+      // Đóng menu TOC mobile trước
+      if (isMobile) setIsMobileTocOpen(false);
+
+      // Cách tối ưu nhất: dùng scrollIntoView.
+      // Trình duyệt sẽ tự động áp dụng scroll-padding-top từ thẻ <html>.
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
       });
       
-      if (isMobile) setIsMobileTocOpen(false);
       setActiveId(id);
     }
   };
