@@ -1,0 +1,19 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        # Pass environment variables to the build stage if SSG fetching is needed
+        - GHOST_URL=${GHOST_URL}
+        - GHOST_KEY=${GHOST_KEY}
+    image: the-decor-atlas:latest
+    container_name: nextjs-decor-atlas
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      # Pass runtime variables
+      - NODE_ENV=production
+      - GHOST_URL=${GHOST_URL}
+      - GHOST_KEY=${GHOST_KEY}
+    network_mode: "host" # Allows connecting directly to host network, equivalent to proxy_pass localhost:3000 in Nginx
