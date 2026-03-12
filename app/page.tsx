@@ -36,8 +36,8 @@ export default async function HomePage() {
   const trendingPosts = posts.filter((p) => p.id !== hotPost?.id);
   const featuredProducts = amazonProducts.slice(0, 8);
 
-  // Use Ghost CMS image as hero if available, else fallback
-  const heroBgImage = hotPost?.feature_image || FALLBACK_HERO;
+  // Always use the original static banner for the homepage
+  const heroBgImage = FALLBACK_HERO;
 
   return (
     <HomeClient
