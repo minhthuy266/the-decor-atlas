@@ -1,6 +1,6 @@
 import { Post, Tag } from '../types';
 
-const URL = "https://slaymua.com";
+const URL = "https://api.thedecoratlas.com";
 const KEY = "ab74a5f89d0a4a3c4451decb46";
 const DEFAULT_COVER = "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop";
 

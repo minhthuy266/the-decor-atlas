@@ -1,134 +1,46 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, X, Search, ChevronDown, Plus, Minus } from 'lucide-react';
-import { Tag } from '../types';
+import { Tag } from '@/types';
 import SearchModal from './SearchModal';
-import { getTags } from '../lib/ghost';
-
-// --- ROUTER CONFIGURATION ---
-const getEnvRouterConfig = () => {
-  try {
-    if (typeof window !== 'undefined' && window.location.protocol === 'blob:') {
-      return true;
-    }
-    // @ts-ignore - Fixing "Property 'env' does not exist on type 'ImportMeta'" for Vite env variables
-    return import.meta.env.VITE_USE_HASH_ROUTER === 'true';
-  } catch {
-    return false;
-  }
-};
-const USE_HASH_ROUTER = getEnvRouterConfig();
-
-// --- Custom Router Implementation ---
-const getLoc = () => {
-  if (typeof window === 'undefined') return { pathname: '/', search: '', hash: '' };
-  if (USE_HASH_ROUTER) {
-    const hashPath = window.location.hash.slice(1);
-    return { pathname: hashPath || '/', search: window.location.search, hash: window.location.hash };
-  } else {
-    return { pathname: window.location.pathname, search: window.location.search, hash: window.location.hash };
-  }
-};
-
-export const useLocation = () => {
-  const [location, setLocation] = useState(getLoc());
-  useEffect(() => {
-    const handler = () => setLocation(getLoc());
-    if (USE_HASH_ROUTER) {
-      window.addEventListener('hashchange', handler);
-      return () => window.removeEventListener('hashchange', handler);
-    } else {
-      window.addEventListener('popstate', handler);
-      return () => window.removeEventListener('popstate', handler);
-    }
-  }, []);
-  return location;
-};
-
-export const useParams = <T extends Record<string, string | undefined>>() => {
-  const { pathname } = useLocation();
-  let slug: string | undefined = undefined;
-  if (pathname.startsWith('/tag/')) {
-    slug = pathname.replace(/^\/tag\//, '');
-  } else if (pathname !== '/' && !pathname.startsWith('/about') && !pathname.startsWith('/shop')) { 
-    slug = pathname.replace(/^\//, '');
-  }
-  return { slug } as unknown as T;
-};
-
-export const Link: React.FC<{ to: string; className?: string; style?: React.CSSProperties; children: React.ReactNode }> = ({ to, className, style, children }) => {
-  const handleClick = (e: React.MouseEvent) => {
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    e.preventDefault();
-    if (USE_HASH_ROUTER) {
-        window.location.hash = to;
-    } else {
-        try {
-            window.history.pushState({}, '', to);
-            window.dispatchEvent(new Event('popstate'));
-        } catch (err) {
-            console.error("Navigation error:", err);
-            window.location.href = to;
-        }
-    }
-    window.scrollTo(0, 0);
-  };
-  const href = USE_HASH_ROUTER ? (to.startsWith('#') ? to : `#${to}`) : to;
-  return (
-    <a href={href} className={`${className || ''} cursor-pointer`} onClick={handleClick} style={style}>
-      {children}
-    </a>
-  );
-};
-
-export const Route: React.FC<{ path: string; element: React.ReactNode }> = () => null;
-
-export const Routes: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { pathname } = useLocation();
-  let match = null;
-  React.Children.forEach(children, (child) => {
-    if (match) return;
-    if (!React.isValidElement(child)) return;
-    const props = child.props as { path: string; element: React.ReactNode };
-    if (props.path === pathname) { match = props.element; return; }
-    if (props.path === '/tag/:slug' && pathname.startsWith('/tag/')) { match = props.element; return; }
-    if (props.path === '/:slug' && pathname !== '/' && !pathname.startsWith('/tag/') && !pathname.startsWith('/shop') && !pathname.startsWith('/about')) { match = props.element; }
-  });
-  return <>{match}</>;
-};
+import { getTags } from '@/lib/ghost';
 
 // --- MENU DEFINITION ---
 interface MenuPillar {
-    label: string;
-    slug: string;
-    tagSlugs: string[]; // Slugs of tags that belong to this pillar
-    children: Tag[]; // Will be populated dynamically
+  label: string;
+  slug: string;
+  tagSlugs: string[];
+  children: Tag[];
 }
 
 const INITIAL_MENU: MenuPillar[] = [
-    {
-        label: "Shop",
-        slug: "shop",
-        tagSlugs: ["amazon-finds", "shop-the-look", "gift-guides", "splurge-vs-save"],
-        children: []
-    },
-    {
-        label: "Organization",
-        slug: "organization",
-        tagSlugs: ["kitchen-pantry", "closet-organization", "small-spaces"],
-        children: []
-    },
-    {
-        label: "Room Ideas",
-        slug: "rooms",
-        tagSlugs: ["living-room", "bedroom", "home-office"],
-        children: []
-    },
-    {
-        label: "Styles",
-        slug: "styles",
-        tagSlugs: ["organic-modern", "seasonal-decor"],
-        children: []
-    }
+  {
+    label: 'Shop',
+    slug: 'shop',
+    tagSlugs: ['amazon-finds', 'shop-the-look', 'gift-guides', 'splurge-vs-save'],
+    children: [],
+  },
+  {
+    label: 'Organization',
+    slug: 'organization',
+    tagSlugs: ['kitchen-pantry', 'closet-organization', 'small-spaces'],
+    children: [],
+  },
+  {
+    label: 'Room Ideas',
+    slug: 'rooms',
+    tagSlugs: ['living-room', 'bedroom', 'home-office'],
+    children: [],
+  },
+  {
+    label: 'Styles',
+    slug: 'styles',
+    tagSlugs: ['organic-modern', 'seasonal-decor'],
+    children: [],
+  },
 ];
 
 const Navbar: React.FC = () => {
@@ -137,22 +49,21 @@ const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuItems, setMenuItems] = useState<MenuPillar[]>(INITIAL_MENU);
   const [activeMobileMenu, setActiveMobileMenu] = useState<string | null>(null);
-  
-  const location = useLocation();
 
-  // Fetch Tags and build dynamic menu
+  const pathname = usePathname();
+
   useEffect(() => {
     const fetchAndBuildMenu = async () => {
-        try {
-            const allTags = await getTags();
-            const updatedMenu = INITIAL_MENU.map(pillar => ({
-                ...pillar,
-                children: allTags.filter(t => pillar.tagSlugs.includes(t.slug))
-            }));
-            setMenuItems(updatedMenu);
-        } catch (error) {
-            console.error("Failed to fetch tags for menu", error);
-        }
+      try {
+        const allTags = await getTags();
+        const updatedMenu = INITIAL_MENU.map((pillar) => ({
+          ...pillar,
+          children: allTags.filter((t) => pillar.tagSlugs.includes(t.slug)),
+        }));
+        setMenuItems(updatedMenu);
+      } catch (error) {
+        console.error('Failed to fetch tags for menu', error);
+      }
     };
     fetchAndBuildMenu();
   }, []);
@@ -167,20 +78,22 @@ const Navbar: React.FC = () => {
     setIsOpen(false);
     setIsSearchOpen(false);
     setActiveMobileMenu(null);
-  }, [location]);
+  }, [pathname]);
 
   useEffect(() => {
-    if (isOpen) { document.body.style.overflow = 'hidden'; } 
+    if (isOpen) { document.body.style.overflow = 'hidden'; }
     else { document.body.style.overflow = 'unset'; }
-    return () => { document.body.style.overflow = 'unset'; }
+    return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
 
-  const isHome = location.pathname === '/';
+  const isHome = pathname === '/';
   const isTransparent = isHome && !scrolled && !isOpen;
   const textBase = isTransparent ? 'text-white' : 'text-stone-600';
   const textHover = isTransparent ? 'hover:text-stone-200' : 'hover:text-stone-900';
   const logoClass = isTransparent ? 'text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)]' : 'text-stone-900';
-  const iconClass = isTransparent ? 'text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)] hover:text-stone-100' : 'text-stone-500 hover:text-stone-900';
+  const iconClass = isTransparent
+    ? 'text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)] hover:text-stone-100'
+    : 'text-stone-500 hover:text-stone-900';
 
   const toggleAccordion = (slug: string) => {
     setActiveMobileMenu(activeMobileMenu === slug ? null : slug);
@@ -191,11 +104,21 @@ const Navbar: React.FC = () => {
   return (
     <>
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
-      
-      <header className={`fixed top-0 left-0 right-0 z-[50] transition-all duration-500 ease-in-out border-b ${scrolled || isOpen ? 'bg-stone-50/95 backdrop-blur-sm border-stone-200 py-3' : 'bg-transparent border-transparent py-6'}`}>
+
+      <header
+        className={`fixed top-0 left-0 right-0 z-[50] transition-all duration-500 ease-in-out border-b ${
+          scrolled || isOpen
+            ? 'bg-stone-50/95 backdrop-blur-sm border-stone-200 py-3'
+            : 'bg-transparent border-transparent py-6'
+        }`}
+      >
         <div className="container mx-auto px-4 md:px-8 max-w-7xl flex justify-between items-center relative">
-          <Link to="/" className="block">
-            <LogoTag className={`font-serif text-xl md:text-3xl tracking-tight font-bold transition-colors duration-300 ${isOpen ? 'text-stone-900' : logoClass}`}>
+          <Link href="/" className="block">
+            <LogoTag
+              className={`font-serif text-xl md:text-3xl tracking-tight font-bold transition-colors duration-300 ${
+                isOpen ? 'text-stone-900' : logoClass
+              }`}
+            >
               The Decor Atlas.
             </LogoTag>
           </Link>
@@ -203,39 +126,51 @@ const Navbar: React.FC = () => {
           {/* DESKTOP NAV */}
           <nav className="hidden md:flex items-center space-x-6 text-sm font-semibold tracking-wide transition-colors duration-300">
             {menuItems.map((item) => (
-                <div key={item.slug} className="relative group">
-                    <button className={`flex items-center transition-all duration-300 focus:outline-none pb-1 border-b-2 border-transparent hover:border-transparent ${textBase} ${textHover}`}>
-                        {item.label} <ChevronDown size={14} className="ml-1 opacity-70" />
-                    </button>
-                    {/* Desktop Dropdown */}
-                    {item.children.length > 0 && (
-                        <div className="absolute top-full -left-4 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
-                            <div className="bg-white shadow-xl border border-stone-100 rounded-sm w-56 py-2 flex flex-col">
-                                {item.children.map(sub => (
-                                    <Link 
-                                        key={sub.slug} 
-                                        to={`/tag/${sub.slug}`} 
-                                        className="px-6 py-3 text-stone-500 hover:text-stone-900 hover:bg-stone-50 transition-colors text-sm font-medium"
-                                    >
-                                        {sub.name}
-                                    </Link>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
+              <div key={item.slug} className="relative group">
+                <button
+                  className={`flex items-center transition-all duration-300 focus:outline-none pb-1 border-b-2 border-transparent hover:border-transparent ${textBase} ${textHover}`}
+                >
+                  {item.label} <ChevronDown size={14} className="ml-1 opacity-70" />
+                </button>
+                {item.children.length > 0 && (
+                  <div className="absolute top-full -left-4 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
+                    <div className="bg-white shadow-xl border border-stone-100 rounded-sm w-56 py-2 flex flex-col">
+                      {item.children.map((sub) => (
+                        <Link
+                          key={sub.slug}
+                          href={`/tag/${sub.slug}`}
+                          className="px-6 py-3 text-stone-500 hover:text-stone-900 hover:bg-stone-50 transition-colors text-sm font-medium"
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
-            
-            <Link to="/about" className={`${textBase} ${textHover} border-b-2 border-transparent pb-1`}>About</Link>
-            
-            <button aria-label="Search" className={`ml-2 transition-colors ${iconClass}`} onClick={() => setIsSearchOpen(true)}>
+
+            <Link
+              href="/about"
+              className={`${textBase} ${textHover} border-b-2 border-transparent pb-1`}
+            >
+              About
+            </Link>
+
+            <button
+              aria-label="Search"
+              className={`ml-2 transition-colors ${iconClass}`}
+              onClick={() => setIsSearchOpen(true)}
+            >
               <Search size={18} strokeWidth={2} />
             </button>
           </nav>
 
           {/* Mobile Toggle */}
-          <button 
-            className={`md:hidden transition-colors duration-300 p-1 ${isOpen || !isTransparent ? 'text-stone-900' : 'text-white'}`}
+          <button
+            className={`md:hidden transition-colors duration-300 p-1 ${
+              isOpen || !isTransparent ? 'text-stone-900' : 'text-white'
+            }`}
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -245,62 +180,89 @@ const Navbar: React.FC = () => {
       </header>
 
       {/* MOBILE MENU OVERLAY */}
-      <div className={`fixed inset-0 z-[45] transition-all duration-500 ${isOpen ? 'visible' : 'invisible delay-300'}`}>
-        <div className={`absolute inset-0 bg-stone-900/40 backdrop-blur-sm transition-opacity duration-500 ${isOpen ? 'opacity-100' : 'opacity-0'}`} onClick={() => setIsOpen(false)} />
-        
-        <div className={`absolute top-0 right-0 h-full w-full md:w-[400px] bg-[#fafaf9] shadow-2xl transition-transform duration-500 ease-out transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-           <div className="flex flex-col h-full pt-24 px-6 pb-10">
-              <div className="mb-6">
-                 <button onClick={() => { setIsOpen(false); setIsSearchOpen(true); }} className="w-full flex items-center justify-between bg-white border border-stone-200 px-4 py-3 text-stone-400 text-sm font-medium rounded-sm active:bg-stone-50 transition-colors">
-                    <span>Search...</span>
-                    <Search size={16} />
-                 </button>
-              </div>
+      <div
+        className={`fixed inset-0 z-[45] transition-all duration-500 ${isOpen ? 'visible' : 'invisible delay-300'}`}
+      >
+        <div
+          className={`absolute inset-0 bg-stone-900/40 backdrop-blur-sm transition-opacity duration-500 ${
+            isOpen ? 'opacity-100' : 'opacity-0'
+          }`}
+          onClick={() => setIsOpen(false)}
+        />
 
-              <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col items-start space-y-3">
-                
-                <Link to="/" className="font-serif text-2xl text-stone-900 hover:text-stone-600 font-bold w-full border-b border-stone-100 pb-3 flex justify-between items-center group">
-                   <span>Journal</span>
-                </Link>
+        <div
+          className={`absolute top-0 right-0 h-full w-full md:w-[400px] bg-[#fafaf9] shadow-2xl transition-transform duration-500 ease-out transform ${
+            isOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          <div className="flex flex-col h-full pt-24 px-6 pb-10">
+            <div className="mb-6">
+              <button
+                onClick={() => { setIsOpen(false); setIsSearchOpen(true); }}
+                className="w-full flex items-center justify-between bg-white border border-stone-200 px-4 py-3 text-stone-400 text-sm font-medium rounded-sm active:bg-stone-50 transition-colors"
+              >
+                <span>Search...</span>
+                <Search size={16} />
+              </button>
+            </div>
 
-                {menuItems.map((item) => (
-                    <div key={item.slug} className="w-full border-b border-stone-100 pb-3">
-                        <button 
-                            onClick={() => toggleAccordion(item.slug)}
-                            className="w-full flex items-center justify-between font-serif text-2xl text-stone-900 font-bold hover:text-stone-600 transition-colors text-left"
-                        >
-                            <span>{item.label}</span>
-                            {item.children.length > 0 && (activeMobileMenu === item.slug ? <Minus size={20} className="text-stone-400" /> : <Plus size={20} className="text-stone-400" />)}
-                        </button>
-                        
-                        {item.children.length > 0 && (
-                            <div className={`overflow-hidden transition-all duration-500 ease-in-out ${activeMobileMenu === item.slug ? 'max-h-[500px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
-                                <div className="flex flex-col space-y-3 pl-2 border-l border-stone-200 ml-2">
-                                    {item.children.map((sub, idx) => (
-                                        <Link 
-                                            key={sub.slug} 
-                                            to={`/tag/${sub.slug}`} 
-                                            className="font-serif text-lg text-stone-500 hover:text-stone-900 transition-colors block"
-                                            style={{ transitionDelay: `${idx * 40}ms` }}
-                                        >
-                                            {sub.name}
-                                        </Link>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+            <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col items-start space-y-3">
+              <Link
+                href="/"
+                className="font-serif text-2xl text-stone-900 hover:text-stone-600 font-bold w-full border-b border-stone-100 pb-3 flex justify-between items-center group"
+              >
+                <span>Journal</span>
+              </Link>
+
+              {menuItems.map((item) => (
+                <div key={item.slug} className="w-full border-b border-stone-100 pb-3">
+                  <button
+                    onClick={() => toggleAccordion(item.slug)}
+                    className="w-full flex items-center justify-between font-serif text-2xl text-stone-900 font-bold hover:text-stone-600 transition-colors text-left"
+                  >
+                    <span>{item.label}</span>
+                    {item.children.length > 0 &&
+                      (activeMobileMenu === item.slug ? (
+                        <Minus size={20} className="text-stone-400" />
+                      ) : (
+                        <Plus size={20} className="text-stone-400" />
+                      ))}
+                  </button>
+
+                  {item.children.length > 0 && (
+                    <div
+                      className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                        activeMobileMenu === item.slug
+                          ? 'max-h-[500px] opacity-100 mt-4'
+                          : 'max-h-0 opacity-0'
+                      }`}
+                    >
+                      <div className="flex flex-col space-y-3 pl-2 border-l border-stone-200 ml-2">
+                        {item.children.map((sub, idx) => (
+                          <Link
+                            key={sub.slug}
+                            href={`/tag/${sub.slug}`}
+                            className="font-serif text-lg text-stone-500 hover:text-stone-900 transition-colors block"
+                            style={{ transitionDelay: `${idx * 40}ms` }}
+                          >
+                            {sub.name}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
-                ))}
-              </div>
+                  )}
+                </div>
+              ))}
+            </div>
 
-              <div className="mt-auto pt-6 border-t border-stone-200">
-                  <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-stone-400">
-                     <Link to="/contact">Contact</Link>
-                     <Link to="/privacy">Privacy</Link>
-                     <span>NY, USA</span>
-                  </div>
+            <div className="mt-auto pt-6 border-t border-stone-200">
+              <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-stone-400">
+                <Link href="/contact">Contact</Link>
+                <Link href="/privacy">Privacy</Link>
+                <span>NY, USA</span>
               </div>
-           </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

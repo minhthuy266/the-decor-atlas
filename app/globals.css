@@ -1,0 +1,293 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* --- BASE --- */
+body {
+  background-color: #fafaf9;
+  color: #111110;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: auto !important;
+}
+
+/* --- UTILITY CLASSES --- */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.line-clamp-3 {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* --- Ghost Content Styles --- */
+.gh-content {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 300;
+  color: #44403c;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+.gh-content h1, .gh-content h2, .gh-content h3,
+.gh-content h4, .gh-content h5, .gh-content h6 {
+  font-family: 'Tenor Sans', sans-serif;
+  color: #111110;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+  text-transform: uppercase;
+  scroll-margin-top: 100px !important;
+}
+
+@media (min-width: 768px) {
+  .gh-content h1, .gh-content h2, .gh-content h3 {
+    scroll-margin-top: 120px !important;
+  }
+}
+
+.gh-content h2 {
+  font-size: 1.5rem;
+  border-bottom: 1px solid #e7e5e4;
+  padding-bottom: 0.5rem;
+}
+
+.gh-content h3 { font-size: 1.25rem; }
+.gh-content p { margin-bottom: 1.5rem; }
+
+/* --- PRODUCT CARD STYLES --- */
+.gh-content .kg-product-card {
+  background: #fff;
+  border: 1px solid #e7e5e4;
+  border-radius: 2px;
+  margin: 2.5rem 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.gh-content .kg-product-card-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  gap: 1rem;
+  min-height: 480px;
+}
+
+@media (min-width: 768px) {
+  .gh-content .kg-product-card-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: auto auto 1fr auto;
+    column-gap: 2.5rem;
+    row-gap: 0.5rem;
+    padding: 2.5rem;
+    min-height: 340px;
+  }
+}
+
+.gh-content .kg-product-card-image {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  background: #f5f5f4;
+  border-radius: 1px;
+  margin: 0 !important;
+}
+
+@media (min-width: 768px) {
+  .gh-content .kg-product-card-image {
+    grid-column: 1;
+    grid-row: 1 / span 4;
+    height: 280px;
+  }
+}
+
+.gh-content .kg-product-card-title {
+  font-family: 'Tenor Sans', sans-serif !important;
+  font-size: 1.25rem !important;
+  font-weight: 400 !important;
+  margin: 0 !important;
+  color: #111110 !important;
+  line-height: 1.3 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.gh-content .kg-product-card-description {
+  font-size: 0.95rem;
+  color: #57534e;
+  line-height: 1.6;
+  margin-top: 0.5rem;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.gh-content .kg-product-card-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #111110 !important;
+  color: #fff !important;
+  height: 48px;
+  padding: 0 1.5rem;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-decoration: none !important;
+  border-radius: 1px;
+  margin-top: auto;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .gh-content .kg-product-card-button { width: 220px !important; }
+}
+
+/* --- PRODUCT SLIDER --- */
+.gh-product-slider-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  margin: 2.5rem 0;
+}
+.gh-product-slider-wrapper::-webkit-scrollbar { display: none; }
+.gh-product-slider-container {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+}
+.gh-product-slider-container .kg-product-card {
+  width: 340px;
+  flex-shrink: 0;
+  margin: 0 !important;
+}
+
+/* --- INTERNAL CARD STYLES --- */
+.da-internal-card {
+  margin: 3.5rem 0;
+  background: #fff;
+  border: 1px solid #e7e5e4;
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  overflow: hidden;
+}
+
+.da-internal-card:hover {
+  border-color: #111110;
+  transform: translateY(-2px);
+}
+
+.da-internal-card a {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+@media (min-width: 640px) {
+  .da-internal-card a {
+    flex-direction: row;
+    align-items: stretch;
+    min-height: 240px;
+  }
+}
+
+.da-internal-image {
+  width: 100%;
+  background: #f5f5f4;
+  overflow: hidden;
+  aspect-ratio: 1/1;
+}
+
+@media (min-width: 640px) {
+  .da-internal-image { width: 240px; flex-shrink: 0; }
+}
+
+.da-internal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s;
+}
+
+.da-internal-content {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+@media (min-width: 768px) { .da-internal-content { padding: 2.5rem; } }
+
+.da-internal-tag {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #a8a29e;
+  margin-bottom: 0.75rem;
+}
+
+.da-internal-title {
+  font-family: 'Tenor Sans', sans-serif !important;
+  font-size: 1.25rem !important;
+  color: #111110 !important;
+  margin: 0 0 0.75rem 0 !important;
+  line-height: 1.3 !important;
+  font-weight: 400 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.da-internal-excerpt {
+  font-size: 0.9rem;
+  color: #78716c;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.da-internal-cta {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #111110;
+  border-bottom: 1px solid #d6d3d1;
+  padding-bottom: 2px;
+  width: fit-content;
+  margin-top: auto;
+}
+
+.gh-content blockquote {
+  border-left: 2px solid #111110;
+  padding-left: 1.5rem;
+  margin: 2.5rem 0;
+  font-family: 'Tenor Sans', sans-serif;
+  font-size: 1.25rem;
+  color: #111110;
+  line-height: 1.4;
+}
