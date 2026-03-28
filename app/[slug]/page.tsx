@@ -8,13 +8,12 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  try {
-    const posts = await getPosts();
-    return posts.map((post) => ({ slug: post.slug }));
-  } catch {
-    return [];
-  }
+  // Return empty array so Next.js doesn't try to build all 1000+ posts at build time.
+  // Posts will be built On-Demand (ISR) on the first visit and cached indefinitely.
+  return [];
 }
+
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
