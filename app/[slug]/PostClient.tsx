@@ -14,11 +14,13 @@ interface PostClientProps {
   post: PostType;
   trendingPosts: PostType[];
   relatedPosts: PostType[];
+  processedHtml: string;
+  tocData: TOCItem[];
 }
 
-export default function PostClient({ post, trendingPosts }: PostClientProps) {
-  const [processedHtml, setProcessedHtml] = useState<string>('');
-  const [toc, setToc] = useState<TOCItem[]>([]);
+export default function PostClient({ post, trendingPosts, processedHtml: initialHtml, tocData }: PostClientProps) {
+  const [processedHtml, setProcessedHtml] = useState<string>(initialHtml);
+  const [toc, setToc] = useState<TOCItem[]>(tocData);
   const [activeId, setActiveId] = useState<string>('');
   const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
@@ -42,52 +44,11 @@ export default function PostClient({ post, trendingPosts }: PostClientProps) {
     return () => document.removeEventListener('click', handleInternalClick);
   }, []);
 
+  // Sync state with props
   useEffect(() => {
-    if (!post?.html) return;
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(post.html, 'text/html');
-
-    const headings = doc.querySelectorAll('h2, h3');
-    const tocData: TOCItem[] = [];
-    headings.forEach((heading, index) => {
-      const text = heading.textContent || '';
-      const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') || `section-${index}`;
-      heading.id = id;
-      tocData.push({ id, text, level: parseInt(heading.tagName.substring(1)) });
-    });
-
-    // Group consecutive product cards into sliders
-    const productCards = Array.from(doc.querySelectorAll('.kg-product-card'));
-    if (productCards.length > 0) {
-      let i = 0;
-      while (i < productCards.length) {
-        const group: Element[] = [productCards[i]];
-        let j = i + 1;
-        while (j < productCards.length) {
-          const current = productCards[j - 1];
-          const next = productCards[j];
-          const sibling = current.nextElementSibling;
-          if (sibling === next) { group.push(next); j++; } else { break; }
-        }
-        if (group.length > 1) {
-          const wrapper = doc.createElement('div');
-          wrapper.className = 'gh-product-slider-wrapper';
-          const container = doc.createElement('div');
-          container.className = 'gh-product-slider-container';
-          wrapper.appendChild(container);
-          const firstCard = group[0];
-          if (firstCard.parentNode) {
-            firstCard.parentNode.insertBefore(wrapper, firstCard);
-            group.forEach((card) => container.appendChild(card));
-          }
-        }
-        i = j;
-      }
-    }
-
-    setProcessedHtml(doc.body.innerHTML);
+    setProcessedHtml(initialHtml);
     setToc(tocData);
-  }, [post]);
+  }, [initialHtml, tocData]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -251,6 +212,7 @@ export default function PostClient({ post, trendingPosts }: PostClientProps) {
               <div
                 className="gh-content max-w-none prose prose-stone prose-base md:prose-lg mx-auto prose-headings:font-serif prose-headings:font-normal prose-img:rounded-sm prose-img:w-full prose-a:text-stone-900 hover:prose-a:text-stone-600"
                 dangerouslySetInnerHTML={{ __html: processedHtml || post.html }}
+                suppressHydrationWarning
               />
             </main>
 

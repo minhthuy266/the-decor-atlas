@@ -70,6 +70,27 @@ export default async function PostPage({ params }: Props) {
     related = [...related, ...remaining];
   }
 
+  // ── SERVER-SIDE PROCESSING (Image Stability & TOC) ──
+  let processedHtml = post.html || '';
+  
+  // 1. Convert lazy to eager loading to prevent flickering (Primary Fix)
+  processedHtml = processedHtml.replace(/loading="lazy"/gi, 'loading="eager"');
+  
+  // 2. Add decoding="async" and stable styling
+  processedHtml = processedHtml.replace(/<img(?![^>]*decoding)/g, '<img decoding="async"');
+  processedHtml = processedHtml.replace(/<img(?![^>]*style="[^"]*width)/g, '<img style="width:100%;height:auto;"');
+
+  // 3. Extract TOC on Server
+  const toc: { id: string; text: string; level: number }[] = [];
+  const headerRegex = /<h(2|3)[^>]*>(.*?)<\/h\1>/gi;
+  let match;
+  let headerIndex = 0;
+  while ((match = headerRegex.exec(processedHtml)) !== null) {
+    const text = match[2].replace(/<\/?[^>]+(>|$)/g, "");
+    const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') || `section-${headerIndex++}`;
+    toc.push({ level: parseInt(match[1]), id, text });
+  }
+
   // JSON-LD Schema
   const siteUrl = 'https://thedecoratlas.com';
   const breadcrumbSchema = {
@@ -105,7 +126,7 @@ export default async function PostPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <PostClient post={post} trendingPosts={trendingPosts} relatedPosts={related.slice(0, 4)} />
+      <PostClient post={post} trendingPosts={trendingPosts} relatedPosts={related.slice(0, 4)} processedHtml={processedHtml} tocData={toc} />
     </>
   );
 }
