@@ -6,67 +6,26 @@ import { usePathname } from 'next/navigation';
 import { Menu, X, Search, ChevronDown, Plus, Minus } from 'lucide-react';
 import { Tag } from '@/types';
 import SearchModal from './SearchModal';
-import { getTags } from '@/lib/ghost';
 
-// --- MENU DEFINITION ---
-interface MenuPillar {
+export interface MenuPillar {
   label: string;
   slug: string;
   tagSlugs: string[];
   children: Tag[];
 }
 
-const INITIAL_MENU: MenuPillar[] = [
-  {
-    label: 'Shop',
-    slug: 'shop',
-    tagSlugs: ['amazon-finds', 'shop-the-look', 'gift-guides', 'splurge-vs-save'],
-    children: [],
-  },
-  {
-    label: 'Organization',
-    slug: 'organization',
-    tagSlugs: ['kitchen-pantry', 'closet-organization', 'small-spaces'],
-    children: [],
-  },
-  {
-    label: 'Room Ideas',
-    slug: 'rooms',
-    tagSlugs: ['living-room', 'bedroom', 'home-office'],
-    children: [],
-  },
-  {
-    label: 'Styles',
-    slug: 'styles',
-    tagSlugs: ['organic-modern', 'seasonal-decor'],
-    children: [],
-  },
-];
+interface NavbarProps {
+  initialMenuItems: MenuPillar[];
+}
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<NavbarProps> = ({ initialMenuItems }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [menuItems, setMenuItems] = useState<MenuPillar[]>(INITIAL_MENU);
+  const [menuItems] = useState<MenuPillar[]>(initialMenuItems);
   const [activeMobileMenu, setActiveMobileMenu] = useState<string | null>(null);
 
   const pathname = usePathname();
-
-  useEffect(() => {
-    const fetchAndBuildMenu = async () => {
-      try {
-        const allTags = await getTags();
-        const updatedMenu = INITIAL_MENU.map((pillar) => ({
-          ...pillar,
-          children: allTags.filter((t) => pillar.tagSlugs.includes(t.slug)),
-        }));
-        setMenuItems(updatedMenu);
-      } catch (error) {
-        console.error('Failed to fetch tags for menu', error);
-      }
-    };
-    fetchAndBuildMenu();
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => { setScrolled(window.scrollY > 20); };

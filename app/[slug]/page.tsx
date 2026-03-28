@@ -80,6 +80,11 @@ export default async function PostPage({ params }: Props) {
   processedHtml = processedHtml.replace(/<img(?![^>]*decoding)/g, '<img decoding="async"');
   processedHtml = processedHtml.replace(/<img(?![^>]*style="[^"]*width)/g, '<img style="width:100%;height:auto;"');
 
+  // 3. Block Ghost size generator 500 errors by forcing native images
+  processedHtml = processedHtml
+    .replace(/srcset="[^"]*"/gi, "")
+    .replace(/\/content\/images\/size\/w\d+\//g, "/content/images/");
+
   // 3. Extract TOC on Server
   const toc: { id: string; text: string; level: number }[] = [];
   const headerRegex = /<h(2|3)[^>]*>(.*?)<\/h\1>/gi;

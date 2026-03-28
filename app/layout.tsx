@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Navbar from '@/components/Navbar';
+import Navbar, { MenuPillar } from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import NewsletterModal from '@/components/NewsletterModal';
+import { getTags } from '@/lib/ghost';
 
 export const metadata: Metadata = {
   title: {
@@ -29,11 +30,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+const INITIAL_MENU: Omit<MenuPillar, 'children'>[] = [
+  { label: 'Shop', slug: 'shop', tagSlugs: ['amazon-finds', 'shop-the-look', 'gift-guides', 'splurge-vs-save'] },
+  { label: 'Organization', slug: 'organization', tagSlugs: ['kitchen-pantry', 'closet-organization', 'small-spaces'] },
+  { label: 'Room Ideas', slug: 'rooms', tagSlugs: ['living-room', 'bedroom', 'home-office'] },
+  { label: 'Styles', slug: 'styles', tagSlugs: ['organic-modern', 'seasonal-decor'] },
+];
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const allTags = await getTags();
+  const initialMenuItems: MenuPillar[] = INITIAL_MENU.map((pillar) => ({
+    ...pillar,
+    children: allTags.filter((t) => pillar.tagSlugs.includes(t.slug)),
+  }));
+
   return (
     <html lang="en-US">
       <head>
@@ -46,7 +60,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-stone-50 text-stone-900 font-sans selection:bg-stone-200 selection:text-stone-900 flex flex-col">
-        <Navbar />
+        <Navbar initialMenuItems={initialMenuItems} />
         <NewsletterModal />
         <div className="flex-grow">{children}</div>
         <Footer />

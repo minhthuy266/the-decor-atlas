@@ -188,6 +188,22 @@ const normalizeUrl = (url?: string) => {
   return `${URL}${url}`;
 };
 
+async function fetchWithTimeout(url: string, options: RequestInit = {}, timeout = 30000) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+    clearTimeout(id);
+    return response;
+  } catch (error) {
+    clearTimeout(id);
+    throw error;
+  }
+}
+
 const mapPost = (p: any): Post => ({
   ...p,
   feature_image: normalizeUrl(p.feature_image) || DEFAULT_COVER,
@@ -207,7 +223,7 @@ const mapTag = (t: any): Tag => ({
 export async function getPosts(): Promise<Post[]> {
   try {
     const endpoint = `${URL}/ghost/api/content/posts/?key=${KEY}&include=tags,authors&limit=20&formats=html&filter=tag:-product`;
-    const response = await fetch(endpoint);
+    const response = await fetchWithTimeout(endpoint, { next: { revalidate: 300 } });
     if (!response.ok) return MOCK_DATA.posts.filter(p => !p.tags?.some(t => t.slug === 'product')).map(mapPost);
     const data = await response.json();
     return (data.posts || []).map(mapPost);
@@ -219,7 +235,7 @@ export async function getPosts(): Promise<Post[]> {
 export async function getSinglePost(slug: string): Promise<Post | null> {
   try {
     const endpoint = `${URL}/ghost/api/content/posts/slug/${slug}/?key=${KEY}&include=tags,authors&formats=html`;
-    const response = await fetch(endpoint);
+    const response = await fetchWithTimeout(endpoint, { next: { revalidate: 300 } });
     if (!response.ok) {
         const mock = MOCK_DATA.posts.find(p => p.slug === slug);
         return mock ? mapPost(mock) : null;
@@ -236,7 +252,7 @@ export async function getSinglePost(slug: string): Promise<Post | null> {
 export async function getProducts(): Promise<Post[]> {
   try {
     const endpoint = `${URL}/ghost/api/content/posts/?key=${KEY}&filter=tag:product&include=tags&limit=all`;
-    const response = await fetch(endpoint);
+    const response = await fetchWithTimeout(endpoint, { next: { revalidate: 300 } });
     if (!response.ok) return MOCK_DATA.posts.filter(p => p.tags?.some(t => t.slug === 'product')).map(mapPost);
     const data = await response.json();
     return (data.posts || []).map(mapPost);
@@ -282,7 +298,7 @@ export async function getPostsByTag(slug: string, page: number = 1, limit: numbe
     let endpoint = slug === 'all' 
         ? `${URL}/ghost/api/content/posts/?key=${KEY}&filter=tag:-product&include=tags,authors&limit=${limit}&page=${page}&formats=html`
         : `${URL}/ghost/api/content/posts/?key=${KEY}&filter=tag:${slug}&include=tags,authors&limit=${limit}&page=${page}&formats=html`;
-    const response = await fetch(endpoint);
+    const response = await fetchWithTimeout(endpoint, { next: { revalidate: 300 } });
     if (!response.ok) throw new Error("API Failed");
     const data = await response.json();
     return { posts: (data.posts || []).map(mapPost), meta: data.meta };
@@ -298,7 +314,7 @@ export async function searchPosts(query: string): Promise<Post[]> {
   try {
     const encodedQuery = encodeURIComponent(query);
     const endpoint = `${URL}/ghost/api/content/posts/?key=${KEY}&filter=title:~'${encodedQuery}'&limit=5&fields=title,slug,feature_image,published_at,excerpt`;
-    const response = await fetch(endpoint);
+    const response = await fetchWithTimeout(endpoint, { next: { revalidate: 300 } });
     if (!response.ok) throw new Error("API Failed");
     const data = await response.json();
     return (data.posts || []).map(mapPost);
