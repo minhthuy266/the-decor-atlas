@@ -18,8 +18,12 @@ interface PostClientProps {
   tocData: TOCItem[];
 }
 
-export default function PostClient({ post, trendingPosts, processedHtml: initialHtml, tocData }: PostClientProps) {
-  const [processedHtml, setProcessedHtml] = useState<string>(initialHtml);
+export default function PostClient({ 
+  post, 
+  trendingPosts, 
+  processedHtml, 
+  tocData 
+}: PostClientProps) {
   const [toc, setToc] = useState<TOCItem[]>(tocData);
   const [activeId, setActiveId] = useState<string>('');
   const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
