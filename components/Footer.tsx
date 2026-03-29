@@ -75,7 +75,7 @@ const Footer: React.FC = () => {
             &copy; {new Date().getFullYear()} The Decor Atlas. All rights reserved.
           </div>
           <div className="text-stone-400 text-[10px] leading-relaxed max-w-lg text-left md:text-right">
-            The Decor Atlas is a participant in the Amazon Services LLC Associates Program. We may earn commissions from qualifying purchases.
+            As an Amazon Associate I earn from qualifying purchases.
           </div>
         </div>
       </div>

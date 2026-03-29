@@ -22,7 +22,7 @@ export default function PrivacyPage() {
           <h3 className="text-2xl mt-12 mb-6">Cookies and Web Beacons</h3>
           <p>Like any other website, The Decor Atlas uses &lsquo;cookies&rsquo;. These cookies are used to store information including visitors&apos; preferences, and the pages on the website that the visitor accessed or visited.</p>
           <h3 className="text-2xl mt-12 mb-6">Affiliate Disclosure</h3>
-          <p>The Decor Atlas is a participant in the Amazon Services LLC Associates Program and other affiliate programs. When you click on links to various merchants on this site and make a purchase, this can result in this site earning a commission.</p>
+          <p>As an Amazon Associate I earn from qualifying purchases. The Decor Atlas is also a participant in various other affiliate programs. When you click on links to various merchants on this site and make a purchase, this can result in this site earning a commission.</p>
           <h3 className="text-2xl mt-12 mb-6">CCPA Privacy Rights</h3>
           <p>Under the CCPA, among other rights, California consumers have the right to request disclosure, deletion, and opt-out of selling of personal data. Contact us at <a href="mailto:privacy@thedecoratlas.com">privacy@thedecoratlas.com</a>.</p>
           <h3 className="text-2xl mt-12 mb-6">GDPR Data Protection Rights</h3>

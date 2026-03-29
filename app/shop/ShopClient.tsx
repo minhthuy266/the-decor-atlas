@@ -8,9 +8,9 @@ import { ArrowUpRight, ShoppingBag, ExternalLink, Star, ArrowRight } from 'lucid
 import AffiliateDisclosure from '@/components/AffiliateDisclosure';
 
 const parseProductMeta = (excerpt?: string) => {
-  if (!excerpt) return { price: 'See Price', retailer: 'Retailer', brand: 'Brand' };
-  const parts = excerpt.split('|').map((s) => s.trim());
-  return { price: parts[0] || 'See Price', retailer: parts[1] || 'Retailer', brand: parts[2] || 'Design' };
+  if (!excerpt) return { price: 'Check Price on Amazon', retailer: 'Retailer', brand: 'Brand' };
+  const parts = excerpt.split('|').map(p => p.trim());
+  return { price: 'Check Price on Amazon', retailer: parts[1] || 'Retailer', brand: parts[2] || 'Design' };
 };
 
 const CATEGORIES = ['All', 'Furniture', 'Lighting', 'Decor', 'Textiles', 'Kitchen'];
@@ -175,9 +175,9 @@ export default function ShopClient({ initialProducts }: { initialProducts: Post[
       </section>
 
       <div className="bg-stone-50 py-8 text-center border-t border-stone-100">
-        <p className="text-[10px] text-stone-400 max-w-lg mx-auto leading-relaxed px-4">
-          *Prices updated daily. As an Amazon Associate, we earn from qualifying purchases.
-        </p>
+          <p className="text-xs text-stone-500 italic">
+          As an Amazon Associate I earn from qualifying purchases.
+          </p>
       </div>
     </main>
   );

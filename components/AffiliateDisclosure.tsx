@@ -11,12 +11,11 @@ export default function AffiliateDisclosure({ variant = 'post' }: AffiliateDiscl
       <Info size={14} className="text-stone-400 shrink-0 mt-0.5" />
       <p>
         <strong className="text-stone-700 font-bold">Affiliate Disclosure:</strong>{' '}
-        This {variant === 'shop' ? 'page' : 'post'} contains affiliate links. If you click a link and make a purchase,
-        we may earn a small commission at no extra cost to you. We only recommend products we genuinely love.{' '}
+        As an Amazon Associate I earn from qualifying purchases. This {variant === 'shop' ? 'page' : 'post'} contains affiliate links. If you click a link and make a purchase,
+        we may earn a commission at no extra cost to you. Read our full{' '}
         <Link href="/privacy#affiliate" className="underline decoration-stone-300 underline-offset-2 hover:text-stone-900 transition-colors">
-          Learn more
-        </Link>
-        .
+          Privacy Policy
+        </Link>.
       </p>
     </div>
   );
