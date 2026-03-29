@@ -13,6 +13,13 @@ export const metadata: Metadata = {
   description:
     'Curated home decor, Amazon finds, and organization hacks for renters & small-space lovers. Updated weekly.',
   metadataBase: new URL('https://thedecoratlas.com'),
+  icons: {
+    icon: [
+      { url: '/icon.png', type: 'image/png', sizes: '512x512' },
+    ],
+    apple: '/icon.png',
+    shortcut: '/icon.png',
+  },
   openGraph: {
     siteName: 'The Decor Atlas',
     locale: 'en_US',
